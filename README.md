@@ -75,20 +75,25 @@ AI 에이전트가 생기면서 세 문제가 한꺼번에 풀렸다. 대화형�
 
 ## 설치
 
-Python 3.8 이상만 있으면 된다. 외부 패키지는 쓰지 않는다.
+Python 3.8 이상만 있으면 된다. 외부 패키지는 쓰지 않는다. macOS · Linux · Windows 에서 같은 코드로 동작한다.
 
 ```bash
 git clone https://github.com/<user>/howami.git
 cd howami
-./install.sh          # 레포를 ~/.claude/skills/howami 로 심볼릭 링크한다
+./install.sh          # macOS · Linux: 레포를 ~/.claude/skills/howami 로 심볼릭 링크한다
+install.cmd           # Windows (PowerShell·cmd): 심볼릭 링크, 권한이 없으면 정션(mklink /J)으로 만든다
 ```
+
+두 래퍼의 본체는 `install.py`라서 `python3 install.py`로 직접 실행해도 된다.
+Windows 에서 `python3` 명령이 없으면 `python` 또는 `py -3`를 쓴다 (래퍼가 알아서 고른다).
 
 Claude Code를 재시작한 뒤 `/howami` 또는 "오늘 나 어때"라고 말하면 시작된다.
 
 데이터 위치를 옮기고 싶으면 `HOWAMI_HOME` 환경변수를 잡는다.
 
 ```bash
-export HOWAMI_HOME=~/Dropbox/howami   # 동기화가 필요하면 이런 식으로 각자 알아서
+export HOWAMI_HOME=~/Dropbox/howami          # macOS · Linux — 동기화가 필요하면 이런 식으로 각자 알아서
+$env:HOWAMI_HOME = "$HOME\Dropbox\howami"    # Windows PowerShell
 ```
 
 ## 어떻게 동작하나
@@ -220,7 +225,7 @@ python3 scripts/howami.py query --sql "
 | **흐름** | 14·30·90일·전체 구간의 축별·영역별 추이, 요일별 평균 표, 시간대별 평균, 처방 실행률, 자주 쓴 기법 |
 | **기록** | 날짜별 세션 목록과 본문. 원본 md도 그대로 볼 수 있다 |
 | **기법** | 진단에 쓰이는 기법 사전. 어디서 왔는지, 쓰면 무엇을 기대할 수 있는지, 위키백과·WHO·NHS·APA 등 더 읽을 곳 |
-| **설정** | 데이터 루트, 원본 md 폴더, SQLite DB, 인사이트 폴더의 위치와 파일 수·용량. 각 항목마다 경로 복사와 "폴더 열기"(Finder/탐색기) 버튼 |
+| **설정** | 데이터 루트, 원본 md 폴더, SQLite DB, 인사이트 폴더의 위치와 파일 수·용량. 각 항목마다 경로 복사와 "폴더 열기" 버튼 (macOS Finder · Windows 탐색기 · Linux xdg-open) |
 
 ### 실행 방법
 
@@ -240,14 +245,15 @@ python3 scripts/serve.py --open      # http://127.0.0.1:7788 을 브라우저로
 포트를 바꾸려면 `--port 9000` 또는 `HOWAMI_WEB_PORT=9000`. 데이터 위치는 다른 명령과 똑같이
 `HOWAMI_HOME`을 따른다. 종료는 `Ctrl+C`.
 
-코드를 고치면서 볼 때는 루트에서 `./dev.sh` 하나로 둘 다 띄운다.
+코드를 고치면서 볼 때는 루트에서 하나로 둘 다 띄운다.
 
 ```bash
-./dev.sh                 # API http://127.0.0.1:7788 + 화면 http://127.0.0.1:5173
-./dev.sh --open          # 브라우저까지 연다
+./dev.sh                 # macOS · Linux: API http://127.0.0.1:7788 + 화면 http://127.0.0.1:5173
+dev.cmd                  # Windows
+python3 dev.py --open    # 어느 OS 든 본체를 직접 실행해도 된다. --open 은 브라우저까지 연다
 ```
 
-`scripts/*.py`를 고치면 파이썬 서버가 스스로 다시 시작하고(`serve.py --reload`), `web/src`를 고치면
+`scripts/*.py`를 고치면 파이썬 서버가 다시 뜨고(`serve.py --reload`와 같은 감독 방식), `web/src`를 고치면
 vite가 브라우저를 바로 갱신한다. `Ctrl+C` 한 번이면 둘 다 종료된다. `node_modules`가 없으면 `npm install`을
 먼저 실행한다. 따로 띄우고 싶으면 `python3 scripts/serve.py --reload`와 `cd web && npm run dev`를 각각 실행한다.
 

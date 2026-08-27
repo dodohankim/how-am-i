@@ -8,8 +8,10 @@
   python3 scripts/serve.py            # http://127.0.0.1:7788
   python3 scripts/serve.py --open     # 브라우저까지 연다
   python3 scripts/serve.py --port 9000
-  python3 scripts/serve.py --reload   # scripts/*.py 가 바뀌면 스스로 다시 시작한다 (개발용)
-                                      # 서버와 화면을 같이 띄우려면 루트의 ./dev.sh
+  python3 scripts/serve.py --reload   # scripts/*.py 가 바뀌면 서버를 다시 띄운다 (개발용)
+                                      # 서버와 화면을 같이 띄우려면 루트의 dev.py (./dev.sh, dev.cmd)
+
+macOS · Linux · Windows 에서 같은 코드로 동작한다. 표준 라이브러리만 쓴다.
 
 API (전부 읽기 전용)
   GET /api/context?days=14      howami.py context 와 같다 (하루 롤업·기준선·열린 처방)
@@ -35,9 +37,9 @@ import json
 import mimetypes
 import os
 import re
+import signal
 import subprocess
 import sys
-import threading
 import time
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -311,7 +313,10 @@ def _which(name):
 
 
 def open_in_file_manager(target):
-    """target 키에 해당하는 폴더를 OS 파일 탐색기로 연다. 파일(db)이면 그 파일이 있는 폴더를 열어 선택한다."""
+    """target 키에 해당하는 폴더를 OS 파일 탐색기로 연다. 파일(db)이면 그 파일이 있는 폴더를 열어 선택한다.
+
+    macOS: open / open -R,  Windows: os.startfile / explorer /select,  Linux: xdg-open
+    """
     targets = open_targets()
     if target not in targets:
         return {"ok": False, "error": "열 수 있는 대상은 %s 뿐입니다" % ", ".join(sorted(targets))}
@@ -319,17 +324,22 @@ def open_in_file_manager(target):
     if not os.path.exists(path):
         return {"ok": False, "error": "아직 없습니다: %s (첫 기록을 남기면 생깁니다)" % path}
     is_file = os.path.isfile(path)
-    if sys.platform == "darwin":
-        cmd = ["open", "-R", path] if is_file else ["open", path]
-    elif sys.platform == "win32":
-        cmd = ["explorer", "/select,", path] if is_file else ["explorer", path]
-    else:
-        opener = _which("xdg-open")
-        if not opener:
-            return {"ok": False, "error": "xdg-open 이 없어 폴더를 열 수 없습니다. 경로를 복사해 직접 여세요."}
-        cmd = [opener, os.path.dirname(path) if is_file else path]
     try:
-        subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if sys.platform == "darwin":
+            cmd = ["open", "-R", path] if is_file else ["open", path]
+            subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        elif sys.platform == "win32":
+            if is_file:
+                # explorer 는 인자를 따로 나눠 주면 /select, 를 못 알아듣는다. 한 문자열로 넘긴다.
+                subprocess.Popen('explorer /select,"%s"' % os.path.normpath(path))
+            else:
+                os.startfile(os.path.normpath(path))  # noqa: S606  (Windows 전용)
+        else:
+            opener = _which("xdg-open")
+            if not opener:
+                return {"ok": False, "error": "xdg-open 이 없어 폴더를 열 수 없습니다. 경로를 복사해 직접 여세요."}
+            subprocess.Popen([opener, os.path.dirname(path) if is_file else path],
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except OSError as exc:
         return {"ok": False, "error": "폴더를 열지 못했습니다: %s" % exc}
     return {"ok": True, "opened": path}
@@ -456,50 +466,83 @@ class Handler(BaseHTTPRequestHandler):
 
 
 # --------------------------------------------------------------------------
-# 핫리로드 (--reload)
+# 핫리로드 (--reload): 감독 프로세스가 자식 서버를 띄우고, scripts/*.py 가 바뀌면 다시 띄운다
 # --------------------------------------------------------------------------
+# os.exec* 로 자기 자신을 교체하는 방식은 Windows 에서 제자리 교체가 안 되므로(새 프로세스가
+# 뜨고 원래 프로세스는 끝난다) 세 OS 에서 똑같이 동작하는 감독 방식을 쓴다.
+# 루트의 dev.py 도 이 supervise() 를 그대로 가져다 쓴다.
 
-def _watched_files():
-    """감시할 파일: scripts/ 안의 .py 전부. questions/*.yaml 은 요청마다 새로 읽으므로 감시할 필요가 없다."""
-    return sorted(
-        os.path.join(HERE, name) for name in os.listdir(HERE) if name.endswith(".py")
-    )
-
-
-def _mtimes():
+def watched_mtimes():
+    """감시 대상: scripts/ 안의 .py 전부. questions/*.yaml 은 요청마다 새로 읽으므로 감시할 필요가 없다."""
     result = {}
-    for path in _watched_files():
-        try:
-            result[path] = os.stat(path).st_mtime
-        except OSError:
-            pass
+    for name in os.listdir(HERE):
+        if name.endswith(".py"):
+            path = os.path.join(HERE, name)
+            try:
+                result[path] = os.stat(path).st_mtime
+            except OSError:
+                pass
     return result
 
 
-def start_reloader(interval=0.7):
-    """백그라운드에서 파일 수정 시각을 살피다가 바뀌면 현재 프로세스를 같은 인자로 다시 실행한다.
+def stop_process(proc, timeout=5):
+    """자식을 끝낸다. 먼저 terminate(POSIX 는 SIGTERM, Windows 는 TerminateProcess), 안 끝나면 kill."""
+    if proc is None or proc.poll() is not None:
+        return
+    try:
+        proc.terminate()
+        proc.wait(timeout)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.wait()
+    except OSError:
+        pass
 
-    os.execv 로 프로세스 자체가 교체되므로 pid 와 터미널은 그대로고, 열어 둔 소켓은
-    (파이썬 소켓은 exec 시 상속되지 않으므로) 닫힌 뒤 새 프로세스가 다시 바인딩한다.
-    --open 은 처음 한 번만 뜻이 있으니 재실행 인자에서 뺀다.
+
+def child_env(extra=None):
+    """자식 프로세스용 환경. 로그가 바로 보이고(무버퍼), Windows 콘솔에서도 한글이 깨지지 않게 한다."""
+    env = dict(os.environ, PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
+    if extra:
+        env.update(extra)
+    return env
+
+
+def handle_sigterm_as_interrupt():
+    """kill(SIGTERM) 도 Ctrl+C 처럼 정리 코드를 거치게 한다. 메인 스레드에서만 부를 수 있다."""
+    def _raise(*_):
+        raise KeyboardInterrupt
+    try:
+        signal.signal(signal.SIGTERM, _raise)
+    except (ValueError, OSError):
+        pass
+
+
+def supervise(argv, env=None, stop=None, interval=0.7, label="serve.py"):
+    """argv 를 자식으로 띄우고 scripts/*.py 가 바뀌면 자식을 끝내고 다시 띄운다.
+
+    stop(threading.Event) 이 켜지거나 Ctrl+C 가 오면 자식을 정리하고 돌아온다.
+    자식이 스스로 죽었다면(예: 문법 오류) 파일이 다시 바뀔 때까지 기다렸다가 띄운다.
     """
-    before = _mtimes()
-
-    def loop():
-        while True:
+    env = env or child_env()
+    child = None
+    try:
+        child = subprocess.Popen(argv, env=env)
+        before = watched_mtimes()
+        while stop is None or not stop.is_set():
             time.sleep(interval)
-            now = _mtimes()
-            changed = [p for p in now if now[p] != before.get(p)] + [p for p in before if p not in now]
-            if not changed:
+            now = watched_mtimes()
+            if now == before:
                 continue
-            names = ", ".join(os.path.basename(p) for p in changed)
-            print("바뀜: %s → 다시 시작합니다" % names, flush=True)
-            argv = [a for a in sys.argv if a != "--open"]
-            env = dict(os.environ, PYTHONUNBUFFERED="1")  # 재실행 뒤에도 로그가 바로 보이게
-            os.execve(sys.executable, [sys.executable, *argv], env)
-
-    thread = threading.Thread(target=loop, name="howami-reload", daemon=True)
-    thread.start()
+            changed = sorted({os.path.basename(p) for p in set(now) ^ set(before)}
+                             | {os.path.basename(p) for p in now if p in before and now[p] != before[p]})
+            before = now
+            print("[%s] 바뀜: %s → 다시 시작합니다" % (label, ", ".join(changed)), flush=True)
+            stop_process(child)
+            child = subprocess.Popen(argv, env=env)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        stop_process(child)
 
 
 def _int(value, default, lo, hi):
@@ -509,23 +552,44 @@ def _int(value, default, lo, hi):
         return default
 
 
+def _utf8_stdout():
+    """Windows 콘솔/파이프에서 한글·화살표가 깨지지 않게 한다. (3.7+ 에서만 reconfigure 가 있다)"""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
+            except (ValueError, OSError):
+                pass
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="howami 로컬 웹 화면")
     parser.add_argument("--port", type=int, default=int(os.environ.get("HOWAMI_WEB_PORT", DEFAULT_PORT)))
     parser.add_argument("--open", action="store_true", help="시작하면서 브라우저를 연다")
-    parser.add_argument("--reload", action="store_true", help="scripts/*.py 가 바뀌면 스스로 다시 시작한다 (개발용)")
+    parser.add_argument("--reload", action="store_true", help="scripts/*.py 가 바뀌면 서버를 다시 띄운다 (개발용)")
     args = parser.parse_args(argv)
-
-    mimetypes.add_type("application/javascript", ".js")
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    _utf8_stdout()
     url = "http://127.0.0.1:%d" % args.port
+
+    if args.reload:
+        # 감독 모드: 실제 서버는 자식 프로세스로 띄우고, 이 프로세스는 파일만 지켜본다.
+        print("핫리로드: scripts/*.py 를 감시 중 (종료: Ctrl+C)")
+        handle_sigterm_as_interrupt()
+        if args.open:
+            webbrowser.open(url)
+        supervise([sys.executable, os.path.abspath(__file__), "--port", str(args.port)])
+        return 0
+
+    # Windows 는 레지스트리의 MIME 표를 읽어 .js 를 text/plain 으로 내주기도 한다. 명시해 둔다.
+    mimetypes.add_type("application/javascript", ".js")
+    mimetypes.add_type("text/css", ".css")
+    mimetypes.add_type("image/svg+xml", ".svg")
+    mimetypes.add_type("application/json", ".json")
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print("howami 웹 화면: %s" % url)
     print("데이터 위치:    %s" % howami.home_dir())
     if not os.path.isdir(DIST_DIR):
         print("안내: web/dist 가 없습니다. `cd web && npm install && npm run build` 후 새로고침하세요.")
-    if args.reload:
-        start_reloader()
-        print("핫리로드:      scripts/*.py 를 감시 중")
     print("종료: Ctrl+C")
     if args.open:
         webbrowser.open(url)
