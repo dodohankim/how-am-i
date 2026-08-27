@@ -1,106 +1,258 @@
-# howami core question set (English)
+# howami default question set (English)
 #
-# This file is data. The diagnostic logic lives in SKILL.md; this only says what to ask.
-# Read the wording as-is or adapt it to the flow of the conversation.
-# To add a set for another language or context (dev, fitness, relationships), copy this shape.
+# This file is data. The flow logic lives in SKILL.md; only the questions live here.
+# Read the wording as-is, or adapt it to the conversation.
+#
+# There are two session kinds.
+#   session  a longer conversation that opens the whole day across life domains (10-15 min)
+#   checkin  a short read on right now (2-3 min). As many per day as you like.
 
-version: 1
+version: 2
 lang: en
 name: core
-description: The default five-axis daily scan
+description: A counselling-style set that opens the day by life domain, then goes deep on one
+
+flow:
+  session: [open, map, domain_scan, state_scan, focus, probe, validate, prescribe, close]
+  checkin: [open_now, state_scan, focus, prescribe, close]
 
 # ---------------------------------------------------------------------------
-# Step 1 — Scan. Ask everything, take only numbers. Target: 1 minute.
+# 0. Opening - no scores yet. Let the day come out in the user's own words.
+#    If there is already an entry from today, use `again` instead of `first`.
 # ---------------------------------------------------------------------------
-scan:
+open:
+  first:
+    - "How did today go? No need to put it in order - just say whatever comes up."
+    - "Which moment from today is still sitting with you?"
+  again:
+    - "When we talked at {time} you were at {summary}. How did the rest of the day go?"
+    - "Has anything you mentioned then changed since?"
+
+open_now:
+  - "Let's keep this short. How are you right now?"
+  - "What were you doing just before this?"
+
+# ---------------------------------------------------------------------------
+# 1. Day map - split the free account into time and domains, reflect it back, confirm.
+#    Whatever the user corrects here becomes the ground for everything after.
+# ---------------------------------------------------------------------------
+map:
+  reflect:
+    - "Let me play that back. Morning was {morning}, the working day was {day}, the evening was {evening}. Does that match?"
+    - "Correct me on anything I got wrong or left out."
+  fill_gap:
+    - "We haven't touched {domain} yet. How was that side today?"
+    - "Was it quiet there today, or is there something worth talking about?"
+
+# ---------------------------------------------------------------------------
+# Life domains - the perspectives the day gets split into. Adjust to the user's life.
+#   key      the id written into the record and the DB
+#   when     roughly when in the day this domain happens
+#   default  whether a standard session always asks about it
+# ---------------------------------------------------------------------------
+domains:
+  - key: family
+    label: Family
+    when: morning / evening
+    default: true
+    question: "How was your time with family today, 1 to 5?"
+    probe_hint: "time together, what was said, what it left behind"
+
+  - key: work
+    label: Work
+    when: daytime
+    default: true
+    question: "How were your working hours today, 1 to 5?"
+    probe_hint: "load, people, output, sense of control"
+
+  - key: solo
+    label: Time alone
+    when: morning / night
+    default: true
+    question: "How was your time alone today, 1 to 5? Say so if there wasn't any."
+    probe_hint: "did you rest, did you do what you wanted, did it just drain away"
+
+  - key: people
+    label: People
+    when: all day
+    default: true
+    question: "How was your time with people outside family and work, 1 to 5?"
+    probe_hint: "friends, messages, whether you felt alone"
+
+  - key: body
+    label: Body
+    when: all day
+    default: true
+    question: "How was your body today, 1 to 5 - sleep, meals and movement together?"
+    probe_hint: "sleep, meals, pain, how much you moved"
+
+  # These are off by default. Start asking once the user keeps raising them.
+  - key: study
+    label: Study
+    when: all day
+    default: false
+    question: "How was your studying or learning today, 1 to 5?"
+    probe_hint: "focus, progress, where you got stuck"
+
+  - key: money
+    label: Money
+    when: all day
+    default: false
+    question: "How did money sit with you today, 1 to 5?"
+    probe_hint: "spending, worry, planning"
+
+  - key: side
+    label: Own work
+    when: night
+    default: false
+    question: "Outside the job, how did your own work go today, 1 to 5?"
+    probe_hint: "did you touch it, progress, why it slipped"
+
+# ---------------------------------------------------------------------------
+# 2. Domain scan - scores only. Do not go digging here.
+# ---------------------------------------------------------------------------
+domain_scan:
+  anchors:
+    1: "rough, or close to falling apart"
+    3: "okay - neither good nor bad"
+    5: "genuinely good"
+  skip: "If that domain wasn't part of today at all, we can skip it."
+  one_line:
+    - "In one line, why that number?"
+
+# ---------------------------------------------------------------------------
+# 3. State scan - axes that run through the whole day, separate from domains.
+# ---------------------------------------------------------------------------
+state_scan:
   - key: energy
     label: Energy
-    question: "How was your energy today, 1 to 5?"
+    question: "How was your energy today, body and head, 1 to 5?"
     anchors:
-      1: "Empty. Even sitting up was hard"
-      3: "Enough to get through"
-      5: "Light, everything moved"
+      1: "empty - even sitting up was work"
+      3: "enough to get through"
+      5: "light, running well"
 
   - key: mood
     label: Mood
-    question: "How was your mood today, 1 to 5?"
+    question: "How was your mood, 1 to 5?"
     anchors:
-      1: "Heavily down"
-      3: "Neither good nor bad"
-      5: "Steady, with room to spare"
+      1: "quite low"
+      3: "neither good nor bad"
+      5: "fine, with room to spare"
 
   - key: sleep
     label: Sleep
-    question: "How was last night's sleep, 1 to 5? Judge by how rested you feel, not hours."
+    question: "How was last night's sleep, 1 to 5 - by how rested you felt, not hours?"
     anchors:
-      1: "Barely slept, or woke up more tired"
-      3: "Short but workable"
-      5: "Deep, woke up clear"
+      1: "barely slept, or woke up more tired"
+      3: "short but workable"
+      5: "slept well, woke up clear"
 
   - key: execution
     label: Execution
-    question: "Of what you meant to do today, how much did you actually do, 1 to 5?"
+    question: "Of what you meant to do today, how much actually happened, 1 to 5?"
     anchors:
-      1: "Hardly touched it"
-      3: "About half"
-      5: "All of it, as planned"
-
-  - key: social
-    label: Connection
-    question: "How was your time with people today, 1 to 5?"
-    anchors:
-      1: "Uncomfortable or lonely"
-      3: "Fine"
-      5: "Warm, supported"
+      1: "hardly touched it"
+      3: "about half"
+      5: "did what I planned"
 
 # ---------------------------------------------------------------------------
-# Step 2 — Probe. Only the low or dropped items. Target: 3 minutes.
-# The order mirrors a CBT thought record (situation -> automatic thought -> feeling -> behavior)
-# in everyday language.
+# 4. Focus - the user picks the one thing to go into.
+# ---------------------------------------------------------------------------
+focus:
+  offer:
+    - "{candidates} stand out today. Which one do you want to go into?"
+    - "If something else is on your mind, we can go there instead."
+  none:
+    - "Nothing is obviously catching today. Anything you still want to look at?"
+
+# ---------------------------------------------------------------------------
+# 5. Probe - go deep on the one thing. Pick the branches that fit; don't run them all.
+#    trigger -> thought -> feeling -> behavior is the thought-record spine.
 # ---------------------------------------------------------------------------
 probe:
   trigger:
-    - "When did that start? Was there a specific moment in the day?"
-    - "Just the situation, briefly: what was happening?"
+    - "When did that start? Was there a particular point in the day?"
+    - "Just the situation - what was happening then?"
   thought:
-    - "What went through your head right then?"
-    - "If you put that thought into one sentence, what is it?"
+    - "What went through your head in that moment?"
+    - "If you put that thought into a sentence, how does it read?"
   feeling:
-    - "If you name the feeling, what is it closest to?"
+    - "If you named the feeling, what would it be closest to - frustration, hurt, urgency?"
+    - "Out of ten, how strong was it?"
   behavior:
-    - "What did you do next? Or what did you stop doing?"
+    - "So what did you do next? Or what did you stop doing?"
+  distortion:
+    # Check for cognitive distortions. Ask about it; don't label it.
+    - "Is that thought phrased with an 'always' or a 'never' in it?"
+    - "Did you check what they actually thought, or is that a guess?"
+  evidence:
+    - "What's the evidence that the thought is true?"
+    - "And one fact that cuts against it?"
   why_chain:
-    # 5 Whys. Don't count to five mechanically; stop when the answer no longer splits.
+    # Five Whys. Don't count to five - stop when the answer stops splitting.
     - "Why do you think that happened?"
     - "And one layer under that reason?"
+  exception:
+    - "Has the same situation gone fine some other day? What was different then?"
+  values:
+    - "That it bothered you that much may mean it matters that much. What was at stake?"
+  compassion:
+    # Only when self-blame is heavy. Keep it a question, not comfort.
+    - "If a friend told you this had happened to them, what would you say?"
+    - "Can you say that to yourself today?"
   controllability:
-    - "Of the causes you just named, how much is actually yours to change?"
+    - "Of the causes you just named, how far does what you can change reach?"
 
 # ---------------------------------------------------------------------------
-# Step 3 — Prescribe. Exactly one thing for tomorrow. Target: 1 minute.
+# 6. Validate - hand the reading back and have the user confirm it. Never skip this.
+#    If they say no, their correction wins.
+# ---------------------------------------------------------------------------
+validate:
+  summary:
+    - "Here's what I've got. {summary} Is that how you see it?"
+    - "Where is it off? Just fix that part."
+  spillover:
+    - "It looks like {from_domain} may have carried into {to_domain}. Did it feel that way?"
+    - "Or were those two separate?"
+  alternative:
+    - "The same facts could also read like this: {alternative} How does that land?"
+    - "Which of the two is closer to what happened?"
+
+# ---------------------------------------------------------------------------
+# 7. Prescribe - one next step. In a mid-day session, scope it to "by the next one"
+#    rather than "tomorrow".
 # ---------------------------------------------------------------------------
 prescribe:
-  - "If you change one thing tomorrow, what is it? Smaller is better."
-  - "When and where will that happen tomorrow?"
+  ask:
+    - "If you changed one thing here, what would it be? Smaller is better."
+    - "When and where will that happen?"
+  too_big:
+    - "That looks a bit big. What's the version you could definitely do today?"
 
 # ---------------------------------------------------------------------------
-# Follow-up on yesterday's prescription. Ask it first, before the scan.
-# Without this, the records never close into a loop.
+# Good days - there is still something to keep on a day with nothing to dig into.
 # ---------------------------------------------------------------------------
-follow_up:
-  - "Yesterday you picked '{prescription}'. Did you do it today?"
-  - "If you did, how did it go? If not, what got in the way?"
+good_day:
+  - "What made today okay? Name one thing."
+  - "What would have to be in place for that to happen again?"
 
 # ---------------------------------------------------------------------------
-# Risk signals. If any appear, stop the diagnosis and surface the notice
-# (see the safety rules in SKILL.md).
+# 8. Close
+# ---------------------------------------------------------------------------
+close:
+  - "Let's stop here. I'll read it back before it goes down."
+  - "Save it as is?"
+
+# ---------------------------------------------------------------------------
+# Warning signs - stop and follow the safety rules in SKILL.md.
 # ---------------------------------------------------------------------------
 safety:
   watch_for:
-    - Thoughts of self-harm or death
-    - Low scores running two weeks or longer
-    - Daily function breaking down (work, eating, hygiene)
+    - thoughts of self-harm or death
+    - low scores holding for more than two weeks
+    - daily functioning breaking down (work, meals, hygiene)
   message: >-
     howami is not a medical device or a therapy tool.
-    If what you described keeps up beyond two weeks or gets hard to carry,
-    talking to a professional is the right next step.
+    If what you just described has been going on for more than two weeks, or is hard to carry,
+    it's worth talking to a professional.
