@@ -157,3 +157,29 @@ export interface Methods {
   methods: Method[];
   general_links: MethodLink[];
 }
+
+export type OpenTarget = "home" | "data" | "db" | "insights";
+
+export interface DirSummary {
+  path: string;
+  exists: boolean;
+  files: number;
+  bytes: number;
+}
+
+export interface Settings {
+  ok?: false;
+  error?: string;
+  home: string;
+  home_env: string | null;
+  data: DirSummary;
+  insights: DirSummary;
+  db: { path: string; exists: boolean; bytes: number };
+  db_entries: number | null;
+  db_days: number | null;
+  schema_version: number | null;
+  project_root: string;
+  questions_dir: string;
+  server: { url: string; port: number; python: string; platform: string };
+  can_open: boolean;
+}

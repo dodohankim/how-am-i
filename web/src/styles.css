@@ -307,3 +307,15 @@ pre.raw { background: var(--surface-2); padding: 12px; border-radius: 6px; font-
 .usage { font-size: 12px; color: var(--ink-3); font-family: var(--font-num); }
 .disclaimer { margin-top: 28px; padding: 14px 18px; border-radius: var(--radius); background: var(--surface-2); color: var(--ink-2); font-size: 13px; }
 .disclaimer strong { color: var(--ink); }
+
+/* ---------- 설정 ---------- */
+.path-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.path-row .path { flex: 1 1 320px; min-width: 0; font-size: 13px; background: var(--surface-2); padding: 6px 10px; border-radius: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.path-actions { display: flex; gap: 6px; flex: none; }
+.raw-toggle.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.raw-toggle.primary:hover { filter: brightness(1.08); }
+.raw-toggle:disabled { opacity: 0.45; cursor: not-allowed; }
+.kv.wide { grid-template-columns: 84px 1fr; }
+.settings-server { margin-top: 16px; }
+.notice { border-left: 3px solid var(--good); background: var(--surface); padding: 8px 14px; border-radius: 6px; margin: 0 0 12px; font-size: 13px; }
+.notice.bad { border-left-color: var(--critical); }

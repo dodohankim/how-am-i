@@ -220,6 +220,7 @@ python3 scripts/howami.py query --sql "
 | **흐름** | 14·30·90일·전체 구간의 축별·영역별 추이, 요일별 평균 표, 시간대별 평균, 처방 실행률, 자주 쓴 기법 |
 | **기록** | 날짜별 세션 목록과 본문. 원본 md도 그대로 볼 수 있다 |
 | **기법** | 진단에 쓰이는 기법 사전. 어디서 왔는지, 쓰면 무엇을 기대할 수 있는지, 위키백과·WHO·NHS·APA 등 더 읽을 곳 |
+| **설정** | 데이터 루트, 원본 md 폴더, SQLite DB, 인사이트 폴더의 위치와 파일 수·용량. 각 항목마다 경로 복사와 "폴더 열기"(Finder/탐색기) 버튼 |
 
 ### 실행 방법
 
@@ -239,15 +240,24 @@ python3 scripts/serve.py --open      # http://127.0.0.1:7788 을 브라우저로
 포트를 바꾸려면 `--port 9000` 또는 `HOWAMI_WEB_PORT=9000`. 데이터 위치는 다른 명령과 똑같이
 `HOWAMI_HOME`을 따른다. 종료는 `Ctrl+C`.
 
-화면을 고치면서 볼 때는 두 개를 같이 띄운다.
+코드를 고치면서 볼 때는 루트에서 `./dev.sh` 하나로 둘 다 띄운다.
 
 ```bash
-python3 scripts/serve.py             # 터미널 1: API
-cd web && npm run dev                # 터미널 2: http://127.0.0.1:5173 (저장하면 바로 반영)
+./dev.sh                 # API http://127.0.0.1:7788 + 화면 http://127.0.0.1:5173
+./dev.sh --open          # 브라우저까지 연다
 ```
 
-서버가 내주는 API는 전부 읽기 전용이다. `/api/context`, `/api/stats?days=30`,
-`/api/day/2026-08-27`, `/api/entries/2026-08-27--2130`, `/api/questions`, `/api/methods`.
+`scripts/*.py`를 고치면 파이썬 서버가 스스로 다시 시작하고(`serve.py --reload`), `web/src`를 고치면
+vite가 브라우저를 바로 갱신한다. `Ctrl+C` 한 번이면 둘 다 종료된다. `node_modules`가 없으면 `npm install`을
+먼저 실행한다. 따로 띄우고 싶으면 `python3 scripts/serve.py --reload`와 `cd web && npm run dev`를 각각 실행한다.
+
+> 서버를 띄워 둔 채로 `scripts/serve.py`를 고쳤다면, `--reload` 없이 띄운 서버는 새 코드를 모른다.
+> 화면에 "없는 API 입니다" 같은 오류가 보이면 서버를 다시 실행하거나 `./dev.sh`를 쓴다.
+
+서버가 내주는 API는 읽기 전용이다. `/api/context`, `/api/stats?days=30`,
+`/api/day/2026-08-27`, `/api/entries/2026-08-27--2130`, `/api/questions`, `/api/methods`, `/api/settings`.
+예외는 설정 화면의 "폴더 열기" 버튼이 쓰는 `POST /api/open` 하나뿐인데, 미리 정한 네 곳
+(`home`·`data`·`db`·`insights`)만 OS 파일 탐색기로 열 수 있고 임의 경로는 받지 않으며 파일을 고치지 않는다.
 차트 라이브러리나 외부 폰트는 쓰지 않는다. 기록이 PC를 떠나지 않는 것과 같은 이유다.
 
 기법 사전의 기대 효과와 출처 링크는 [`questions/references.yaml`](questions/references.yaml)에 있다.

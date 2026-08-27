@@ -6,14 +6,16 @@ import { Today } from "./components/Today";
 import { Trends } from "./components/Trends";
 import { Records } from "./components/Records";
 import { Methods } from "./components/Methods";
+import { Settings } from "./components/Settings";
 import { fmtDate } from "./lib/format";
 
-type Tab = "today" | "trends" | "records" | "methods";
+type Tab = "today" | "trends" | "records" | "methods" | "settings";
 const TABS: { id: Tab; label: string }[] = [
   { id: "today", label: "오늘" },
   { id: "trends", label: "흐름" },
   { id: "records", label: "기록" },
   { id: "methods", label: "기법" },
+  { id: "settings", label: "설정" },
 ];
 
 function tabFromHash(): Tab {
@@ -132,6 +134,8 @@ export default function App() {
       {tab === "methods" && (methods
         ? <Methods data={methods} stats={stats} focusId={focusMethod} />
         : !error && <div className="muted">불러오는 중…</div>)}
+
+      {tab === "settings" && <Settings />}
 
       <footer className="faint tiny" style={{ marginTop: 40, borderTop: "1px solid var(--rule)", paddingTop: 12 }}>
         이 화면은 내 PC 의 <code className="num">{ctx?.home ?? "~/howami"}</code> 만 읽습니다. 바깥으로 보내는 것은 없습니다.
