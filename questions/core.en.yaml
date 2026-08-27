@@ -1,0 +1,106 @@
+# howami core question set (English)
+#
+# This file is data. The diagnostic logic lives in SKILL.md; this only says what to ask.
+# Read the wording as-is or adapt it to the flow of the conversation.
+# To add a set for another language or context (dev, fitness, relationships), copy this shape.
+
+version: 1
+lang: en
+name: core
+description: The default five-axis daily scan
+
+# ---------------------------------------------------------------------------
+# Step 1 — Scan. Ask everything, take only numbers. Target: 1 minute.
+# ---------------------------------------------------------------------------
+scan:
+  - key: energy
+    label: Energy
+    question: "How was your energy today, 1 to 5?"
+    anchors:
+      1: "Empty. Even sitting up was hard"
+      3: "Enough to get through"
+      5: "Light, everything moved"
+
+  - key: mood
+    label: Mood
+    question: "How was your mood today, 1 to 5?"
+    anchors:
+      1: "Heavily down"
+      3: "Neither good nor bad"
+      5: "Steady, with room to spare"
+
+  - key: sleep
+    label: Sleep
+    question: "How was last night's sleep, 1 to 5? Judge by how rested you feel, not hours."
+    anchors:
+      1: "Barely slept, or woke up more tired"
+      3: "Short but workable"
+      5: "Deep, woke up clear"
+
+  - key: execution
+    label: Execution
+    question: "Of what you meant to do today, how much did you actually do, 1 to 5?"
+    anchors:
+      1: "Hardly touched it"
+      3: "About half"
+      5: "All of it, as planned"
+
+  - key: social
+    label: Connection
+    question: "How was your time with people today, 1 to 5?"
+    anchors:
+      1: "Uncomfortable or lonely"
+      3: "Fine"
+      5: "Warm, supported"
+
+# ---------------------------------------------------------------------------
+# Step 2 — Probe. Only the low or dropped items. Target: 3 minutes.
+# The order mirrors a CBT thought record (situation -> automatic thought -> feeling -> behavior)
+# in everyday language.
+# ---------------------------------------------------------------------------
+probe:
+  trigger:
+    - "When did that start? Was there a specific moment in the day?"
+    - "Just the situation, briefly: what was happening?"
+  thought:
+    - "What went through your head right then?"
+    - "If you put that thought into one sentence, what is it?"
+  feeling:
+    - "If you name the feeling, what is it closest to?"
+  behavior:
+    - "What did you do next? Or what did you stop doing?"
+  why_chain:
+    # 5 Whys. Don't count to five mechanically; stop when the answer no longer splits.
+    - "Why do you think that happened?"
+    - "And one layer under that reason?"
+  controllability:
+    - "Of the causes you just named, how much is actually yours to change?"
+
+# ---------------------------------------------------------------------------
+# Step 3 — Prescribe. Exactly one thing for tomorrow. Target: 1 minute.
+# ---------------------------------------------------------------------------
+prescribe:
+  - "If you change one thing tomorrow, what is it? Smaller is better."
+  - "When and where will that happen tomorrow?"
+
+# ---------------------------------------------------------------------------
+# Follow-up on yesterday's prescription. Ask it first, before the scan.
+# Without this, the records never close into a loop.
+# ---------------------------------------------------------------------------
+follow_up:
+  - "Yesterday you picked '{prescription}'. Did you do it today?"
+  - "If you did, how did it go? If not, what got in the way?"
+
+# ---------------------------------------------------------------------------
+# Risk signals. If any appear, stop the diagnosis and surface the notice
+# (see the safety rules in SKILL.md).
+# ---------------------------------------------------------------------------
+safety:
+  watch_for:
+    - Thoughts of self-harm or death
+    - Low scores running two weeks or longer
+    - Daily function breaking down (work, eating, hygiene)
+  message: >-
+    howami is not a medical device or a therapy tool.
+    If what you described keeps up beyond two weeks or gets hard to carry,
+    talking to a professional is the right next step.

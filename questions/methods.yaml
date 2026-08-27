@@ -1,0 +1,133 @@
+# howami 진단 기법 카탈로그
+#
+# 이 파일은 데이터다. 진단 대화에서 어떤 기법을 참고했는지 기록에 남기고,
+# 사용자에게 "오늘은 이런 방식으로 봤다"고 알려주기 위한 목록이다.
+#
+# id 는 기록 frontmatter의 `methods` 와 DB의 methods 테이블에 그대로 들어간다.
+# 새 기법을 추가하려면 여기에 항목 하나를 더하고 SKILL.md의 안내를 따르면 된다.
+#
+# 주의: 임상 척도나 치료 기법의 이름을 빌려 왔더라도, howami는 그것을 일상 언어로
+# 재작성해 참고할 뿐이다. 치료를 대신하지 않는다.
+
+version: 1
+
+methods:
+  - id: baseline_delta
+    stage: scan
+    name: { ko: 기준선 비교, en: Baseline delta }
+    summary:
+      ko: 오늘 점수를 최근 7일 평균과 견줘 어디가 떨어졌는지 찾는다
+      en: Compares today's scores against the 7-day average to spot what dropped
+    origin: 개인 시계열 기준선 (임상 척도가 아니라 본인의 평소값이 기준이다)
+    use_when: 스캔을 마칠 때마다 자동으로
+    say_it_as:
+      ko: 평소 평균과 비교해서 {item}이 눈에 띄게 떨어진 걸 먼저 잡았어요
+      en: I started from {item} standing out against your usual average
+
+  - id: trigger_mapping
+    stage: probe
+    name: { ko: 트리거 특정, en: Trigger mapping }
+    summary:
+      ko: 언제·어디서·무슨 상황이었는지를 좁혀 변화가 시작된 지점을 찾는다
+      en: Narrows down when, where, and in what situation the change began
+    origin: 행동 분석의 선행사건-행동-결과(ABC) 관찰
+    use_when: 점수가 떨어진 항목을 파기 시작할 때
+    say_it_as:
+      ko: 언제부터였는지를 좁혀서 시작 지점을 {trigger}로 잡았어요
+      en: I narrowed the starting point down to {trigger}
+
+  - id: cbt_thought_record
+    stage: probe
+    name: { ko: 사고기록, en: Thought record }
+    summary:
+      ko: 상황 → 그때 스친 생각 → 감정 → 그다음 행동 순서로 하나씩 분리한다
+      en: Separates situation, automatic thought, feeling, and following behavior
+    origin: 인지행동치료(CBT)의 사고기록지를 일상 언어로 옮긴 것
+    use_when: 기분이나 자책이 얽혀 있어 원인이 뭉뚱그려질 때
+    say_it_as:
+      ko: 상황과 생각과 감정을 따로 떼어 놓고 봤어요
+      en: I pulled the situation, the thought, and the feeling apart
+
+  - id: five_whys
+    stage: probe
+    name: { ko: 5 Whys, en: Five Whys }
+    summary:
+      ko: '"왜?"를 반복해 표면 증상에서 근본 원인까지 내려간다'
+      en: Repeats "why" to descend from the surface symptom to the root cause
+    origin: 도요타 생산 시스템 (도요다 사키치)
+    use_when: 트리거는 찾았지만 그게 왜 생겼는지가 남아 있을 때
+    say_it_as:
+      ko: 왜를 {depth}번 따라 내려가서 근본 원인을 {root}로 봤어요
+      en: I followed "why" {depth} times down to {root}
+
+  - id: control_dichotomy
+    stage: probe
+    name: { ko: 통제 이분법, en: Dichotomy of control }
+    summary:
+      ko: 찾아낸 원인을 내가 바꿀 수 있는 것과 없는 것으로 가른다
+      en: Splits the causes into what you can change and what you cannot
+    origin: 스토아 철학의 통제 구분 (에픽테토스)
+    use_when: 원인에 타인의 결정이나 이미 지난 일이 섞여 있을 때
+    say_it_as:
+      ko: 바꿀 수 있는 것과 없는 것을 갈라서, 바꿀 수 있는 쪽만 처방으로 뒀어요
+      en: I split what you can change from what you can't, and only prescribed the former
+
+  - id: behavioral_activation
+    stage: prescribe
+    name: { ko: 행동 활성화, en: Behavioral activation }
+    summary:
+      ko: 기분이 올라오길 기다리지 않고 작은 행동을 먼저 놓는다
+      en: Places a small action first instead of waiting for mood to lift
+    origin: 우울 개입 연구의 행동 활성화 (르윈슨, 제이컵슨)
+    use_when: 기분이나 에너지가 낮아 아무것도 하기 싫다고 할 때
+    say_it_as:
+      ko: 기분이 회복되길 기다리는 대신 작은 행동을 먼저 잡았어요
+      en: Instead of waiting for the mood, we put a small action first
+
+  - id: tiny_habit
+    stage: prescribe
+    name: { ko: 최소 단위로 쪼개기, en: Tiny habit }
+    summary:
+      ko: 처방이 부담스러우면 실패할 수 없을 만큼 작게 자른다
+      en: Cuts the prescription down to a size that cannot fail
+    origin: 작은 습관 설계 (BJ 포그)
+    use_when: 사용자가 정한 처방이 커서 내일 못 지킬 것 같을 때
+    say_it_as:
+      ko: 처방을 내일 실패하기 어려운 크기로 줄였어요
+      en: I shrank the prescription to a size that's hard to miss
+
+  - id: implementation_intention
+    stage: prescribe
+    name: { ko: 실행 의도, en: Implementation intention }
+    summary:
+      ko: '"언제·어디서 무엇을 한다"까지 붙여 실행 확률을 올린다'
+      en: Attaches when and where to the action to raise follow-through
+    origin: 실행 의도 연구 (골비처, 1999)
+    use_when: 처방이 정해진 뒤 항상
+    say_it_as:
+      ko: 언제 어디서 할지까지 붙여 뒀어요
+      en: We pinned down when and where it happens
+
+  - id: pattern_review
+    stage: review
+    name: { ko: 누적 패턴 관찰, en: Pattern review }
+    summary:
+      ko: 쌓인 기록에서 요일·추세·처방 실행률 같은 반복을 찾는다
+      en: Looks for weekday, trend, and follow-through patterns across records
+    origin: 개인 기록 시계열 관찰
+    use_when: 주간 회고나 "요즘 어때" 같은 요청일 때
+    say_it_as:
+      ko: 최근 {days}일 기록을 모아서 반복되는 패턴을 봤어요
+      en: I looked across the last {days} days for repeating patterns
+
+  - id: prescription_followup
+    stage: scan
+    name: { ko: 처방 팔로업, en: Prescription follow-up }
+    summary:
+      ko: 어제 정한 행동을 실제로 했는지 확인해 기록을 루프로 닫는다
+      en: Checks whether yesterday's action happened, closing the record into a loop
+    origin: 자기 점검(self-monitoring) 루프
+    use_when: 어제 기록에 처방이 남아 있을 때
+    say_it_as:
+      ko: 어제 정한 걸 했는지부터 확인하고 시작했어요
+      en: I started by checking whether yesterday's action happened

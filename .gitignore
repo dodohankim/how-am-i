@@ -1,0 +1,14 @@
+# 개인 기록은 절대 레포에 들어오면 안 된다.
+# 기본 저장 위치는 ~/howami 라 보통 문제없지만, HOWAMI_HOME을 레포 안으로
+# 잡아 쓰는 경우를 대비한 안전장치다.
+data/
+insights/
+config.yaml
+howami.db
+howami.db-wal
+howami.db-shm
+
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
