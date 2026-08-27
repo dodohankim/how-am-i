@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>howami — 오늘 나, 어때</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231c5cab'/%3E%3Cg fill='%23fff'%3E%3Crect x='8' y='20' width='16' height='3' rx='1.5'/%3E%3Crect x='8' y='14' width='16' height='3' rx='1.5'/%3E%3Crect x='8' y='8' width='16' height='3' rx='1.5' opacity='.45'/%3E%3C/g%3E%3C/svg%3E" />
+    <script>
+      // 첫 그리기 전에 저장된 테마를 적용해 깜빡임을 막는다.
+      try {
+        var t = localStorage.getItem("howami.theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
