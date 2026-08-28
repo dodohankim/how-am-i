@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
 import { api } from "./api";
-import type { Context, Methods as MethodsData, Questions, Stats } from "./types";
+import type { Context, Methods as MethodsData, Questions, Stats, Struggles as StrugglesData } from "./types";
 import { ErrorBox } from "./components/ui";
 import { Today } from "./components/Today";
 import { Trends } from "./components/Trends";
 import { Records } from "./components/Records";
 import { Methods } from "./components/Methods";
+import { Struggles } from "./components/Struggles";
 import { Settings } from "./components/Settings";
 import { fmtDate } from "./lib/format";
 
-type Tab = "today" | "trends" | "records" | "methods" | "settings";
+type Tab = "today" | "trends" | "records" | "methods" | "struggles" | "settings";
 const TABS: { id: Tab; label: string }[] = [
   { id: "today", label: "오늘" },
   { id: "trends", label: "흐름" },
   { id: "records", label: "기록" },
   { id: "methods", label: "기법" },
+  { id: "struggles", label: "어려움" },
   { id: "settings", label: "설정" },
 ];
 
@@ -42,6 +44,7 @@ export default function App() {
   const [allDays, setAllDays] = useState<Context | null>(null);
   const [questions, setQuestions] = useState<Questions | null>(null);
   const [methods, setMethods] = useState<MethodsData | null>(null);
+  const [struggles, setStruggles] = useState<StrugglesData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [focusMethod, setFocusMethod] = useState<string | null>(null);
 
@@ -69,6 +72,7 @@ export default function App() {
     api.stats(days).then(setStats).catch((e) => setError(String(e.message ?? e)));
     api.questions().then(setQuestions).catch((e) => setError(String(e.message ?? e)));
     api.methods().then(setMethods).catch((e) => setError(String(e.message ?? e)));
+    api.struggles().then(setStruggles).catch((e) => setError(String(e.message ?? e)));
     api.context(3650, 5000).then(setAllDays).catch(() => {});
   }, [days]);
 
@@ -132,6 +136,10 @@ export default function App() {
 
       {tab === "methods" && (methods
         ? <Methods data={methods} stats={stats} focusId={focusMethod} />
+        : !error && <div className="muted">불러오는 중…</div>)}
+
+      {tab === "struggles" && (struggles
+        ? <Struggles data={struggles} questions={questions} />
         : !error && <div className="muted">불러오는 중…</div>)}
 
       {tab === "settings" && <Settings />}

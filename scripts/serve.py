@@ -21,6 +21,8 @@ API (전부 읽기 전용)
   GET /api/questions            questions/core.<lang>.yaml 의 생활 영역(domains)과 상태 축(state_scan)
   GET /api/methods              questions/methods.yaml 의 기법 목록에 questions/references.yaml 의
                                 기대 효과·외부 출처 링크를 합친 것
+  GET /api/struggles            questions/struggles.yaml 의 어려움 지도 (전 세계 성인이 흔히 겪는
+                                정신적 어려움을 세 층위로 묶은 목록과 출처 링크)
   GET /api/settings             데이터 위치(루트·md 폴더·DB 파일)와 파일 수·용량, 환경변수, 서버 정보
 
 쓰기 성격의 API 는 하나뿐이다.
@@ -252,6 +254,81 @@ def load_methods_with_references():
     return data
 
 
+def load_struggles():
+    """questions/struggles.yaml 을 읽는다. 어려움 지도 화면용.
+
+    구조는 세 단이다. 최상위 스칼라(version·updated·sources_reviewed·subagents)와
+    intro{ko,en}, groups[] > items[] > links[], patterns[]. 들여쓰기 폭이 곧 계층이다
+    (묶음 2, 묶음 필드 4, 항목 6, 항목 필드 8, 링크 10).
+    """
+    path = os.path.join(QUESTIONS_DIR, "struggles.yaml")
+    result = {"intro": {}, "groups": [], "patterns": []}
+    if not os.path.exists(path):
+        return result
+    section, group, item, block = None, None, None, None
+    with open(path, encoding="utf-8") as handle:
+        for raw in handle:
+            line = raw.rstrip("\n")
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#"):
+                continue
+            indent = len(line) - len(line.lstrip())
+            if indent == 0:
+                key, _, val = stripped.partition(":")
+                if val.strip():
+                    result[key.strip()] = _unquote(val)
+                    section = None
+                else:
+                    section = key.strip()
+                group, item, block = None, None, None
+                continue
+            if section == "intro":
+                key, _, val = stripped.partition(":")
+                result["intro"][key.strip()] = _unquote(val)
+            elif section == "patterns":
+                if stripped.startswith("- "):
+                    result["patterns"].append(_unquote(stripped[2:]))
+            elif section == "groups":
+                if indent == 2 and stripped.startswith("- id:"):
+                    group = {"id": _unquote(stripped[len("- id:"):]), "title": {}, "layout": "cards", "items": []}
+                    result["groups"].append(group)
+                    item, block = None, None
+                elif group is None:
+                    continue
+                elif indent == 4:
+                    key, _, val = stripped.partition(":")
+                    key = key.strip()
+                    if key == "title":
+                        group["title"] = _inline_map(val) or {}
+                    elif key in ("note", "layout"):
+                        group[key] = _unquote(val)
+                    item, block = None, None  # `items:` 머리줄은 여기서 흘려보낸다
+                elif indent == 6 and stripped.startswith("- id:"):
+                    item = {"id": _unquote(stripped[len("- id:"):]), "name": {},
+                            "domains": [], "states": [], "links": []}
+                    group["items"].append(item)
+                    block = None
+                elif item is None:
+                    continue
+                elif indent == 8:
+                    key, _, val = stripped.partition(":")
+                    key = key.strip()
+                    block = None
+                    if key == "name":
+                        item["name"] = _inline_map(val) or {}
+                    elif key in ("domains", "states"):
+                        item[key] = [p.strip() for p in val.split(",") if p.strip()]
+                    elif key == "links":
+                        block = "links"
+                    elif key in ("region", "summary", "figure", "variation"):
+                        item[key] = _unquote(val)
+                elif block == "links" and indent > 8 and stripped.startswith("- "):
+                    link = _inline_map(stripped[2:])
+                    if link and link.get("url"):
+                        item["links"].append(link)
+    return result
+
+
 # --------------------------------------------------------------------------
 # 설정 화면용 정보와 폴더 열기
 # --------------------------------------------------------------------------
@@ -413,6 +490,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(load_questions(query.get("lang", "ko")))
             if path == "/api/methods":
                 return self.send_json(load_methods_with_references())
+            if path == "/api/struggles":
+                return self.send_json(load_struggles())
             if path.startswith("/api/entries/"):
                 entry_id = path[len("/api/entries/"):]
                 if not ID_RE.match(entry_id):

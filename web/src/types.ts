@@ -183,3 +183,34 @@ export interface Settings {
   server: { url: string; port: number; python: string; platform: string };
   can_open: boolean;
 }
+
+/** 어려움 지도 (questions/struggles.yaml → /api/struggles) */
+export interface StruggleItem {
+  id: string;
+  region?: string;
+  name: Bilingual;
+  summary?: string;
+  figure?: string;
+  variation?: string;
+  domains: string[];
+  states: string[];
+  links: MethodLink[];
+}
+
+export interface StruggleGroup {
+  id: string;
+  title: Bilingual;
+  note?: string;
+  layout: "cards" | "table" | string;
+  items: StruggleItem[];
+}
+
+export interface Struggles {
+  version?: string;
+  updated?: string;
+  sources_reviewed?: string;
+  subagents?: string;
+  intro: Bilingual;
+  groups: StruggleGroup[];
+  patterns: string[];
+}

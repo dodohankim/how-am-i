@@ -39,6 +39,13 @@ export const SOURCE_LABEL: Record<string, string> = {
   stanford: "스탠퍼드",
   iep: "IEP",
   official: "공식",
+  gallup: "Gallup",
+  ipsos: "Ipsos",
+  wellcome: "Wellcome",
+  gbd: "GBD",
+  journal: "논문",
+  survey: "설문",
+  press: "언론",
   other: "출처",
 };
 

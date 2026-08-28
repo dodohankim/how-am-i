@@ -1,0 +1,358 @@
+# howami 어려움 지도 — 현대 성인이 흔히 겪는 정신적 어려움
+#
+# 이 파일은 데이터다. 웹 화면의 "어려움" 탭이 이 파일을 그대로 보여준다
+# (scripts/serve.py 가 /api/struggles 로 내준다).
+#
+# 대상은 전 세계 성인이다. 특정 나라에 치우치지 않도록 다국가 조사(WHO, Gallup 144개국,
+# Ipsos 31개국, Wellcome 113개국, GBD 204개 지역)를 근거로 삼고, 단일 국가 자료는
+# "지역별 이름" 묶음의 사례로만 쓴다. 조사 기록은 docs/research-struggles-2026-08-28.md 에 있다 (레포에는 올리지 않는다).
+#
+# 필드
+#   groups[].layout   cards | table   화면에 카드로 펼칠지 표로 보여줄지
+#   items[].name      { ko, en }      en 에는 원어 이름이나 통용되는 영어 이름
+#   items[].summary   이 어려움이 어떤 느낌인지 한 줄
+#   items[].figure    전 세계 수치 (다국가 조사)
+#   items[].variation 지역별 편차나 단일 국가 사례
+#   items[].domains   하루 지도의 어느 영역에서 드러나는지 (core.*.yaml 의 domains key, 쉼표 구분)
+#   items[].states    상태 축 (core.*.yaml 의 state_scan key, 쉼표 구분)
+#   items[].links     더 읽을 곳. source: who | apa | nimh | gallup | ipsos | wellcome | gbd | journal | survey | press | official | wikipedia | other
+#
+# 주의: 값 안에 쉼표가 들어가면 { } 한 줄 맵이 깨진다. label 에는 쉼표를 쓰지 않는다.
+# 값 안에 ": " 가 들어가면 큰따옴표로 감싼다.
+#
+# howami 는 치료 도구가 아니다. 이 목록은 "무엇이 흔한가"를 알기 위한 것이지 진단표가 아니다.
+
+version: 1
+updated: 2026-08-28
+sources_reviewed: 294
+subagents: 5
+
+intro:
+  ko: "보편적인 것은 압력이고 지역적인 것은 이름이다. 일에서 오는 소진, 경제 불안, 경쟁에서 뒤처질 두려움, 관계의 단절은 어느 지역에서나 나타나며 과로사·내권·번아웃은 그 압력에 각 문화가 붙인 이름이다. 아래는 다국가 조사와 상담 현장 기록에서 반복해서 확인되는 어려움을 세 층위로 묶은 것이다."
+  en: "The pressure is universal; only the name is local. Work exhaustion, money worry, fear of falling behind and disconnection show up everywhere."
+
+groups:
+  - id: universal
+    title: { ko: 어디서나 확인되는 어려움, en: Seen everywhere }
+    note: "144개국 이상을 함께 조사한 자료 기준이다. 정신질환 전체로는 204개 지역에서 인구 10만 명당 약 14,200명이 겪고 있으며 장애 원인 1위(YLD 의 17.3%)다. 31개국 성인 45%가 정신건강을 자기 나라의 가장 큰 건강 문제로 꼽는다(스웨덴·칠레 59~63%, 일본 15%)."
+    layout: cards
+    items:
+      - id: worry
+        name: { ko: 걱정, en: Worry }
+        summary: "머릿속에서 내일 일이 계속 돌아가서 지금에 머물지 못하는 상태"
+        figure: "144개국 성인 39%가 어제 하루의 많은 시간을 걱정하며 보냈다 (Gallup 2024)"
+        variation: "우크라이나·레바논 57% 로 분쟁이 끌어올리고 동아시아는 약 20% 로 낮다"
+        domains: work, money, family
+        states: mood
+        links:
+          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+
+      - id: stress
+        name: { ko: 스트레스, en: Stress }
+        summary: "요구가 감당할 수 있는 범위를 넘어서서 몸이 긴장한 채로 하루를 보내는 상태"
+        figure: "144개국 37%가 어제 많은 스트레스를 겪었고 직장인은 40%가 매일 심한 스트레스를 겪는다 (Gallup 2024·2025)"
+        variation: "키프로스 65% 에서 키르기스스탄 8% 까지 편차가 크다. 팬데믹 이전 수준으로 아직 돌아오지 않았다"
+        domains: work
+        states: energy
+        links:
+          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: Gallup — 세계 직장 현황, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
+
+      - id: anxiety
+        name: { ko: 불안, en: Anxiety }
+        summary: "뚜렷한 이유 없이도 가슴이 조이고 최악을 먼저 떠올리게 되는 상태"
+        figure: "전 세계 인구 4.4% 약 3억 5천9백만 명이 불안장애를 겪는다. 가장 흔한 정신질환이다 (WHO 2021)"
+        variation: "미국 성인은 한 해 19.1% (여성 23.4% 남성 14.3%). 10년 전 3.6% 에서 4.4% 로 늘었다"
+        domains: work, people, money
+        states: mood, sleep
+        links:
+          - { label: WHO — 불안장애 팩트시트, url: "https://www.who.int/news-room/fact-sheets/detail/anxiety-disorders", source: who }
+          - { label: NIMH — 불안장애 통계, url: "https://www.nimh.nih.gov/health/statistics/any-anxiety-disorder", source: nimh }
+
+      - id: depression
+        name: { ko: 우울, en: Depression }
+        summary: "기분이 가라앉는 것을 넘어 아무것도 하고 싶지 않고 즐겁던 일이 더는 즐겁지 않은 상태"
+        figure: "전 세계 성인 5.7% 약 3억 3천2백만 명 (여성 6.9% 남성 4.6%) (WHO 2021)"
+        variation: "미국 성인 한 해 8.3%. 동아시아는 진단 유병률이 낮게 나오지만(한국 1.7%) 자가보고 증상은 높다(서울 26.2%). 낙인으로 인한 과소보고 가능성이 크다"
+        domains: solo
+        states: mood, energy
+        links:
+          - { label: WHO — 우울증 팩트시트, url: "https://www.who.int/news-room/fact-sheets/detail/depression", source: who }
+          - { label: NIMH — 주요우울 통계, url: "https://www.nimh.nih.gov/health/statistics/major-depression", source: nimh }
+          - { label: 서울연구원 — 서울시민 정신건강 실태 2023, url: "https://www.si.re.kr/node/67705", source: survey }
+
+      - id: impairment
+        name: { ko: 불안·우울로 인한 기능 저하, en: Anxiety or depression that stops daily life }
+        summary: "걱정이나 가라앉음 때문에 일이나 관계가 평소처럼 돌아가지 않는 상태"
+        figure: "113개국 성인 19%가 일상이 멈출 정도의 불안이나 우울을 겪은 적이 있다 (Wellcome 2020)"
+        variation: "라틴아메리카 33% 로 세계 최고, 동아시아 9% 로 최저. 동아시아의 낮은 수치는 공개를 꺼리는 문화의 영향으로 본다"
+        domains: work, people
+        states: execution
+        links:
+          - { label: Wellcome Global Monitor — 정신건강, url: "https://wellcome.org/insights/reports/wellcome-global-monitor-mental-health/2020", source: wellcome }
+
+      - id: loneliness
+        name: { ko: 외로움, en: Loneliness }
+        summary: "사람들 사이에 있어도 나를 아는 사람이 없다고 느끼는 상태"
+        figure: "전 세계 직장인 22%가 매일 외로움을 느낀다 (Gallup 2025)"
+        variation: "미국 성인 54%가 고립감을 느끼고 69%가 받는 것보다 더 많은 정서적 지지가 필요하다고 답했다 (APA 2025). 1인 가구에서 급증한다(서울 1인 가구 62.1%)"
+        domains: people, solo, family
+        states: mood
+        links:
+          - { label: Gallup — 세계 직장 현황, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
+          - { label: APA — Stress in America 2025, url: "https://www.apa.org/pubs/reports/stress-in-america/2025/full-report.pdf", source: apa }
+
+      - id: burnout
+        name: { ko: 번아웃, en: Burnout }
+        summary: "쉬어도 회복되지 않고 노력이 결과로 이어지지 않는다고 느끼는 소진"
+        figure: "전 세계 직장인 56%가 고전 중이거나 고통받고 있으며 잘 지내는 사람은 34%뿐이다 (Gallup 2025)"
+        variation: "한국 직장인 69% (30대 75.3%). 일본의 과로사, 중국의 내권, 인도의 경력 압박이 같은 뿌리다"
+        domains: work, side
+        states: energy, execution
+        links:
+          - { label: Gallup — 세계 직장 현황, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
+          - { label: 위키백과 — Occupational burnout, url: "https://en.wikipedia.org/wiki/Occupational_burnout", source: wikipedia }
+
+      - id: sleep
+        name: { ko: 수면 문제, en: Sleep problems }
+        summary: "잠들기 어렵거나 자주 깨거나 자고 나도 개운하지 않은 밤이 이어지는 상태"
+        figure: "상담 플랫폼에서 불면을 이유로 찾아온 사람이 한 해 만에 151% 늘었다 (Grow Therapy 2025)"
+        variation: "한국 수면장애 진료 인원은 5년간 24% 늘어 124만 명(2023)"
+        domains: body
+        states: sleep
+        links:
+          - { label: Grow Therapy — 정신건강 트렌드, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
+          - { label: 위키백과 — Insomnia, url: "https://en.wikipedia.org/wiki/Insomnia", source: wikipedia }
+
+      - id: money
+        name: { ko: 경제적 불안, en: Financial anxiety }
+        summary: "돈 걱정이 다른 모든 걱정 밑에 깔려 있는 상태"
+        figure: "미국 성인 69%가 재정 불확실성 때문에 우울하거나 불안했다 (Northwestern Mutual 2025). 남미·인도·아프리카에서는 정신건강 악화의 1차 요인이다"
+        variation: "페루 노동자 조사에서 고용 불안은 불안을 1.43배 우울을 1.71배 높였다"
+        domains: money, work
+        states: mood
+        links:
+          - { label: Northwestern Mutual — Planning and Progress Study 2025, url: "https://news.northwesternmutual.com/planning-and-progress-study-2025", source: survey }
+          - { label: MDPI — 페루 노동자 고용 불안 연구, url: "https://www.mdpi.com/2071-1050/14/22/14799", source: journal }
+
+      - id: sadness_anger
+        name: { ko: 슬픔과 분노, en: Sadness and anger }
+        summary: "이유를 대기 어려운 슬픔이나 사소한 일에 터지는 화가 하루를 물들이는 상태"
+        figure: "144개국에서 어제 슬픔을 느낀 사람 26% 분노를 느낀 사람 22% (Gallup 2024)"
+        variation: "차드 슬픔 52% 분노 47%. 요르단·아르메니아·이라크도 분쟁으로 높다"
+        domains: family, people
+        states: mood
+        links:
+          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+
+      - id: pain
+        name: { ko: 몸으로 나오는 고통, en: Physical pain }
+        summary: "마음의 부담이 두통·소화불량·근육 통증으로 몸에 먼저 나타나는 상태"
+        figure: "144개국 32%가 어제 신체 통증을 느꼈다 (Gallup 2024)"
+        variation: "시에라리온 77% 로 Gallup 16년 추적 중 최고치. 분쟁과 보건 체계 붕괴가 겹친 곳에서 정신적 고통이 몸으로 나온다"
+        domains: body
+        states: energy
+        links:
+          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: GBD — 정신질환 유병과 부담 1990~2023, url: "https://www.healthdata.org/index%2Ephp/research-analysis/library/updated-trends-global-prevalence-and-burden-mental-disorders-1990-2023", source: gbd }
+
+  - id: regional
+    title: { ko: 같은 압력에 지역마다 다르게 붙은 이름, en: Same pressure and different names }
+    note: "일·경쟁·경제·관계라는 압력은 어디서나 같지만 문화마다 다른 이름으로 드러난다. 이름을 알면 그 지역 사람이 무엇을 말하고 있는지 빨리 알아들을 수 있다."
+    layout: table
+    items:
+      - id: jp_karoshi
+        region: 일본
+        name: { ko: 과로사와 장시간 노동, en: Karoshi }
+        summary: "조직을 위한 자기희생이 정상으로 여겨져 주 55시간 이상 일하는 사람이 많다"
+        variation: "주 55시간 이상 근무자는 정신질환 위험이 유의하게 높고 비정규직·여성·관리자에서 가장 크다. 과로사는 산재로 법적 인정을 받는다"
+        links:
+          - { label: 후생노동성 — 과로사 방지 백서 2024, url: "https://www.mhlw.go.jp/content/11200000/2024Summary.pdf", source: official }
+          - { label: MDPI — 일본 장시간 노동과 정신건강, url: "https://www.mdpi.com/1660-4601/21/7/842", source: journal }
+
+      - id: cn_involution
+        region: 중국
+        name: { ko: 996과 내권 그리고 탕핑, en: Involution and lying flat }
+        summary: "끝없는 경쟁적 자기계발이 성과로 이어지지 않는 데서 오는 소진. 탕핑은 이에 대한 의도적 철수다"
+        variation: "Z세대 노동자 676명 연구에서 996 문화와 업무 과부하가 직무 만족을 거쳐 번아웃과 심리적 고통으로 이어졌다"
+        links:
+          - { label: Nature HSSC — 중국 Z세대와 996, url: "https://www.nature.com/articles/s41599-023-02371-w", source: journal }
+          - { label: Frontiers — 내권과 청년 정신건강, url: "https://doi.org/10.3389/fpsyg.2022.909423", source: journal }
+
+      - id: in_pressure
+        region: 인도
+        name: { ko: 생활비 압박과 가족의 기대, en: Cost of living and family expectation }
+        summary: "경력의 성공이 가족의 명예와 묶여 있어서 개인의 선택이 곧 가족의 문제가 된다"
+        variation: "젊은 세대가 의미 있는 일·경제적 안정·웰빙을 동시에 찾기 어렵다고 답했고 잦은 이직으로 이어진다 (Deloitte 2025)"
+        links:
+          - { label: Deloitte — 인도 Z세대·밀레니얼 조사 2025, url: "https://www.deloitte.com/content/dam/assets-zone1/in/en/docs/campaigns/2025/in-hc-2025genzmillennialsurveycountryreport-india.pdf", source: survey }
+
+      - id: kr_burnout
+        region: 한국
+        name: { ko: 번아웃과 진로 불안, en: Burnout and career anxiety }
+        summary: "직장인 대다수가 번아웃을 겪지만 도움을 구하는 비율은 낮다"
+        variation: "직장인 69% 번아웃. 청년 번아웃 원인 1위는 진로 불안 39.1%. 정신질환을 경험한 성인 중 12.1%만 전문가 도움을 받았다"
+        links:
+          - { label: 국무조정실 — 청년 삶 실태조사 2024, url: "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583", source: official }
+          - { label: 동아일보 — 직장인 번아웃 조사 2024, url: "https://www.donga.com/news/Economy/article/all/20240612/125388807/1", source: press }
+
+      - id: latam_precarity
+        region: 라틴아메리카
+        name: { ko: 고용 불안과 폭력이 겹친 불안정, en: Job insecurity and violence }
+        summary: "경제적 불안정 위에 치안과 정치 불안이 겹쳐서 자가보고 불안·우울이 세계에서 가장 높다"
+        variation: "페루 노동자 1,855명 중 30% 불안 16% 우울. 지역 전체 자가보고 불안·우울 33% (Wellcome)"
+        links:
+          - { label: MDPI — 페루 노동자 연구, url: "https://www.mdpi.com/2071-1050/14/22/14799", source: journal }
+          - { label: Wellcome Global Monitor — 정신건강, url: "https://wellcome.org/insights/reports/wellcome-global-monitor-mental-health/2020", source: wellcome }
+
+      - id: me_stigma
+        region: 중동
+        name: { ko: 낙인과 치료 격차, en: Stigma and treatment gap }
+        summary: "정신건강을 말하는 것 자체가 조직 안에서 억제되어 겪고 있어도 드러내지 못한다"
+        variation: "사우디 직장인 4,050명 조사에서 조직 문화가 정신건강 공개를 억제하고 관련 복지가 부족했다"
+        links:
+          - { label: Tuhoon — 사우디 직장 웰니스 보고서 2022, url: "https://tuhoon.com/pdf/State_of_Wellness_at_the_Workplace_2022_Tuhoon_en.pdf", source: survey }
+
+      - id: africa_untreated
+        region: 사하라 이남 아프리카
+        name: { ko: 치료받지 못하는 우울과 복합 고통, en: Untreated depression }
+        summary: "분쟁·경제 붕괴·보건 체계 부재가 겹쳐서 고통이 진단 이전에 몸과 감정으로 나온다"
+        variation: "차드 슬픔 52% 분노 47%. 시에라리온 신체 통증 77%. 아프리카 지역 1억 5천만 명이 정신건강 문제를 겪지만 1인당 정신건강 예산은 0.5달러(세계 평균 7.5달러) 정신건강 인력은 10만 명당 1.6명이다 (WHO AFRO)"
+        links:
+          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: WHO 아프리카 — 정신건강 대시보드 발표, url: "https://www.afro.who.int/news/mental-health-conditions-affect-150-million-africa-amid-insufficient-care-services", source: who }
+          - { label: WHO 아프리카 — 정신건강 돌봄의 장벽, url: "https://www.afro.who.int/news/barriers-mental-health-care-africa", source: who }
+
+      - id: west_diagnosed
+        region: 유럽·북미
+        name: { ko: 높은 진단률과 임상 부담, en: High diagnosis rates }
+        summary: "진단과 통계가 촘촘해서 임상 부담이 가장 크게 잡힌다. 실제 고통이 더 크다는 뜻은 아니다"
+        variation: "GBD 장애보정수명 아메리카 2,380 유럽 2,162 (10만 명당). 네덜란드 3,556 으로 최고"
+        links:
+          - { label: GBD — 정신질환 유병과 부담 1990~2023, url: "https://www.healthdata.org/index%2Ephp/research-analysis/library/updated-trends-global-prevalence-and-burden-mental-disorders-1990-2023", source: gbd }
+
+  - id: everyday
+    title: { ko: 상담 현장에서 가장 자주 나오는 일상적 어려움, en: What people actually bring to counseling }
+    note: "진단 기준에는 못 미치지만 상담사들이 가장 자주 마주치는 것들이다. 주로 영어권 상담 데이터에 근거하지만 일·경쟁·관계라는 압력은 위의 모든 지역과 겹친다. howami 의 대화가 실제로 다루는 층위가 여기다."
+    layout: cards
+    items:
+      - id: everyday_anxiety
+        name: { ko: 만성적 일상 불안, en: Everyday anxiety }
+        summary: "진단 기준에는 못 미치지만 걱정과 압도감이 늘 배경에 깔려 있는 상태"
+        figure: "상담을 찾는 이유 1위 34% (Grow Therapy 2025)"
+        domains: work, people
+        states: mood, sleep
+        links:
+          - { label: Grow Therapy — 정신건강 트렌드, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
+
+      - id: overwhelm
+        name: { ko: 압도감, en: Overwhelm }
+        summary: "일상의 요구를 감당하지 못한다는 느낌. 사건 자체보다 그에 대한 내 반응을 감당하기 어렵다"
+        figure: "인생 전환기를 이유로 한 상담 +168% 대처 기술을 이유로 한 상담 +152% (한 해 증가율)"
+        domains: work, family
+        states: execution, energy
+        links:
+          - { label: Grow Therapy — 정신건강 트렌드, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
+          - { label: ReachLink — 상담에서 자주 나오는 문제, url: "https://www.reachlink.com/advice/mental-health-of-men-and-boys/mental-health-challenges-faced-by-therapy-clients/", source: other }
+
+      - id: languishing
+        name: { ko: 무기력, en: Languishing }
+        summary: "우울도 아니고 잘 지내는 것도 아닌 정체 상태. 아무것도 잘못되지 않았는데 아무것도 좋지 않다"
+        figure: "Adam Grant 가 2021년에 대중화했고 긍정심리학에서 구성 개념으로 정립됐다"
+        domains: solo
+        states: energy, execution
+        links:
+          - { label: PMC — Languishing in critical perspective, url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9186784/", source: journal }
+          - { label: 위키백과 — Languishing, url: "https://en.wikipedia.org/wiki/Languishing", source: wikipedia }
+
+      - id: relationship
+        name: { ko: 관계 갈등과 단절, en: Relationship strain }
+        summary: "가까운 사람에게 이해받지 못하고 같은 충돌이 반복되는 상태"
+        figure: "상담사들이 꼽는 반복적 호소 문제. 직무 스트레스 원인 중 인간관계가 4분의 1을 차지한다"
+        domains: family, people
+        states: mood
+        links:
+          - { label: GoodTherapy — 상담에서 다루는 문제들, url: "https://www.goodtherapy.org/learn-about-therapy/issues", source: other }
+
+      - id: behind
+        name: { ko: 뒤처졌다는 감각, en: Feeling behind }
+        summary: "남들 기준의 인생 이정표에 못 미친다는 자책. 중국의 내권과 같은 뿌리다"
+        figure: "상담사들이 일관되게 마주치는 주제. 스스로를 탓하는 방식으로 내면화된다"
+        domains: work, study, side
+        states: mood
+        links:
+          - { label: Verywell Mind — 상담에서 가장 흔한 문제, url: "https://www.verywellmind.com/most-common-issues-in-therapy-8547822", source: other }
+
+      - id: comparison
+        name: { ko: 사회적 비교와 FoMO, en: Social comparison and FoMO }
+        summary: "타인의 편집된 삶과 나를 끊임없이 비교하고 놓치고 있다는 불안에 시달리는 상태"
+        figure: "수동적으로 SNS 를 훑으며 비교하는 방식이 총 사용 시간보다 정신건강 악화를 더 강하게 예측한다 (1,707명 연구)"
+        domains: solo, people
+        states: mood
+        links:
+          - { label: Nature Scientific Reports — SNS 사용과 성인 웰빙, url: "https://www.nature.com/articles/s41598-026-40371-3", source: journal }
+
+      - id: rumination
+        name: { ko: 반추와 둠스크롤링, en: Rumination and doomscrolling }
+        summary: "같은 생각을 되돌리고 나쁜 뉴스를 멈추지 못하고 읽는 상태. 잠을 가장 먼저 앗아간다"
+        figure: "Z세대가 윗세대보다 2~3배 높다"
+        domains: solo
+        states: sleep, mood
+        links:
+          - { label: Nature Scientific Reports — SNS 사용과 성인 웰빙, url: "https://www.nature.com/articles/s41598-026-40371-3", source: journal }
+          - { label: 위키백과 — Doomscrolling, url: "https://en.wikipedia.org/wiki/Doomscrolling", source: wikipedia }
+
+      - id: perfectionism
+        name: { ko: 완벽주의, en: Perfectionism }
+        summary: "스스로 세운 비현실적 기준에 못 미치면 전부 실패로 느끼는 상태"
+        figure: "완벽주의에서 번아웃으로 이어지는 경로가 실증됐다. 역할 경계가 뚜렷하면 완충된다"
+        domains: work, study
+        states: execution
+        links:
+          - { label: Taylor and Francis — 완벽주의와 번아웃, url: "https://www.tandfonline.com/doi/full/10.1080/1359432X.2025.2528616", source: journal }
+          - { label: 위키백과 — Perfectionism, url: "https://en.wikipedia.org/wiki/Perfectionism_(psychology)", source: wikipedia }
+
+      - id: imposter
+        name: { ko: 가면 증후군, en: Imposter syndrome }
+        summary: "성과가 있어도 언젠가 들통날 것 같다는 두려움"
+        figure: "자신감과 자존감 문제의 밑바탕으로 상담사들이 지목한다"
+        domains: work, side
+        states: mood
+        links:
+          - { label: BBC Worklife — 가면 증후군과 번아웃, url: "https://www.bbc.com/worklife/article/20220517-the-link-between-imposter-syndrome-and-burnout", source: press }
+          - { label: 위키백과 — Impostor syndrome, url: "https://en.wikipedia.org/wiki/Impostor_syndrome", source: wikipedia }
+
+      - id: shame
+        name: { ko: 수치심, en: Shame }
+        summary: "잘못했다가 아니라 내가 잘못됐다는 느낌. 표면의 불안과 우울 아래에 자주 깔려 있다"
+        figure: "1,500시간 임상 기록을 종합한 상담사가 가장 중요한 중심축으로 꼽았다"
+        domains: solo
+        states: mood
+        links:
+          - { label: One Percent Better — 1500시간 임상에서 배운 것, url: "https://one-percent-better.kit.com/posts/8-lessons-from-1-500-hours-with-clients-in-2025", source: other }
+
+      - id: career
+        name: { ko: 경력 정체와 직무 불만, en: Career distress }
+        summary: "안정 때문에 해로운 직장에 머물면서 매일 조금씩 닳는 상태"
+        figure: "고성과자의 조용한 위기로 불린다. 중국의 탕핑과 인도의 잦은 이직이 같은 뿌리다"
+        domains: work, side
+        states: energy, execution
+        links:
+          - { label: Forbes — Career distress response, url: "https://www.forbes.com/sites/bryanrobinson/2026/08/07/career-distress-response-a-silent-crisis-facing-high-achievers-today/", source: press }
+
+      - id: meaning
+        name: { ko: 의미와 목적 상실, en: Loss of meaning }
+        summary: "성취해도 약속된 행복이 오지 않고 왜 하는지 모르겠는 상태"
+        figure: "인도 젊은 세대의 의미 있는 일 결핍과 같은 호소. 인생 전환기 상담 +168% 와 겹친다"
+        domains: solo, side
+        states: mood, execution
+        links:
+          - { label: GoodTherapy — 상담에서 다루는 문제들, url: "https://www.goodtherapy.org/learn-about-therapy/issues", source: other }
+
+patterns:
+  - "보편적인 것은 압력이고 지역적인 것은 이름이다. 일에서 오는 소진, 경제 불안, 경쟁에서 뒤처질 두려움, 관계의 단절은 모든 지역에서 나타나고, 과로사·내권·탕핑·번아웃은 그 압력에 각 문화가 붙인 이름이다."
+  - "발전 단계에 따라 주된 압력이 다르다. 저소득·중소득 지역(남미·인도·아프리카)은 경제적 불안정이, 고소득 지역(일본·한국·유럽)은 문화적으로 정상화된 과로가, 급성장 지역(중국)은 경쟁 강도가 주된 원인이다."
+  - "동아시아의 낮은 자가보고 수치는 덜 겪어서가 아니라 낙인과 공개 회피 때문일 가능성이 크다. 임상 유병률은 다른 지역과 비슷하고 한국은 진단 경험자 중 12.1%만 도움을 받는다."
+  - "상담사들은 완벽주의 → 번아웃 → 압도감 → 수치심과 실패감 → 반추·회피·둠스크롤링으로 이어지는 연쇄를 지목한다. 표면의 불안·우울 아래에 수치심과 뒤처졌다는 감각이 있다는 관점이다."
+  - "번아웃은 개인의 회복 기술보다 구조의 문제라는 관점이 강해지고 있다. 휴식과 마음챙김의 효과가 오래가지 않는 이유로 설명된다."
+  - "모든 지역에서 젊은 세대(Z세대·밀레니얼)와 여성이 더 높은 수치를 보이고, 정서적 지지의 수요와 공급 간극이 외로움과 불안을 동시에 키운다."

@@ -1,4 +1,4 @@
-import type { Context, Day, Methods, OpenTarget, Questions, Session, Settings, Stats } from "./types";
+import type { Context, Day, Methods, OpenTarget, Questions, Session, Settings, Stats, Struggles } from "./types";
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(path, { headers: { Accept: "application/json" } });
@@ -39,6 +39,7 @@ export const api = {
   entry: (id: string) => get<Session & { raw: string; path: string }>(`/api/entries/${id}`),
   questions: (lang = "ko") => get<Questions>(`/api/questions?lang=${lang}`),
   methods: () => get<Methods>("/api/methods"),
+  struggles: () => get<Struggles>("/api/struggles"),
   settings: () => get<Settings>("/api/settings"),
   open: (target: OpenTarget) => post<{ ok: true; opened: string }>("/api/open", { target }),
 };
