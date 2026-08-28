@@ -89,7 +89,6 @@ export default function App() {
       <header className="topbar">
         <div className="wordmark">
           <h1>howami</h1>
-          <span className="tagline">오늘 나, 어때</span>
         </div>
         <div className="topbar-right">
           {ctx && (

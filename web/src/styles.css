@@ -119,7 +119,6 @@ button { font: inherit; color: inherit; }
 .wordmark h1 {
   margin: 0; font-family: var(--font-num); font-weight: 600; font-size: 22px; letter-spacing: 0.02em;
 }
-.wordmark .tagline { color: var(--ink-2); font-size: 14px; }
 .topbar-right { display: flex; align-items: center; gap: 14px; color: var(--ink-2); font-size: 13px; flex-wrap: wrap; }
 .topbar-right .sep { color: var(--rule); }
 
