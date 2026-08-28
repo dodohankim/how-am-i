@@ -139,7 +139,7 @@ export default function App() {
         : !error && <div className="muted">불러오는 중…</div>)}
 
       {tab === "struggles" && (struggles
-        ? <Struggles data={struggles} questions={questions} />
+        ? <Struggles data={struggles} questions={questions} methods={methods} onOpenMethod={openMethod} />
         : !error && <div className="muted">불러오는 중…</div>)}
 
       {tab === "settings" && <Settings />}

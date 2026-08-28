@@ -185,6 +185,19 @@ export interface Settings {
 }
 
 /** 어려움 지도 (questions/struggles.yaml → /api/struggles) */
+export type HelpStrength = "strong" | "moderate" | "weak" | "none" | string;
+
+/** 임상시험에서 이 어려움에 도움이 된 과정 하나 */
+export interface StruggleHelp {
+  name: Bilingual;
+  strength: HelpStrength;
+  method?: string;
+  process?: string;
+  evidence?: string;
+  caveat?: string;
+  links: MethodLink[];
+}
+
 export interface StruggleItem {
   id: string;
   region?: string;
@@ -195,6 +208,7 @@ export interface StruggleItem {
   domains: string[];
   states: string[];
   links: MethodLink[];
+  helps: StruggleHelp[];
 }
 
 export interface StruggleGroup {
@@ -210,6 +224,7 @@ export interface Struggles {
   updated?: string;
   sources_reviewed?: string;
   subagents?: string;
+  helps_note?: string;
   intro: Bilingual;
   groups: StruggleGroup[];
   patterns: string[];

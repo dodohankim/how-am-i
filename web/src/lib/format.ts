@@ -30,6 +30,14 @@ export const EVIDENCE_LABEL: Record<string, string> = {
   local: "개인 기록 관찰",
 };
 
+/** 어려움 탭의 "도움이 된 과정" 근거 등급 */
+export const STRENGTH_LABEL: Record<string, string> = {
+  strong: "근거 탄탄",
+  moderate: "근거 있음",
+  weak: "근거 약함",
+  none: "시험 없음",
+};
+
 export const SOURCE_LABEL: Record<string, string> = {
   wikipedia: "위키백과",
   apa: "APA",

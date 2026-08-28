@@ -342,3 +342,26 @@ pre.raw { background: var(--surface-2); padding: 12px; border-radius: 6px; font-
 .patterns ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
 .patterns li { line-height: 1.55; }
 .src.gallup, .src.ipsos, .src.wellcome, .src.gbd { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+
+/* 어려움 지도 — 이런 과정을 거치면 나아졌다 */
+.helps { margin-top: 14px; border-top: 1px dashed var(--rule); padding-top: 10px; }
+.helps > .k { font-size: 12px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+.help + .help { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule-2); }
+.help-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+.help-head b { font-size: 14px; }
+.help-head .en { color: var(--ink-3); font-size: 12px; }
+.help-process { font-size: 14px; line-height: 1.55; margin: 2px 0 6px; padding-left: 10px; border-left: 2px solid var(--accent-soft); }
+.help-line { display: grid; grid-template-columns: 32px 1fr; gap: 6px; font-size: 13px; color: var(--ink-2); line-height: 1.5; margin: 2px 0; }
+.help-line .lbl { color: var(--ink-3); font-size: 12px; padding-top: 1px; }
+.help-links { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.help-links li { display: flex; gap: 8px; align-items: baseline; font-size: 12px; }
+.help-method { border: 0; cursor: pointer; font: inherit; font-size: 12px; }
+.help-method:hover { filter: brightness(1.08); }
+.badge.strong { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
+.badge.moderate { border-color: transparent; background: var(--surface-2); }
+.badge.weak { border-style: dashed; }
+.badge.none { border-style: dashed; color: var(--serious); }
+.struggle-table td.helps-cell { min-width: 220px; }
+.struggle-table td.helps-cell .help + .help { margin-top: 8px; padding-top: 8px; }
+.struggle-table td.helps-cell .help-head b { font-size: 13px; }
+@media (max-width: 800px) { .struggle-table { min-width: 960px; } }

@@ -257,15 +257,17 @@ def load_methods_with_references():
 def load_struggles():
     """questions/struggles.yaml 을 읽는다. 어려움 지도 화면용.
 
-    구조는 세 단이다. 최상위 스칼라(version·updated·sources_reviewed·subagents)와
-    intro{ko,en}, groups[] > items[] > links[], patterns[]. 들여쓰기 폭이 곧 계층이다
-    (묶음 2, 묶음 필드 4, 항목 6, 항목 필드 8, 링크 10).
+    구조는 네 단이다. 최상위 스칼라(version·updated·sources_reviewed·subagents·helps_note)와
+    intro{ko,en}, groups[] > items[] > links[] / helps[] > links[], patterns[].
+    들여쓰기 폭이 곧 계층이다 (묶음 2, 묶음 필드 4, 항목 6, 항목 필드 8, 항목 링크 10,
+    helps 항목 10, helps 필드 12, helps 링크 14).
     """
     path = os.path.join(QUESTIONS_DIR, "struggles.yaml")
     result = {"intro": {}, "groups": [], "patterns": []}
     if not os.path.exists(path):
         return result
     section, group, item, block = None, None, None, None
+    help_item, help_block = None, None
     with open(path, encoding="utf-8") as handle:
         for raw in handle:
             line = raw.rstrip("\n")
@@ -305,27 +307,50 @@ def load_struggles():
                     item, block = None, None  # `items:` 머리줄은 여기서 흘려보낸다
                 elif indent == 6 and stripped.startswith("- id:"):
                     item = {"id": _unquote(stripped[len("- id:"):]), "name": {},
-                            "domains": [], "states": [], "links": []}
+                            "domains": [], "states": [], "links": [], "helps": []}
                     group["items"].append(item)
-                    block = None
+                    block, help_item, help_block = None, None, None
                 elif item is None:
                     continue
                 elif indent == 8:
                     key, _, val = stripped.partition(":")
                     key = key.strip()
-                    block = None
+                    block, help_item, help_block = None, None, None
                     if key == "name":
                         item["name"] = _inline_map(val) or {}
                     elif key in ("domains", "states"):
                         item[key] = [p.strip() for p in val.split(",") if p.strip()]
-                    elif key == "links":
-                        block = "links"
+                    elif key in ("links", "helps"):
+                        block = key
                     elif key in ("region", "summary", "figure", "variation"):
                         item[key] = _unquote(val)
                 elif block == "links" and indent > 8 and stripped.startswith("- "):
                     link = _inline_map(stripped[2:])
                     if link and link.get("url"):
                         item["links"].append(link)
+                elif block == "helps":
+                    if indent == 10 and stripped.startswith("- "):
+                        help_item = {"name": {}, "strength": "", "links": []}
+                        item["helps"].append(help_item)
+                        help_block = None
+                        stripped = stripped[2:]  # `- name: {...}` 의 첫 필드를 아래에서 같이 처리
+                        indent = 12
+                    if help_item is None:
+                        continue
+                    if indent == 12:
+                        key, _, val = stripped.partition(":")
+                        key = key.strip()
+                        help_block = None
+                        if key == "name":
+                            help_item["name"] = _inline_map(val) or {}
+                        elif key == "links":
+                            help_block = "links"
+                        elif key in ("strength", "method", "process", "evidence", "caveat"):
+                            help_item[key] = _unquote(val)
+                    elif help_block == "links" and indent > 12 and stripped.startswith("- "):
+                        link = _inline_map(stripped[2:])
+                        if link and link.get("url"):
+                            help_item["links"].append(link)
     return result
 
 
