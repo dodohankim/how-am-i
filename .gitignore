@@ -12,3 +12,6 @@ howami.db-shm
 __pycache__/
 *.pyc
 .venv/
+
+# 조사 메모·설계 노트. 개인 작업용이라 레포에 올리지 않는다.
+docs/

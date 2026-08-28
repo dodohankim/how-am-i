@@ -203,6 +203,10 @@ probe:
     - "Can you say that to yourself today?"
   controllability:
     - "Of the causes you just named, how far does what you can change reach?"
+  catastrophe:
+    # Only for worries about what's ahead. Don't reassure - have them split the cases.
+    - "If it went as badly as it could, what happens? And the most likely version?"
+    - "If the worst actually came, what could you do then?"
 
 # ---------------------------------------------------------------------------
 # 6. Validate - hand the reading back and have the user confirm it. Never skip this.
@@ -229,6 +233,18 @@ prescribe:
     - "When and where will that happen?"
   too_big:
     - "That looks a bit big. What's the version you could definitely do today?"
+  options:
+    # Problem solving. Don't settle on the first idea - pull out two or three more, then choose.
+    - "Skip judging them for now - can you name three things you could try?"
+    - "Which of those do you think you'd actually do tomorrow?"
+  experiment:
+    # Behavioral experiment. Write the prediction down first so it can be compared later.
+    - "Is there a small way to check whether that thought holds?"
+    - "Before you try it, what do you expect to happen?"
+  obstacle:
+    # Obstacle first. Put this before the implementation intention when a prescription keeps slipping.
+    - "When you go to do that, what's likely to get in the way?"
+    - "And if that gets in the way, then what?"
 
 # ---------------------------------------------------------------------------
 # Good days - there is still something to keep on a day with nothing to dig into.
@@ -243,6 +259,14 @@ good_day:
 close:
   - "Let's stop here. I'll read it back before it goes down."
   - "Save it as is?"
+
+# ---------------------------------------------------------------------------
+# Review - only when the same dip repeats across records. Stats first, questions second.
+# ---------------------------------------------------------------------------
+review:
+  warning_signs:
+    - "Looking back, something similar seems to come before a dip. Does that match how it feels?"
+    - "If we note that as a sign, what would help when it shows up next time?"
 
 # ---------------------------------------------------------------------------
 # Warning signs - stop and follow the safety rules in SKILL.md.

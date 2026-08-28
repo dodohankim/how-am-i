@@ -143,6 +143,7 @@ session으로 넘어간다. 시작하기 전에 "긴 걸로 할까요 짧은 걸
 | 불편함이 사건보다 클 때 | `values` | `values_check` |
 | 자책이 강할 때 | `compassion` | `self_compassion` |
 | 원인에 남의 결정이 섞였을 때 | `controllability` | `control_dichotomy` |
+| 이미 일어난 일이 아니라 앞으로 올 일을 걱정할 때 | `catastrophe` | `decatastrophizing` |
 
 "왜"는 다섯 번을 채우려 하지 말고, 답이 더 이상 쪼개지지 않으면 멈춘다.
 보통 두세 번에서 바닥이 나온다.
@@ -168,6 +169,20 @@ session으로 넘어간다. 시작하기 전에 "긴 걸로 할까요 짧은 걸
 
 밤 세션이면 "내일", 낮 세션이면 "오늘 안에" 또는 "다음번 얘기할 때까지"로
 시간 단위를 맞춘다. 하루에 여러 번 쓰는 사람에게 매번 "내일"이라고 하면 쌓이지 않는다.
+
+후보가 바로 안 나오거나, 처방이 생각을 검증하는 일이거나, 같은 처방을 계속 못 지키고
+있으면 `prescribe`의 갈래를 하나 더 쓴다. 역시 **필요한 것만** 고른다.
+
+| 상황 | 쓰는 갈래 | 기법 id |
+|---|---|---|
+| 원인은 분명한데 뭘 해볼지 안 떠오를 때 | `options` | `problem_solving` |
+| 증거 검토로 결론이 안 난 생각이 남았을 때 | `experiment` | `behavioral_experiment` |
+| 같은 처방을 두 번 이상 못 지켰을 때 | `obstacle` | `obstacle_plan` |
+
+`options`는 첫 후보에 바로 붙지 않고 두세 개를 더 꺼낸 뒤 사용자가 고르게 하는 것이다.
+`experiment`는 예상 결과를 먼저 적어 두어, 다음 `prescription_followup`에서 실제 결과와
+견주는 것이다. 예상과 결과를 모두 기록에 남긴다. `obstacle`은 막을 것을 먼저 묻고
+"그러면 어떻게 할지"를 실행 의도 앞에 붙인다. 셋 다 답은 사용자가 낸다.
 
 ## 하루에 여러 번 쓸 때
 
@@ -213,11 +228,11 @@ python3 <스킬디렉토리>/scripts/howami.py day --date 2026-08-27
 | 지도 | `day_mapping`, `domain_scan` | `spillover_check` |
 | 스캔 | `baseline_delta` | `prescription_followup` |
 | 초점 | `agenda_setting` | |
-| 탐색 | `trigger_mapping` | `cbt_thought_record`, `affect_labeling`, `cognitive_distortion_check`, `evidence_check`, `five_whys`, `exception_question`, `values_check`, `self_compassion`, `control_dichotomy` |
+| 탐색 | `trigger_mapping` | `cbt_thought_record`, `affect_labeling`, `cognitive_distortion_check`, `evidence_check`, `five_whys`, `exception_question`, `values_check`, `self_compassion`, `control_dichotomy`, `decatastrophizing` |
 | 검증 | `summary_validation` | `alternative_hypothesis` |
-| 다음 걸음 | `implementation_intention` | `tiny_habit`, `behavioral_activation` |
+| 다음 걸음 | `implementation_intention` | `tiny_habit`, `behavioral_activation`, `problem_solving`, `behavioral_experiment`, `obstacle_plan` |
 | 좋은 날 | | `three_good_things` |
-| 되짚기 | `pattern_review` | `within_day_shift` |
+| 되짚기 | `pattern_review` | `within_day_shift`, `early_warning_signs` |
 
 규칙은 세 가지다.
 
@@ -352,6 +367,12 @@ python3 <스킬디렉토리>/scripts/howami.py stats --days 30
 관찰 두세 개로 정리한다. 데이터가 7일 미만이면 "아직 패턴을 말하기엔 이르다"고 솔직히 말한다.
 없는 상관관계를 지어내지 않는다. 이때 참고한 기법은 `pattern_review`다.
 
+같은 하강이 두 번 이상 반복되고 그 앞에 먼저 오는 것이 보이면(예: "잠 점수가 2점인
+이틀 뒤에 일 점수가 떨어진다"), `review.warning_signs`로 사용자에게 확인하고 **사용자의 말로**
+신호를 적어 둔다. 그 세션 기록의 본문에 `## 조기 경고 신호` 절로 남기고, 참고한 기법은
+`early_warning_signs`다. 다음 세션에서 그 신호가 보이면 담담히 짚기만 한다.
+경고 신호는 예측이 아니라 알아차림이고, 사용자가 아니라고 하면 목록에서 뺀다.
+
 집계만으로 부족하면 SQL을 직접 던진다. **읽기 전용이고 쓰기는 거부된다.**
 
 ```bash
@@ -382,6 +403,8 @@ python3 <스킬디렉토리>/scripts/howami.py query --sql "
 
 낮은 점수가 2주 이상 이어지는 것이 `days`에서 보이면, 그 사실만 담담히 짚고
 전문가 상담을 한 번 권한다. 매일 반복해서 권하지는 않는다.
+이전 기록에 `## 조기 경고 신호`가 있고 오늘 그 신호가 보이면, 2주를 기다리지 않고
+그 시점에 한 번 짚는다. 짚는 것까지다. 캐묻거나 단정하지 않는다.
 
 특정 영역(예: 가족)이 오래 낮게 유지되는데 사용자가 매번 그 얘기를 피하면,
 캐묻지 않는다. 피하는 것도 정보이고, 준비되면 사용자가 먼저 꺼낸다.

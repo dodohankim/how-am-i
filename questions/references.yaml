@@ -9,7 +9,7 @@
 #   links      더 읽을 곳. label 은 화면에 보이는 이름, url 은 주소, source 는 출처 종류
 #              source: wikipedia | apa | who | nhs | nimh | stanford | iep | official | other
 #
-# 링크는 추가하기 전에 실제로 열리는지 확인한다 (2026-08-27 기준 전부 200 응답).
+# 링크는 추가하기 전에 실제로 열리는지 확인한다 (2026-08-28 기준 전부 200 응답).
 # 한국어 위키백과에 해당 문서가 없는 항목은 영어 문서만 걸었다.
 #
 # 주의: 여기 적힌 출처는 "더 읽어보기"일 뿐이다. howami 는 치료 도구가 아니며,
@@ -151,7 +151,7 @@ references:
 
   five_whys:
     effect:
-      ko: "왜"를 몇 겹 따라 내려가면 겉으로 보이는 이유(늦게 잤다) 아래의 바꿀 수 있는 지점(멈출 시각을 정하지 않았다)에 닿는다. 다섯 번을 채우는 것이 목적이 아니라 더 쪼개지지 않는 곳에서 멈춘다.
+      ko: '"왜"를 몇 겹 따라 내려가면 겉으로 보이는 이유(늦게 잤다) 아래의 바꿀 수 있는 지점(멈출 시각을 정하지 않았다)에 닿는다. 다섯 번을 채우는 것이 목적이 아니라 더 쪼개지지 않는 곳에서 멈춘다.'
       en: Following "why" a few layers down reaches a changeable point beneath the surface reason.
     links:
       - { label: 위키백과 — Five whys, url: "https://en.wikipedia.org/wiki/Five_whys", source: wikipedia }
@@ -221,7 +221,7 @@ references:
 
   implementation_intention:
     effect:
-      ko: "내일 언제, 어디서" 할지 미리 정해 두면 그 상황이 왔을 때 별도의 결심 없이 행동이 나온다. 목표만 세운 경우보다 실행률이 높다는 연구가 여럿 있다.
+      ko: '"내일 언제, 어디서" 할지 미리 정해 두면 그 상황이 왔을 때 별도의 결심 없이 행동이 나온다. 목표만 세운 경우보다 실행률이 높다는 연구가 여럿 있다.'
       en: Deciding "when and where" in advance triggers the action without a fresh decision in the moment.
     links:
       - { label: 위키백과 — Implementation intention, url: "https://en.wikipedia.org/wiki/Implementation_intention", source: wikipedia }
@@ -263,3 +263,52 @@ references:
       - { label: 위키백과 — Experience sampling method, url: "https://en.wikipedia.org/wiki/Experience_sampling_method", source: wikipedia }
       - { label: APA 사전 — experience sampling method, url: "https://dictionary.apa.org/experience-sampling-method", source: apa }
       - { label: 위키백과 — Mihaly Csikszentmihalyi, url: "https://en.wikipedia.org/wiki/Mihaly_Csikszentmihalyi", source: wikipedia }
+
+  decatastrophizing:
+    effect:
+      ko: 걱정을 "최악·최선·가장 그럴듯한 경우"로 나누면 머릿속에서 최악만 크게 보이던 것이 제자리를 찾는다. 최악이 와도 할 수 있는 일이 있다는 것을 확인하면 걱정의 크기가 줄어든다.
+      en: Splitting a worry into worst, best, and likely cases puts the worst case back in proportion, and finding a way to cope with it shrinks the worry.
+    links:
+      - { label: APA 사전 — decatastrophizing, url: "https://dictionary.apa.org/decatastrophizing", source: apa }
+      - { label: APA 사전 — catastrophizing, url: "https://dictionary.apa.org/catastrophizing", source: apa }
+      - { label: 위키백과 — Decatastrophizing, url: "https://en.wikipedia.org/wiki/Decatastrophizing", source: wikipedia }
+      - { label: Psychology Tools — Decatastrophizing 워크시트, url: "https://www.psychologytools.com/resource/decatastrophizing/", source: other }
+
+  problem_solving:
+    effect:
+      ko: 첫 번째로 떠오른 방법에 바로 붙지 않고 후보를 두세 개 더 꺼낸 뒤 고르면, 실제로 하게 될 확률이 높은 쪽을 고를 수 있다. 우울과 불안에서 반복 검증된 절차다.
+      en: Listing two or three options before choosing, instead of grabbing the first, makes it more likely you pick the one you'll actually do.
+    links:
+      - { label: 위키백과 — Problem-solving therapy, url: "https://en.wikipedia.org/wiki/Problem-solving_therapy", source: wikipedia }
+      - { label: APA 사전 — problem-solving therapy, url: "https://dictionary.apa.org/problem-solving-therapy", source: apa }
+      - { label: APA 사전 — problem-solving training, url: "https://dictionary.apa.org/problem-solving-training", source: apa }
+
+  behavioral_experiment:
+    effect:
+      ko: 머릿속에서 증거를 따지는 것만으로 결론이 안 나는 생각은, 작게 해 보고 결과를 보는 편이 빠르다. 예상 결과를 먼저 적어 두면 다음에 실제 결과와 견줄 수 있다.
+      en: A thought that arguing over evidence can't settle is often settled faster by a small real-world test, with the prediction written down first.
+    links:
+      - { label: APA 사전 — behavioral experiment, url: "https://dictionary.apa.org/behavioral-experiment", source: apa }
+      - { label: Psychology Tools — Behavioral experiment 워크시트, url: "https://www.psychologytools.com/resource/behavioral-experiment/", source: other }
+      - { label: 위키백과 — Cognitive behavioral therapy, url: "https://en.wikipedia.org/wiki/Cognitive_behavioral_therapy", source: wikipedia }
+      - { label: 위키백과 — 인지행동치료 (한국어), url: "https://ko.wikipedia.org/wiki/%EC%9D%B8%EC%A7%80%ED%96%89%EB%8F%99%EC%B9%98%EB%A3%8C", source: wikipedia }
+
+  obstacle_plan:
+    effect:
+      ko: 못 지킨 처방은 대개 의지가 아니라 막는 것을 미리 보지 않아서다. 무엇이 막을지를 먼저 떠올리고 "그러면 어떻게 한다"를 붙여 두면 실행률이 올라간다는 연구가 20년 넘게 쌓여 있다.
+      en: Missed actions usually come from not seeing the obstacle in advance; naming it and attaching an if-then raises follow-through.
+    links:
+      - { label: WOOP — 외팅겐 공식 사이트, url: "https://woopmylife.org/", source: official }
+      - { label: APA 사전 — mental contrasting, url: "https://dictionary.apa.org/mental-contrasting", source: apa }
+      - { label: 위키백과 — Gabriele Oettingen, url: "https://en.wikipedia.org/wiki/Gabriele_Oettingen", source: wikipedia }
+      - { label: 위키백과 — Implementation intention, url: "https://en.wikipedia.org/wiki/Implementation_intention", source: wikipedia }
+
+  early_warning_signs:
+    effect:
+      ko: 나빠지기 전에 먼저 오는 신호("잠이 줄면 이틀 뒤 일이 무너진다")를 자기 말로 적어 두면, 다음에 그 신호가 보였을 때 2주를 기다리지 않고 알아차릴 수 있다. 예측이 아니라 알아차림을 위한 목록이다.
+      en: Writing down, in your own words, what tends to come before a slump lets you notice it next time without waiting two weeks.
+    links:
+      - { label: 위키백과 — Relapse prevention, url: "https://en.wikipedia.org/wiki/Relapse_prevention", source: wikipedia }
+      - { label: APA 사전 — relapse prevention, url: "https://dictionary.apa.org/relapse-prevention", source: apa }
+      - { label: Stanley-Brown 안전 계획 (공식), url: "https://suicidesafetyplan.com/", source: official }
+      - { label: NIMH — 자살 예방, url: "https://www.nimh.nih.gov/health/topics/suicide-prevention", source: nimh }

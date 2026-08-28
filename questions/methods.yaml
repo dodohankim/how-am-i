@@ -254,6 +254,19 @@ methods:
       ko: 바꿀 수 있는 것과 없는 것을 갈라서, 바꿀 수 있는 쪽만 처방으로 뒀어요
       en: I split what you can change from what you can't, and only prescribed the former
 
+  - id: decatastrophizing
+    stage: probe
+    name: { ko: 최악·최선·현실, en: Decatastrophizing }
+    summary:
+      ko: 걱정하는 일의 최악·최선·가장 그럴듯한 경우를 나누고, 최악이 와도 어떻게 할지 묻는다
+      en: Splits a worry into worst, best, and most likely cases, then asks how you'd cope with the worst
+    origin: 합리정서행동치료(REBT)의 파국화 줄이기 — 엘리스; 벡의 인지치료에도 같은 절차가 있다
+    evidence: clinical
+    use_when: 이미 일어난 일이 아니라 앞으로 올 일을 걱정하고 있을 때
+    say_it_as:
+      ko: 최악의 경우와 가장 그럴듯한 경우를 나눠 놓고, 최악이 와도 어떻게 할지까지 봤어요
+      en: We split the worst case from the likely case, and looked at how you'd handle the worst
+
   # -------------------------------------------------------------------------
   # validate — 해석을 사용자에게 확인받는 단계
   # -------------------------------------------------------------------------
@@ -325,6 +338,45 @@ methods:
       ko: 언제 어디서 할지까지 붙여 뒀어요
       en: We pinned down when and where it happens
 
+  - id: problem_solving
+    stage: prescribe
+    name: { ko: 문제 해결 단계, en: Problem solving }
+    summary:
+      ko: 원인은 찾았는데 다음 걸음이 안 떠오를 때, 후보를 여러 개 꺼낸 뒤 하나를 고르게 한다
+      en: When the cause is clear but the next step isn't, lists several options before picking one
+    origin: 문제해결치료(Problem-Solving Therapy) — 드주릴라와 네주
+    evidence: clinical
+    use_when: 원인은 분명한데 무엇을 해볼지 바로 안 나올 때
+    say_it_as:
+      ko: 해볼 수 있는 걸 {n}개 꺼내 놓고 그중 하나를 직접 고르게 했어요
+      en: We laid out {n} options and you picked one
+
+  - id: behavioral_experiment
+    stage: prescribe
+    name: { ko: 행동 실험, en: Behavioral experiment }
+    summary:
+      ko: 증거로 결론이 안 나는 생각을, 예상 결과를 미리 적어 둔 작은 실험으로 확인해 보게 한다
+      en: Turns a thought the evidence can't settle into a small test, with the prediction written down first
+    origin: 인지행동치료의 행동 실험 — 베넷-레비 외(2004)
+    evidence: clinical
+    use_when: 증거 검토를 했는데도 그 생각이 맞는지 결론이 안 날 때
+    say_it_as:
+      ko: '"{prediction}"이 맞는지 작은 실험으로 확인해 보기로 하고, 예상 결과를 미리 적어 뒀어요'
+      en: 'We set up a small test of "{prediction}" and wrote down what you expect first'
+
+  - id: obstacle_plan
+    stage: prescribe
+    name: { ko: 장애물 먼저, en: Obstacle plan }
+    summary:
+      ko: 처방을 정한 뒤 무엇이 막을지를 먼저 떠올리고, 그러면 어떻게 할지를 붙인다
+      en: Names what is likely to get in the way of the action, then attaches an if-then for it
+    origin: 정신적 대조와 실행 의도의 결합(WOOP) — 외팅겐과 골비처
+    evidence: clinical
+    use_when: 같은 처방을 두 번 이상 못 지켰을 때, 또는 처방이 막힐 이유가 뻔히 보일 때
+    say_it_as:
+      ko: '{obstacle}이 막을 것 같아서, 그러면 어떻게 할지까지 붙여 뒀어요'
+      en: '{obstacle} looked likely to get in the way, so we planned for that too'
+
   # -------------------------------------------------------------------------
   # care — 잘 지나간 날과 힘든 날을 다루는 방식
   # -------------------------------------------------------------------------
@@ -382,3 +434,16 @@ methods:
     say_it_as:
       ko: 오늘 {time} 기록과 견줘서 그사이에 뭐가 달라졌는지 봤어요
       en: I compared this with your {time} check-in to see what shifted
+
+  - id: early_warning_signs
+    stage: review
+    name: { ko: 내 조기 경고 신호, en: Early warning signs }
+    summary:
+      ko: 나빠지기 전에 반복해서 먼저 나타나는 신호를 사용자의 말로 목록에 남긴다
+      en: Records, in the user's own words, the signs that tend to show up before things go down
+    origin: 재발 예방의 재발 신호 — 말랫; 안전 계획의 경고 신호 — 스탠리와 브라운(2012)
+    evidence: clinical
+    use_when: 누적 패턴에서 같은 하강이 두 번 이상 보이고, 그 앞에 먼저 오는 것이 있을 때
+    say_it_as:
+      ko: '{sign}이 먼저 오더라는 걸 신호로 적어 두고, 다음에 그게 보이면 짚기로 했어요'
+      en: 'We noted {sign} as a sign that tends to come first, and will flag it next time'
