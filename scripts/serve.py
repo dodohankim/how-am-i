@@ -16,6 +16,7 @@ macOS · Linux · Windows 에서 같은 코드로 동작한다. 표준 라이브
 API (전부 읽기 전용)
   GET /api/context?days=14      howami.py context 와 같다 (하루 롤업·기준선·열린 처방)
   GET /api/stats?days=30        howami.py stats 와 같다 (0 이면 전체)
+  GET /api/works                howami.py works 와 같다 (걸음별 실행·도움 실적, "나에게 통한 것")
   GET /api/day/YYYY-MM-DD       howami.py day 와 같다 (그날 세션 전부, 본문 포함)
   GET /api/entries/<세션 id>     세션 md 원본 텍스트와 파싱 결과 (id 는 YYYY-MM-DD 또는 YYYY-MM-DD--HHMM)
   GET /api/questions            questions/core.<lang>.yaml 의 생활 영역(domains)과 상태 축(state_scan)
@@ -507,6 +508,8 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/stats":
                 days = _int(query.get("days"), 30, 0, 3650)
                 return self.send_json(run_howami("stats", "--days", str(days)))
+            if path == "/api/works":
+                return self.send_json(run_howami("works"))
             if path == "/api/where":
                 return self.send_json(run_howami("where"))
             if path == "/api/settings":

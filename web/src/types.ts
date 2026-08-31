@@ -18,7 +18,11 @@ export interface Session {
   weekday: number;
   weekday_label: string;
   prescription: string | null;
+  prescription_tag?: string | null;
+  prescription_domain?: string | null;
   prev_prescription_done: boolean | null;
+  prev_prescription_ref?: string | null;
+  prev_prescription_helped?: boolean | null;
   scores: Record<string, number>;
   domains: DomainEntry[];
   flags: string[];
@@ -37,8 +41,34 @@ export interface DayRollup {
 
 export interface OpenPrescription {
   text: string;
+  tag?: string | null;
+  domain?: string | null;
   from: string;
   same_day: boolean;
+}
+
+// "나에게 통한 것" — 걸음(prescription) 태그 하나의 실적.
+// helped 는 사용자가 직접 확인한 답만 센 n=1 관찰이라, 화면은 비율 대신 횟수로 말한다.
+export interface WorksItem {
+  tag: string;
+  attempts: number;
+  last_set: string;
+  done: number;
+  helped_yes: number;
+  helped_no: number;
+  text: string | null;
+  domain: string | null;
+}
+
+export interface Works {
+  ok?: false;
+  error?: string;
+  note?: string;
+  min_attempts: number;
+  worked: WorksItem[];
+  not_worked: WorksItem[];
+  undecided: WorksItem[];
+  pending: WorksItem[];
 }
 
 export interface Context {
@@ -58,6 +88,11 @@ export interface Context {
   baseline_7d: Record<string, number>;
   domain_baseline_7d: Record<string, number>;
   drop_threshold: number;
+  works?: {
+    top: WorksItem[];
+    avoid: WorksItem[];
+    tags: { tag: string; text: string | null }[];
+  };
   history: Session[];
   days: DayRollup[];
 }
@@ -100,6 +135,7 @@ export interface Stats {
   flags?: { flag: string; n: number }[];
   methods?: { method: string; n: number; last_used: string }[];
   prescription_follow_through?: { n: number; done: number };
+  works_top?: WorksItem[];
   recent_prescriptions?: { id: string; date: string; time: string | null; prescription: string }[];
 }
 

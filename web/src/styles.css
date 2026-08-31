@@ -388,3 +388,6 @@ pre.raw { background: var(--surface-2); padding: 12px; border-radius: 6px; font-
 .chat-panel-body .chat { margin: 0; }
 .chat-empty { padding: 20px 4px; text-align: center; }
 @media (max-width: 800px) { .bubble { max-width: 92%; } }
+
+/* 나에게 통한 것 — 걸음별 실적 목록 */
+.works-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }

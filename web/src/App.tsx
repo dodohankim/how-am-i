@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { api } from "./api";
-import type { Context, Lang, Methods as MethodsData, Questions, Stats, Struggles as StrugglesData } from "./types";
+import type { Context, Lang, Methods as MethodsData, Questions, Stats, Struggles as StrugglesData, Works } from "./types";
 import { ErrorBox } from "./components/ui";
 import { Today } from "./components/Today";
 import { Trends } from "./components/Trends";
@@ -53,6 +53,7 @@ function Shell() {
   const [questions, setQuestions] = useState<Questions | null>(null);
   const [methods, setMethods] = useState<MethodsData | null>(null);
   const [struggles, setStruggles] = useState<StrugglesData | null>(null);
+  const [works, setWorks] = useState<Works | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [focusMethod, setFocusMethod] = useState<string | null>(null);
 
@@ -90,6 +91,7 @@ function Shell() {
     api.questions(lang).then(setQuestions).catch((e) => setError(String(e.message ?? e)));
     api.methods().then(setMethods).catch((e) => setError(String(e.message ?? e)));
     api.struggles().then(setStruggles).catch((e) => setError(String(e.message ?? e)));
+    api.works().then(setWorks).catch(() => {});
     api.context(3650, 5000).then(setAllDays).catch(() => {});
   }, [days, lang]);
 
@@ -157,7 +159,7 @@ function Shell() {
         : !error && loading)}
 
       {tab === "trends" && (stats
-        ? <Trends stats={stats} days={days} onDays={setDays} questions={questions} methods={methods} onOpenMethod={openMethod} />
+        ? <Trends stats={stats} days={days} onDays={setDays} questions={questions} methods={methods} onOpenMethod={openMethod} works={works} />
         : !error && loading)}
 
       {tab === "records" && ((allDays ?? ctx)

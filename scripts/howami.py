@@ -9,6 +9,7 @@
   day       하루치 세션을 모아서 출력 (하루 종합을 볼 때)
   guard     사용자가 하지 않은 말이 기록에 섞였는지 검사 (save가 자동으로 호출)
   stats     누적 점수와 영역 패턴을 SQL로 집계해 출력
+  works     걸음(다음 걸음)별 실행·도움 실적을 태그 단위로 모아 출력
   query     DB에 읽기 전용 SQL을 던진다
   sync      md 원본과 DB를 맞춘다
   where     경로와 DB 상태 출력
@@ -33,7 +34,7 @@ import sys
 import time
 from datetime import date, datetime, timedelta
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 WEEKDAY_KO = ["월", "화", "수", "목", "금", "토", "일"]
 WEEKDAY_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 KINDS = ("session", "checkin")
@@ -212,6 +213,29 @@ def read_entry_file(entry_id):
     if not isinstance(prescription, str) or not prescription.strip():
         prescription = None
 
+    # 걸음이 없으면 태그와 영역도 의미가 없다.
+    tag = meta.get("prescription_tag")
+    if prescription is None or not isinstance(tag, str) or not tag.strip():
+        tag = None
+    else:
+        tag = tag.strip()
+
+    p_domain = meta.get("prescription_domain")
+    if prescription is None or not isinstance(p_domain, str) or not p_domain.strip():
+        p_domain = None
+    else:
+        p_domain = p_domain.strip()
+
+    ref = meta.get("prev_prescription_ref")
+    if not isinstance(ref, str) or not ID_RE.match(ref.strip()):
+        ref = None
+    else:
+        ref = ref.strip()
+
+    helped = meta.get("prev_prescription_helped")
+    if not isinstance(helped, bool):
+        helped = None
+
     return {
         "id": entry_id,
         "date": day,
@@ -222,7 +246,11 @@ def read_entry_file(entry_id):
         "flags": [str(f) for f in flags],
         "methods": [str(m) for m in methods],
         "prescription": prescription,
+        "prescription_tag": tag,
+        "prescription_domain": p_domain,
         "prev_prescription_done": done,
+        "prev_prescription_ref": ref,
+        "prev_prescription_helped": helped,
         "body": body.strip(),
         "path": path,
     }
@@ -259,7 +287,11 @@ CREATE TABLE IF NOT EXISTS entries (
     weekday                INTEGER NOT NULL,     -- 0=월 .. 6=일
     kind                   TEXT NOT NULL,        -- session / checkin
     prescription           TEXT,
+    prescription_tag       TEXT,                 -- 반복되는 걸음을 묶는 내부 슬러그
+    prescription_domain    TEXT,                 -- 걸음이 겨냥한 생활 영역 key
     prev_prescription_done INTEGER,              -- 0 / 1 / NULL
+    prev_prescription_ref  TEXT,                 -- done/helped 판정이 가리키는 세션 id
+    prev_prescription_helped INTEGER,            -- 0 / 1 / NULL. 사용자의 답으로만 정한다
     body                   TEXT,
     source_path            TEXT NOT NULL,
     source_mtime           REAL NOT NULL,
@@ -308,6 +340,8 @@ CREATE INDEX IF NOT EXISTS idx_scores_key      ON scores(key);
 CREATE INDEX IF NOT EXISTS idx_domains_domain  ON domains(domain);
 CREATE INDEX IF NOT EXISTS idx_flags_flag      ON flags(flag);
 CREATE INDEX IF NOT EXISTS idx_methods_method  ON methods(method);
+CREATE INDEX IF NOT EXISTS idx_entries_ptag    ON entries(prescription_tag);
+CREATE INDEX IF NOT EXISTS idx_entries_pref    ON entries(prev_prescription_ref);
 """
 
 
@@ -352,12 +386,18 @@ def upsert_entry(conn, entry, stat):
     mtime, size = stat
     conn.execute(
         "INSERT INTO entries(id, date, time, slot, weekday, kind, prescription,"
-        " prev_prescription_done, body, source_path, source_mtime, source_size, synced_at)"
-        " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        " prescription_tag, prescription_domain, prev_prescription_done,"
+        " prev_prescription_ref, prev_prescription_helped,"
+        " body, source_path, source_mtime, source_size, synced_at)"
+        " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
         " ON CONFLICT(id) DO UPDATE SET"
         "  date=excluded.date, time=excluded.time, slot=excluded.slot,"
         "  weekday=excluded.weekday, kind=excluded.kind, prescription=excluded.prescription,"
-        "  prev_prescription_done=excluded.prev_prescription_done, body=excluded.body,"
+        "  prescription_tag=excluded.prescription_tag,"
+        "  prescription_domain=excluded.prescription_domain,"
+        "  prev_prescription_done=excluded.prev_prescription_done,"
+        "  prev_prescription_ref=excluded.prev_prescription_ref,"
+        "  prev_prescription_helped=excluded.prev_prescription_helped, body=excluded.body,"
         "  source_path=excluded.source_path, source_mtime=excluded.source_mtime,"
         "  source_size=excluded.source_size, synced_at=excluded.synced_at",
         (
@@ -368,7 +408,11 @@ def upsert_entry(conn, entry, stat):
             weekday_num(entry["date"]),
             entry["kind"],
             entry["prescription"],
+            entry["prescription_tag"],
+            entry["prescription_domain"],
             None if entry["prev_prescription_done"] is None else int(entry["prev_prescription_done"]),
+            entry["prev_prescription_ref"],
+            None if entry["prev_prescription_helped"] is None else int(entry["prev_prescription_helped"]),
             entry["body"],
             entry["path"],
             mtime,
@@ -443,7 +487,8 @@ def sync(conn, rebuild=False):
 
 def entry_rows(conn, limit=None, until=None, since=None, day=None):
     sql = ("SELECT id, date, time, slot, kind, weekday, prescription,"
-           " prev_prescription_done FROM entries")
+           " prescription_tag, prescription_domain, prev_prescription_done,"
+           " prev_prescription_ref, prev_prescription_helped FROM entries")
     clauses, params = [], []
     if day:
         clauses.append("date = ?")
@@ -499,6 +544,8 @@ def attach_details(conn, rows, with_body=False):
         row["methods"] = methods.get(row["id"], [])
         done = row.pop("prev_prescription_done")
         row["prev_prescription_done"] = None if done is None else bool(done)
+        helped = row.pop("prev_prescription_helped")
+        row["prev_prescription_helped"] = None if helped is None else bool(helped)
         if with_body:
             row["body"] = bodies.get(row["id"])
     return rows
@@ -535,6 +582,99 @@ def day_rollup(conn, since, until):
 
 
 # --------------------------------------------------------------------------
+# works - "나에게 통한 것"
+#
+# 걸음(prescription)을 태그 단위로 묶어 시도·실행·도움 실적을 센다.
+# '도움'은 점수에서 추론하지 않는다. 다음 세션에서 사용자가 "해보니 어땠어요?"에
+# 답한 것을 에이전트가 판정해 확인받은 값(prev_prescription_helped)만 센다.
+# n=1 관찰이지 임상 근거가 아니므로, 보여줄 때는 비율이 아니라 횟수로 말한다.
+# --------------------------------------------------------------------------
+
+WORKS_MIN_ATTEMPTS = 2  # 시도가 이보다 적으면 아직 판정하지 않는다
+
+
+def works_rows(conn):
+    """태그별 실적. 창을 자르지 않는다 — 개인 근거는 전체 역사에서 나온다."""
+    tags = {}
+    for row in conn.execute(
+        "SELECT prescription_tag AS tag, COUNT(*) AS attempts, MAX(date) AS last_set"
+        " FROM entries WHERE prescription_tag IS NOT NULL GROUP BY prescription_tag"
+    ):
+        tags[row["tag"]] = {
+            "tag": row["tag"], "attempts": row["attempts"], "last_set": row["last_set"],
+            "done": 0, "helped_yes": 0, "helped_no": 0, "text": None, "domain": None,
+        }
+    if not tags:
+        return []
+
+    # 대표 문구와 영역은 가장 최근에 그 태그로 정한 걸음의 것을 쓴다.
+    for row in conn.execute(
+        "SELECT prescription_tag AS tag, prescription AS text,"
+        " prescription_domain AS domain FROM entries"
+        " WHERE prescription_tag IS NOT NULL"
+        " ORDER BY date, COALESCE(time, '00:00')"
+    ):
+        tags[row["tag"]]["text"] = row["text"]
+        if row["domain"]:
+            tags[row["tag"]]["domain"] = row["domain"]
+
+    # 판정은 그 걸음을 정한 세션(p)을 가리키는 다음 세션(f)에서 온다.
+    for row in conn.execute(
+        "SELECT p.prescription_tag AS tag,"
+        " SUM(CASE WHEN f.prev_prescription_done = 1 THEN 1 ELSE 0 END) AS done,"
+        " SUM(CASE WHEN f.prev_prescription_helped = 1 THEN 1 ELSE 0 END) AS yes,"
+        " SUM(CASE WHEN f.prev_prescription_helped = 0 THEN 1 ELSE 0 END) AS no"
+        " FROM entries f JOIN entries p ON p.id = f.prev_prescription_ref"
+        " WHERE p.prescription_tag IS NOT NULL GROUP BY p.prescription_tag"
+    ):
+        tags[row["tag"]]["done"] = row["done"] or 0
+        tags[row["tag"]]["helped_yes"] = row["yes"] or 0
+        tags[row["tag"]]["helped_no"] = row["no"] or 0
+
+    return sorted(tags.values(),
+                  key=lambda t: (t["helped_yes"], t["done"], t["last_set"]),
+                  reverse=True)
+
+
+def works_groups(rows):
+    """실적을 네 묶음으로 가른다.
+
+    worked      도움됐다는 확인이 아니라는 확인보다 많다
+    not_worked  아니라는 확인이 더 많다 — 다시 권하지 않을 목록
+    undecided   시도는 쌓였는데 판정이 갈리거나 없다
+    pending     시도가 WORKS_MIN_ATTEMPTS 미만 — 아직 판정하지 않는다
+    """
+    groups = {"worked": [], "not_worked": [], "undecided": [], "pending": []}
+    for item in rows:
+        if item["attempts"] < WORKS_MIN_ATTEMPTS:
+            groups["pending"].append(item)
+        elif item["helped_yes"] > item["helped_no"]:
+            groups["worked"].append(item)
+        elif item["helped_no"] > item["helped_yes"]:
+            groups["not_worked"].append(item)
+        else:
+            groups["undecided"].append(item)
+    return groups
+
+
+def cmd_works(args):
+    conn = connect()
+    sync(conn)
+    rows = works_rows(conn)
+    groups = works_groups(rows)
+    return emit({
+        "note": "사용자가 '도움이 됐다'고 직접 확인한 답만 센 n=1 관찰입니다. "
+                "임상 근거가 아니며, 사용자에게 말할 때는 비율 대신 횟수로 말합니다"
+                " (예: \"세 번 중 세 번\").",
+        "min_attempts": WORKS_MIN_ATTEMPTS,
+        "worked": groups["worked"],
+        "not_worked": groups["not_worked"],
+        "undecided": groups["undecided"],
+        "pending": groups["pending"],
+    })
+
+
+# --------------------------------------------------------------------------
 # context
 # --------------------------------------------------------------------------
 
@@ -566,13 +706,15 @@ def cmd_context(args):
     open_prescription = None
     if today_sessions and today_sessions[-1]["prescription"]:
         # 오늘 이미 세션이 있었으면 그때 정한 것이 아직 열려 있는 처방이다.
-        open_prescription = {"text": today_sessions[-1]["prescription"],
-                             "from": today_sessions[-1]["id"], "same_day": True}
+        open_prescription = open_prescription_of(today_sessions[-1], same_day=True)
     elif last and last["prescription"]:
-        open_prescription = {"text": last["prescription"], "from": last["id"], "same_day": False}
+        open_prescription = open_prescription_of(last, same_day=False)
 
     since = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=args.days - 1)).date().isoformat()
     total = conn.execute("SELECT COUNT(*) AS n FROM entries").fetchone()["n"]
+
+    all_works = works_rows(conn)
+    groups = works_groups(all_works)
     total_days = conn.execute("SELECT COUNT(DISTINCT date) AS n FROM entries").fetchone()["n"]
 
     return emit({
@@ -590,10 +732,24 @@ def cmd_context(args):
         "baseline_7d": mean_map(conn, "scores", "t.key", "t.value", week_ago, today),
         "domain_baseline_7d": mean_map(conn, "domains", "t.domain", "t.score", week_ago, today),
         "drop_threshold": DROP_THRESHOLD,
+        "works": {
+            # top: 오늘의 초점과 맞으면 새 걸음보다 먼저 제안한다. 횟수로 말한다.
+            "top": groups["worked"][:3],
+            # avoid: 도움이 안 됐다고 확인된 걸음. 다시 권하지 않는다.
+            "avoid": groups["not_worked"],
+            # tags: 태그 재사용용 전체 목록. 같은 뜻의 걸음이면 반드시 재사용한다.
+            "tags": [{"tag": w["tag"], "text": w["text"]} for w in all_works],
+        },
         "history": history,
         "days": day_rollup(conn, since, today),
         "synced": summarize_sync(synced),
     })
+
+
+def open_prescription_of(row, same_day):
+    return {"text": row["prescription"], "tag": row.get("prescription_tag"),
+            "domain": row.get("prescription_domain"),
+            "from": row["id"], "same_day": same_day}
 
 
 def streak(conn, today):
@@ -678,6 +834,8 @@ def guard_payload(payload):
     problems = []
     problems += scan_text(payload.get("body") or "", "body")
     problems += scan_text(payload.get("prescription") or "", "prescription")
+    for key in ("prescription_tag", "prescription_domain", "prev_prescription_ref"):
+        problems += scan_text(str(payload.get(key) or ""), key)
     for item in payload.get("domains") or []:
         if isinstance(item, dict):
             problems += scan_text(item.get("note") or "", "domains.%s" % item.get("key"))
@@ -824,6 +982,28 @@ def cmd_save(args):
                         % (item.get("key"), score))
     domains = clean_domains(raw_domains)
 
+    prescription = payload.get("prescription")
+    if prescription is not None and (not isinstance(prescription, str)):
+        return fail("prescription은 문자열이거나 null이어야 합니다: %r" % (prescription,))
+
+    tag = payload.get("prescription_tag")
+    if tag is not None and (not isinstance(tag, str) or not tag.strip()):
+        return fail("prescription_tag는 비어 있지 않은 문자열이거나 null이어야 합니다: %r" % (tag,))
+    p_domain = payload.get("prescription_domain")
+    if p_domain is not None and (not isinstance(p_domain, str) or not p_domain.strip()):
+        return fail("prescription_domain은 비어 있지 않은 문자열이거나 null이어야 합니다: %r" % (p_domain,))
+    if prescription is None or not prescription.strip():
+        # 걸음이 없으면 태그와 영역도 의미가 없다
+        tag = p_domain = None
+
+    ref = payload.get("prev_prescription_ref")
+    if ref is not None and (not isinstance(ref, str) or not ID_RE.match(ref.strip())):
+        return fail("prev_prescription_ref는 세션 id(YYYY-MM-DD 또는 YYYY-MM-DD--HHMM) 형식이어야 합니다: %r" % (ref,))
+
+    helped = payload.get("prev_prescription_helped")
+    if helped is not None and not isinstance(helped, bool):
+        return fail("prev_prescription_helped는 true/false/null이어야 합니다: %r" % (helped,))
+
     problems = guard_payload(payload)
     transcript = None
     if not problems:
@@ -854,8 +1034,12 @@ def cmd_save(args):
         "domains": domains,
         "flags": payload.get("flags") or [],
         "methods": payload.get("methods") or [],
-        "prescription": payload.get("prescription"),
+        "prescription": prescription,
+        "prescription_tag": tag.strip() if tag else None,
+        "prescription_domain": p_domain.strip() if p_domain else None,
         "prev_prescription_done": payload.get("prev_prescription_done"),
+        "prev_prescription_ref": ref.strip() if ref else None,
+        "prev_prescription_helped": helped,
     }
     lines = ["---"]
     for key, value in meta.items():
@@ -1015,6 +1199,8 @@ def cmd_stats(args):
         " WHERE date >= ? AND prescription IS NOT NULL"
         " ORDER BY date DESC, COALESCE(time,'00:00') DESC LIMIT 14", [since])]
 
+    works_top = works_groups(works_rows(conn))["worked"][:3]
+
     return emit({
         "range": {"from": span["a"], "to": span["b"]},
         "entries": span["n"],
@@ -1026,6 +1212,7 @@ def cmd_stats(args):
         "flags": flags,
         "methods": methods,
         "prescription_follow_through": {"n": follow["n"], "done": follow["done"] or 0},
+        "works_top": works_top,
         "recent_prescriptions": prescriptions[::-1],
     })
 
@@ -1126,6 +1313,9 @@ def main(argv=None):
     p = sub.add_parser("stats", help="누적 점수와 영역 패턴을 출력합니다")
     p.add_argument("--days", type=int, default=0, help="최근 N일만 (0이면 전체)")
     p.set_defaults(func=cmd_stats)
+
+    p = sub.add_parser("works", help="걸음별 실행·도움 실적을 태그 단위로 출력합니다")
+    p.set_defaults(func=cmd_works)
 
     p = sub.add_parser("query", help="DB에 읽기 전용 SQL을 던집니다")
     p.add_argument("--sql", help="SELECT 또는 WITH 문. 생략하면 stdin에서 읽습니다")

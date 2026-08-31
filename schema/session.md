@@ -40,7 +40,11 @@ domains: [{"key": "family", "score": 4, "note": "저녁에 같이 산책"}, {"ke
 flags: ["work_drop"]
 methods: ["day_mapping", "domain_scan", "trigger_mapping", "five_whys", "summary_validation", "implementation_intention"]
 prescription: "내일 아침 캘린더 3분 확인"
+prescription_tag: "morning-calendar-check"
+prescription_domain: "work"
 prev_prescription_done: false
+prev_prescription_ref: "2026-08-26--2140"
+prev_prescription_helped: null
 ---
 
 ## 하루 지도
@@ -78,7 +82,11 @@ prev_prescription_done: false
 | `flags` | 문자열 배열 | | 자동 감지된 신호 (`work_drop`, `mood_low`) |
 | `methods` | 문자열 배열 | | 그 세션에서 밟은 상담 기법 id. 카탈로그는 `questions/methods.yaml` |
 | `prescription` | 문자열/null | | 다음번까지 바꿀 행동 하나 |
+| `prescription_tag` | 문자열/null | | 반복되는 걸음을 묶는 내부 슬러그(kebab-case). "나에게 통한 것" 실적이 이 단위로 쌓인다. 걸음이 없으면 null |
+| `prescription_domain` | 문자열/null | | 걸음이 겨냥한 생활 영역. 질문 세트 `domains[].key` |
 | `prev_prescription_done` | 불리언/null | | 지난번 처방을 실행했는지. 모르면 null |
+| `prev_prescription_ref` | 문자열/null | | done/helped 판정이 가리키는 세션 id. 며칠 건너뛰어도 판정이 엉뚱한 걸음에 붙지 않게 한다 |
+| `prev_prescription_helped` | 불리언/null | | 실행한 걸음이 도움이 됐는지에 대한 **사용자 본인의 답**. 실행하지 않았거나 답이 애매하면 null |
 
 값은 전부 JSON 리터럴로 쓴다. 표준 라이브러리만으로 읽기 위한 제약이고,
 덕분에 YAML 의존성 없이 어떤 언어에서도 읽힌다.
@@ -144,7 +152,9 @@ A: 살짝 떨리긴 한데 괜찮아요.
 
 ```sql
 entries(id PK, date, time, slot, weekday, kind, prescription,
-        prev_prescription_done, body, source_path, source_mtime, source_size, synced_at)
+        prescription_tag, prescription_domain, prev_prescription_done,
+        prev_prescription_ref, prev_prescription_helped,
+        body, source_path, source_mtime, source_size, synced_at)
 scores (entry_id FK, key, value)            -- 하루를 관통하는 축
 domains(entry_id FK, domain, score, note)   -- 생활 영역별 관점
 flags  (entry_id FK, flag)

@@ -122,16 +122,16 @@ methods:
     stage: scan
     name: { ko: 처방 팔로업, en: Prescription follow-up }
     summary:
-      ko: 지난번에 정한 행동을 실제로 했는지 확인해 기록을 루프로 닫는다
-      en: Checks whether the last action happened, closing the record into a loop
-    origin: 자기 점검(self-monitoring) 루프 — 행동치료의 기본 절차
-    origin_en: "The self-monitoring loop - a basic procedure of behavior therapy"
+      ko: 지난번에 정한 행동을 했는지, 했다면 해보니 어땠는지 열린 질문으로 확인해 기록을 루프로 닫는다
+      en: Checks whether the last action happened and - with an open question - how it went, closing the record into a loop
+    origin: 자기 점검(self-monitoring) 루프와 CBT 숙제 검토 — 완료 여부가 아니라 해보니 어땠는지를 묻는다
+    origin_en: "The self-monitoring loop and CBT homework review - asking how it went, not just whether it was done"
     evidence: clinical
     use_when: 이전 기록에 처방이 남아 있을 때
     use_when_en: "When a prescription is open from a previous record"
     say_it_as:
-      ko: 지난번에 정한 걸 했는지부터 확인하고 시작했어요
-      en: I started by checking whether the last action happened
+      ko: 지난번에 정한 걸 했는지, 해보니 어땠는지부터 확인하고 시작했어요
+      en: I started by checking whether the last action happened and how it went
 
   # -------------------------------------------------------------------------
   # focus — 무엇을 팔지 정하는 단계

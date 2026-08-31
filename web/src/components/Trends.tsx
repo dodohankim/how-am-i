@@ -1,16 +1,17 @@
-import type { KeyStats, Lang, Methods, Questions, Slot, Stats } from "../types";
+import type { KeyStats, Lang, Methods, Questions, Slot, Stats, Works, WorksItem } from "../types";
 import { Card, Empty, RangePicker, Section } from "./ui";
 import { Sparkline } from "./Sparkline";
 import { addDays, fmtNum, labelOf, rampStep, seriesVar, slotLabel, todayIso, weekdays } from "../lib/format";
 import { useI18n } from "../lib/i18n";
 
-export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }: {
+export function Trends({ stats, days, onDays, questions, methods, onOpenMethod, works }: {
   stats: Stats;
   days: number;
   onDays: (d: number) => void;
   questions: Questions | null;
   methods: Methods | null;
   onOpenMethod: (id: string) => void;
+  works: Works | null;
 }) {
   const { lang, t, pick } = useI18n();
   const RANGES = [
@@ -167,7 +168,65 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
           ) : <div className="muted small">{t("이 기간에는 급락이나 낮은 점수 신호가 없었어요.", "No drops or low-score signals in this range.")}</div>}
         </Card>
       </div>
+
+      <Section title={t("나에게 통한 것", "What worked for me")}
+        hint={t("'도움이 됐다'고 직접 확인한 답만 세요 · 기간과 무관한 전체 기록", "Counts only what you yourself confirmed helped · all records, not range-bound")}>
+        <div className="grid cols-2">
+          <Card title={t("도움이 됐다고 확인한 걸음", "Steps you confirmed helped")}>
+            {works?.worked?.length ? (
+              <ul className="works-list">
+                {works.worked.map((w) => <WorksRow key={w.tag} w={w} questions={questions} />)}
+              </ul>
+            ) : (
+              <div className="muted small">
+                {t("아직 없어요. 다음 걸음을 정하고, 다음 세션에서 \"해보니 어땠는지\" 답이 두 번 이상 쌓이면 여기에 모여요.",
+                  "Nothing yet. Set next steps and answer \"how did it go\" in later sessions - after two or more attempts it collects here.")}
+              </div>
+            )}
+            {(works?.undecided?.length ?? 0) > 0 && (
+              <div className="muted small" style={{ marginTop: 10 }}>
+                {t(`판정이 아직 갈리는 걸음 ${works!.undecided.length}개`,
+                  `${works!.undecided.length} steps with mixed or missing verdicts`)}
+              </div>
+            )}
+            {(works?.pending?.length ?? 0) > 0 && (
+              <div className="muted small" style={{ marginTop: 4 }}>
+                {t(`판정을 모으는 중인 걸음 ${works!.pending.length}개 (시도 1회)`,
+                  `${works!.pending.length} steps still collecting (1 attempt)`)}
+              </div>
+            )}
+          </Card>
+          <Card title={t("도움이 안 됐다고 확인한 걸음", "Steps you confirmed didn't help")}
+            hint={t("다시 권하지 않아요", "Not suggested again")}>
+            {works?.not_worked?.length ? (
+              <ul className="works-list">
+                {works.not_worked.map((w) => <WorksRow key={w.tag} w={w} questions={questions} />)}
+              </ul>
+            ) : (
+              <div className="muted small">{t("없어요.", "None.")}</div>
+            )}
+          </Card>
+        </div>
+      </Section>
     </>
+  );
+}
+
+function WorksRow({ w, questions }: { w: WorksItem; questions: Questions | null }) {
+  const { t } = useI18n();
+  return (
+    <li>
+      <div>
+        <span>{w.text ?? w.tag}</span>
+        {w.domain && <span className="chip" style={{ marginLeft: 8 }}>{labelOf(w.domain, questions?.domains)}</span>}
+      </div>
+      <div className="muted small" style={{ marginTop: 2 }}>
+        {t(`${w.attempts}번 정함 · ${w.done}번 실행 · ${w.helped_yes}번 도움`,
+          `set ${w.attempts} · done ${w.done} · helped ${w.helped_yes}`)}
+        {w.helped_no > 0 ? t(` · ${w.helped_no}번 아님`, ` · ${w.helped_no} not`) : ""}
+        <span className="num faint" style={{ marginLeft: 8 }}>{w.last_set}</span>
+      </div>
+    </li>
   );
 }
 
