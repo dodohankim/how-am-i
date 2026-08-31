@@ -1,7 +1,7 @@
 import type { Context, Methods, Questions, Session } from "../types";
 import { Card, Empty, Section } from "./ui";
 import { Ladder } from "./Ladder";
-import { Markdown } from "./Markdown";
+import { ChatButton, SessionBody } from "./Chat";
 import { KIND_LABEL, SLOT_LABEL, fmtDate, fmtNum, labelOf, seriesVar } from "../lib/format";
 
 export function Today({ ctx, questions, methods, onOpenMethod }: {
@@ -103,6 +103,9 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
                       {s.prev_prescription_done ? "✓ 지난 처방 했음" : "✗ 지난 처방 못 했음"}
                     </span>
                   )}
+                  <span style={{ marginLeft: "auto" }}>
+                    <ChatButton body={s.body} title={`${fmtDate(s.date)} ${s.time ?? ""}`} />
+                  </span>
                 </div>
                 {s.methods.length > 0 && (
                   <div className="chips" style={{ marginBottom: 8 }}>
@@ -114,7 +117,7 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
                     ))}
                   </div>
                 )}
-                {s.body ? <Markdown text={s.body} /> : <div className="faint small">본문 없음</div>}
+                {s.body ? <SessionBody body={s.body} /> : <div className="faint small">본문 없음</div>}
               </div>
             ))}
           </div>

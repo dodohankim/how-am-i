@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api";
 import type { Day, DayRollup, Methods, Questions } from "../types";
 import { Card, Empty, ErrorBox } from "./ui";
-import { Markdown } from "./Markdown";
+import { ChatButton, SessionBody } from "./Chat";
 import { KIND_LABEL, SLOT_LABEL, fmtDate, fmtNum, labelOf } from "../lib/format";
 
 export function Records({ days, questions, methods, onOpenMethod }: {
@@ -78,7 +78,10 @@ export function Records({ days, questions, methods, onOpenMethod }: {
                     {stateKeys.filter((k) => s.scores[k] !== undefined).map((k) => (
                       <span className="chip" key={k}>{labelOf(k, questions?.states)} <b className="num">{s.scores[k]}</b></span>
                     ))}
-                    <button type="button" className="raw-toggle" style={{ marginLeft: "auto" }} onClick={() => toggleRaw(s.id)}>
+                    <span style={{ marginLeft: "auto" }}>
+                      <ChatButton body={s.body} title={`${fmtDate(s.date)} ${s.time ?? ""}`} />
+                    </span>
+                    <button type="button" className="raw-toggle" onClick={() => toggleRaw(s.id)}>
                       {showRaw[s.id] !== undefined ? "본문 보기" : "원본 md"}
                     </button>
                   </div>
@@ -104,7 +107,7 @@ export function Records({ days, questions, methods, onOpenMethod }: {
                   )}
                   {showRaw[s.id] !== undefined
                     ? <pre className="raw">{showRaw[s.id]}</pre>
-                    : s.body ? <Markdown text={s.body} /> : <div className="faint small">본문 없음</div>}
+                    : s.body ? <SessionBody body={s.body} /> : <div className="faint small">본문 없음</div>}
                 </div>
               ))}
             </div>

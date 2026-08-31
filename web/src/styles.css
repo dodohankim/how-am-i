@@ -365,3 +365,26 @@ pre.raw { background: var(--surface-2); padding: 12px; border-radius: 6px; font-
 .struggle-table td.helps-cell .help + .help { margin-top: 8px; padding-top: 8px; }
 .struggle-table td.helps-cell .help-head b { font-size: 13px; }
 @media (max-width: 800px) { .struggle-table { min-width: 960px; } }
+
+/* ---------- 세션 대화 말풍선 (오늘·기록 탭) ---------- */
+.chat { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 12px; }
+.bubble { max-width: 78%; padding: 8px 12px; border-radius: 14px; font-size: 14px; line-height: 1.55; }
+.bubble .text { white-space: pre-wrap; word-break: break-word; }
+.bubble .who { display: block; font-size: 11px; color: var(--ink-3); margin-bottom: 2px; font-family: var(--font-num); }
+.bubble.agent { align-self: flex-start; background: var(--surface-2); border-bottom-left-radius: 4px; }
+.bubble.user { align-self: flex-end; background: var(--accent-soft); border-bottom-right-radius: 4px; }
+.bubble.user .who { text-align: right; color: var(--accent); }
+.chat-btn { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--rule); background: var(--surface); color: var(--accent); border-radius: 999px; padding: 3px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+.chat-btn:hover { background: var(--accent-soft); }
+.chat-btn.empty { color: var(--ink-3); border-style: dashed; }
+.chat-btn svg { width: 14px; height: 14px; }
+.chat-btn b { font-weight: 600; }
+.chat-overlay { position: fixed; inset: 0; background: rgba(10, 14, 20, 0.55); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 24px; }
+.chat-panel { width: min(720px, 100%); max-height: 85vh; display: flex; flex-direction: column; background: var(--surface); border-radius: var(--radius); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35); overflow: hidden; }
+.chat-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--rule); font-size: 13px; color: var(--ink-2); }
+.chat-close { border: 0; background: transparent; font-size: 22px; line-height: 1; color: var(--ink-3); cursor: pointer; padding: 0 6px; }
+.chat-close:hover { color: var(--ink); }
+.chat-panel-body { overflow: auto; padding: 14px 16px; }
+.chat-panel-body .chat { margin: 0; }
+.chat-empty { padding: 20px 4px; text-align: center; }
+@media (max-width: 800px) { .bubble { max-width: 92%; } }
