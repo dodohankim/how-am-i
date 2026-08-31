@@ -36,7 +36,7 @@
 # howami 는 치료 도구가 아니다. 이 목록은 "무엇이 흔한가"와 "무엇이 도움이 됐나"를 알기 위한 것이지 진단표나 처방전이 아니다.
 
 version: 2
-updated: 2026-08-28
+updated: 2026-08-31
 sources_reviewed: 654
 subagents: 11
 
@@ -248,6 +248,35 @@ groups:
             links:
               - { label: 코칭 메타분석 2024 — BMC, url: "https://link.springer.com/article/10.1186/s12909-024-06195-3", source: journal }
               - { label: 직장 마음챙김 메타분석 2020 — Mindfulness, url: "https://link.springer.com/article/10.1007/s12671-020-01328-3", source: journal }
+          - name: { ko: 가치 중심으로 방향 다시 잡기 (ACT), en: Values-based redirection (ACT) }
+            strength: moderate
+            method: values_check
+            process: "지금 하는 일과 내가 중요하게 여기는 것 사이의 거리를 확인하고 → 붙어 있는 생각과는 거리를 두고 → 가치에 맞는 작은 행동을 하나 고른다"
+            evidence: "번아웃 진단자 168명 RCT: 통상치료 대비 d 0.36~0.76 이 1년 추적까지 유지 (Puolakanaho 2020). 직장 ACT 17개 RCT 에서도 추적 시점까지 효과 유지 (Unruh 2022)"
+            caveat: "개인 번아웃 개입 중 1년을 버틴 드문 사례다. 다만 보건의료직에서는 효과가 거의 없었다"
+            links:
+              - { label: Puolakanaho 2020 — Journal of Contextual Behavioral Science, url: "https://doi.org/10.1016/j.jcbs.2019.11.007", source: journal }
+              - { label: Unruh 2022 — 직장 ACT 메타분석, url: "https://doi.org/10.1016/j.jcbs.2022.09.003", source: journal }
+          - name: { ko: 일의 구성 스스로 바꾸기 (잡 크래프팅), en: Job crafting }
+            strength: moderate
+            method: problem_solving
+            process: "하는 일을 전부 나열하고 → 소모시키는 일과 살리는 일을 가르고 → 도움 요청이나 피드백처럼 자원을 구하는 행동을 하나 정해 몇 주 실행한 뒤 점검한다"
+            evidence: "심리치료사 135명 RCT: 번아웃 d 0.43 (Delgadillo 2026). 다만 281명 RCT 에서는 전체 효과가 없었다 (Sakuraya 2020)"
+            caveat: "요구를 줄이기만 하는 크래프팅은 오히려 긴장 증가와 연관된다 (Holman 2024). 자원을 구하는 쪽을 반드시 함께 간다. 효과가 저절로 유지되지 않아 몇 주 뒤 점검이 필요하다"
+            links:
+              - { label: Delgadillo 2026 — Journal of Consulting and Clinical Psychology, url: "https://doi.org/10.1037/ccp0000992", source: journal }
+              - { label: Sakuraya 2020 — Frontiers in Psychology, url: "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2020.00235/full", source: journal }
+              - { label: Holman 2024 — 잡 크래프팅 메타분석, url: "https://doi.org/10.1111/joop.12450", source: journal }
+          - name: { ko: 퇴근 후 일 생각 끊기 (심리적 분리), en: Psychological detachment }
+            strength: weak
+            method: implementation_intention
+            process: "퇴근 후 일 생각이 몇 번 찾아오는지 알아차리고 → 저녁의 회복 활동을 언제 무엇으로 할지 미리 정하고 → 수면과 함께 관찰한다"
+            evidence: "분리 개입 30편 메타분석: 분리 d 0.36 (Karabinski 2021). 반추·수면을 함께 겨냥한 온라인 회복 훈련은 효과가 6개월 유지 (Thiart 2015)"
+            caveat: "분리는 늘어도 소진 자체는 잘 줄지 않았다 (Hahn 2011 에서 소진 무효). 퇴근 후에도 일이 머리에서 안 떠나는 사람에게 효과가 집중된다"
+            links:
+              - { label: Karabinski 2021 — 분리 개입 메타분석, url: "https://doi.org/10.1037/ocp0000280", source: journal }
+              - { label: Thiart 2015 — Scandinavian Journal of Work Environment and Health, url: "https://doi.org/10.5271/sjweh.3478", source: journal }
+              - { label: Hahn 2011 — 회복 훈련 RCT, url: "https://doi.org/10.1037/a0022169", source: journal }
 
       - id: sleep
         name: { ko: 수면 문제, en: Sleep problems }

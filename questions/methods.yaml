@@ -267,6 +267,19 @@ methods:
       ko: 최악의 경우와 가장 그럴듯한 경우를 나눠 놓고, 최악이 와도 어떻게 할지까지 봤어요
       en: We split the worst case from the likely case, and looked at how you'd handle the worst
 
+  - id: cognitive_defusion
+    stage: probe
+    name: { ko: 생각과 거리 두기, en: Cognitive defusion }
+    summary:
+      ko: 붙어 있는 생각을 "나는 ~라는 생각을 하고 있다"로 바꿔 말해, 생각과 나 사이에 거리를 만든다
+      en: Restates a sticky thought as "I'm having the thought that..." to put distance between you and it
+    origin: 수용전념치료(ACT)의 탈융합 — 헤이즈
+    evidence: clinical
+    use_when: 같은 생각이 며칠째 붙어서 떨어지지 않을 때
+    say_it_as:
+      ko: 그 생각을 지우려 하지 않고, "그런 생각을 하고 있구나"로 한 걸음 떨어져서 봤어요
+      en: We didn't fight the thought - we stepped back and watched it as a thought
+
   # -------------------------------------------------------------------------
   # validate — 해석을 사용자에게 확인받는 단계
   # -------------------------------------------------------------------------

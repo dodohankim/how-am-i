@@ -312,3 +312,12 @@ references:
       - { label: APA 사전 — relapse prevention, url: "https://dictionary.apa.org/relapse-prevention", source: apa }
       - { label: Stanley-Brown 안전 계획 (공식), url: "https://suicidesafetyplan.com/", source: official }
       - { label: NIMH — 자살 예방, url: "https://www.nimh.nih.gov/health/topics/suicide-prevention", source: nimh }
+
+  cognitive_defusion:
+    effect:
+      ko: 며칠째 붙어 있는 생각을 지우려고 다투는 대신 "그런 생각을 하고 있다"로 떨어져서 보면, 생각의 내용은 그대로여도 그 생각이 나를 끌고 다니는 힘이 줄어든다. 생각의 내용이 아니라 생각과의 관계를 바꾸는 절차다.
+      en: Watching a sticky thought as a thought, instead of fighting its content, loosens its grip even while the content stays the same.
+    links:
+      - { label: WHO — Doing What Matters in Times of Stress (ACT 기반 자가 안내서), url: "https://www.who.int/publications/i/item/9789240003927", source: who }
+      - { label: 위키백과 — Acceptance and commitment therapy, url: "https://en.wikipedia.org/wiki/Acceptance_and_commitment_therapy", source: wikipedia }
+      - { label: 위키백과 — 수용전념치료 (한국어), url: "https://ko.wikipedia.org/wiki/%EC%88%98%EC%9A%A9%EC%A0%84%EB%85%90%EC%B9%98%EB%A3%8C", source: wikipedia }

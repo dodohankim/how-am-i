@@ -144,6 +144,7 @@ session으로 넘어간다. 시작하기 전에 "긴 걸로 할까요 짧은 걸
 | 자책이 강할 때 | `compassion` | `self_compassion` |
 | 원인에 남의 결정이 섞였을 때 | `controllability` | `control_dichotomy` |
 | 이미 일어난 일이 아니라 앞으로 올 일을 걱정할 때 | `catastrophe` | `decatastrophizing` |
+| 같은 생각이 며칠째 붙어서 떨어지지 않을 때 | `defusion` | `cognitive_defusion` |
 
 "왜"는 다섯 번을 채우려 하지 말고, 답이 더 이상 쪼개지지 않으면 멈춘다.
 보통 두세 번에서 바닥이 나온다.
@@ -228,7 +229,7 @@ python3 <스킬디렉토리>/scripts/howami.py day --date 2026-08-27
 | 지도 | `day_mapping`, `domain_scan` | `spillover_check` |
 | 스캔 | `baseline_delta` | `prescription_followup` |
 | 초점 | `agenda_setting` | |
-| 탐색 | `trigger_mapping` | `cbt_thought_record`, `affect_labeling`, `cognitive_distortion_check`, `evidence_check`, `five_whys`, `exception_question`, `values_check`, `self_compassion`, `control_dichotomy`, `decatastrophizing` |
+| 탐색 | `trigger_mapping` | `cbt_thought_record`, `affect_labeling`, `cognitive_distortion_check`, `evidence_check`, `five_whys`, `exception_question`, `values_check`, `self_compassion`, `control_dichotomy`, `decatastrophizing`, `cognitive_defusion` |
 | 검증 | `summary_validation` | `alternative_hypothesis` |
 | 다음 걸음 | `implementation_intention` | `tiny_habit`, `behavioral_activation`, `problem_solving`, `behavioral_experiment`, `obstacle_plan` |
 | 좋은 날 | | `three_good_things` |
@@ -413,6 +414,11 @@ python3 <스킬디렉토리>/scripts/howami.py query --sql "
 전문가 상담을 한 번 권한다. 매일 반복해서 권하지는 않는다.
 이전 기록에 `## 조기 경고 신호`가 있고 오늘 그 신호가 보이면, 2주를 기다리지 않고
 그 시점에 한 번 짚는다. 짚는 것까지다. 캐묻거나 단정하지 않는다.
+
+일에서 오는 소진이 화제가 되면, 그 상태가 얼마나 오래됐는지 한 번 묻는다.
+번아웃 경과 연구에서 유일하게 확실한 예후 인자가 "도움을 구하기 전까지 증상이
+이어진 기간"이었다. 수개월에서 1년 가까이 됐다는 답이 나오면, 그 사실을 담담히
+짚고 전문가 상담을 안내한다. 여기서도 반복해서 권하지는 않는다.
 
 특정 영역(예: 가족)이 오래 낮게 유지되는데 사용자가 매번 그 얘기를 피하면,
 캐묻지 않는다. 피하는 것도 정보이고, 준비되면 사용자가 먼저 꺼낸다.

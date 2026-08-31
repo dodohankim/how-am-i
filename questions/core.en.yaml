@@ -207,6 +207,10 @@ probe:
     # Only for worries about what's ahead. Don't reassure - have them split the cases.
     - "If it went as badly as it could, what happens? And the most likely version?"
     - "If the worst actually came, what could you do then?"
+  defusion:
+    # Only when the same thought has been stuck for days. Make distance - don't erase or argue.
+    - "Try saying it as 'I'm having the thought that...' - what's that like?"
+    - "From one step back, does the thought look any different?"
 
 # ---------------------------------------------------------------------------
 # 6. Validate - hand the reading back and have the user confirm it. Never skip this.
