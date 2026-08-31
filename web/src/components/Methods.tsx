@@ -69,12 +69,12 @@ export function Methods({ data, stats, focusId }: { data: MethodsData; stats: St
 
       <div className="disclaimer">
         {lang === "en"
-          ? <><strong>howami is not a medical device or a psychotherapy tool.</strong> These techniques borrow their names from clinical
+          ? <><strong>how-am-i is not a medical device or a psychotherapy tool.</strong> These techniques borrow their names from clinical
             procedures and research, rewritten into everyday language; they don't replace treatment. If low scores persist for two
             weeks or more, or anything feels like a crisis, see a professional — a local crisis line is at{" "}
             <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a>; in South Korea,
             dial <b className="num">109</b> (24/7).</>
-          : <><strong>howami 는 의료 기기나 심리 치료 도구가 아닙니다.</strong> 위의 기법들은 임상 절차와 연구에서 이름을 빌려
+          : <><strong>how-am-i 는 의료 기기나 심리 치료 도구가 아닙니다.</strong> 위의 기법들은 임상 절차와 연구에서 이름을 빌려
             일상 언어로 옮긴 것이며, 치료를 대신하지 않습니다. 낮은 점수가 2주 이상 이어지거나 위기 신호가 느껴진다면
             전문가와 상담하세요. 한국에서는 자살예방 상담전화 <b className="num">109</b> 로 24시간 연결됩니다.</>}
         {data.general_links.length > 0 && (
@@ -152,12 +152,12 @@ function evidenceHelp(ev: string, lang: "ko" | "en"): string {
   const KO: Record<string, string> = {
     clinical: "임상 연구에서 반복 검증된 개입 절차를 일상 언어로 옮긴 것",
     applied: "심리학 밖(경영·철학)에서 왔지만 널리 검증된 절차",
-    local: "howami 가 쌓은 개인 기록에서만 성립하는 관찰",
+    local: "how-am-i 가 쌓은 개인 기록에서만 성립하는 관찰",
   };
   const EN: Record<string, string> = {
     clinical: "An intervention repeatedly validated in clinical research, rewritten into everyday language",
     applied: "From outside psychology (management, philosophy) but widely validated",
-    local: "An observation that only holds within your own howami records",
+    local: "An observation that only holds within your own how-am-i records",
   };
   return (lang === "en" ? EN : KO)[ev] ?? ev;
 }

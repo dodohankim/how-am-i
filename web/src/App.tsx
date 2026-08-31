@@ -110,7 +110,7 @@ function Shell() {
     <div className="app">
       <header className="topbar">
         <div className="wordmark">
-          <h1>howami</h1>
+          <h1>how-am-i</h1>
         </div>
         <div className="topbar-right">
           {ctx && (

@@ -11,7 +11,7 @@ export function Chat({ turns }: { turns: Turn[] }) {
     <div className="chat" role="log" aria-label={t("대화", "Conversation")}>
       {turns.map((tn, i) => (
         <div className={`bubble ${tn.role}`} key={i}>
-          <span className="who">{tn.role === "agent" ? "howami" : t("나", "me")}</span>
+          <span className="who">{tn.role === "agent" ? "how-am-i" : t("나", "me")}</span>
           <div className="text">{tn.text}</div>
         </div>
       ))}

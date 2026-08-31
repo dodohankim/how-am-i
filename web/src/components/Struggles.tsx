@@ -104,14 +104,14 @@ export function Struggles({ data, questions, methods, onOpenMethod }: {
         {lang === "en"
           ? <><strong>This list is not a diagnostic chart or a prescription.</strong> It is a map of what is common and what helped
             in research — a name here fitting your state is not a diagnosis, and a process here is not guaranteed to work the same
-            for you. Effect sizes are group averages, and waitlist-controlled numbers tend to be inflated. howami is not a medical
+            for you. Effect sizes are group averages, and waitlist-controlled numbers tend to be inflated. how-am-i is not a medical
             device or a psychotherapy tool. If low scores persist for two weeks or more, or anything feels like a crisis, reach a
             professional or a local crisis line — see{" "}
             <a href="https://findahelpline.com" target="_blank" rel="noopener noreferrer">findahelpline.com</a>; in South Korea,
             dial <b className="num">109</b> (24/7).</>
           : <><strong>이 목록은 진단표도 처방전도 아닙니다.</strong> "무엇이 흔한가"와 "연구에서 무엇이 도움이 됐나"를 알기 위한 지도일 뿐이며,
             여기 있는 이름이 내 상태에 붙는다고 해서 진단이 되는 것도, 여기 있는 과정이 나에게도 같은 효과를 낸다는 보장도 아닙니다.
-            효과 크기는 집단 평균이고, 대기자 명단 대비 수치는 부풀려지기 쉽습니다. howami 는 의료 기기나 심리 치료 도구가 아닙니다.
+            효과 크기는 집단 평균이고, 대기자 명단 대비 수치는 부풀려지기 쉽습니다. how-am-i 는 의료 기기나 심리 치료 도구가 아닙니다.
             낮은 점수가 2주 이상 이어지거나 위기 신호가 느껴진다면 전문가나 거주 지역의 위기 상담 전화에 연결하세요.
             한국에서는 자살예방 상담전화 <b className="num">109</b> 로 24시간 연결됩니다.</>}
       </div>
