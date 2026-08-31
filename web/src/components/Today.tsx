@@ -2,7 +2,8 @@ import type { Context, Methods, Questions, Session } from "../types";
 import { Card, Empty, Section } from "./ui";
 import { Ladder } from "./Ladder";
 import { ChatButton, SessionBody } from "./Chat";
-import { KIND_LABEL, SLOT_LABEL, fmtDate, fmtNum, labelOf, seriesVar } from "../lib/format";
+import { fmtDate, fmtNum, kindLabel, labelOf, seriesVar, slotLabel } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 
 export function Today({ ctx, questions, methods, onOpenMethod }: {
   ctx: Context;
@@ -10,6 +11,7 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
   methods: Methods | null;
   onOpenMethod: (id: string) => void;
 }) {
+  const { lang, t, pick } = useI18n();
   const sessions = ctx.today_sessions;
   // 사다리와 영역은 오늘 마지막 세션을 기준으로 그린다. 체크인보다 세션을 우선한다.
   const primary: Session | null =
@@ -17,18 +19,25 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
 
   const stateKeys = questions?.states.map((q) => q.key) ?? ["energy", "mood", "sleep", "execution"];
   const domainOrder = questions?.domains.map((q) => q.key) ?? [];
-  const methodName = (id: string) => methods?.methods.find((m) => m.id === id)?.name.ko ?? id;
+  const methodName = (id: string) => {
+    const m = methods?.methods.find((x) => x.id === id);
+    return m ? pick(m.name) || id : id;
+  };
 
   if (!sessions.length) {
     return (
       <>
         <Card>
-          <Empty title={`${fmtDate(ctx.today)}, 아직 오늘 기록이 없어요`}>
-            <div>Claude Code 에서 <code>/howami</code> 라고 말하면 5분 안에 끝나요.</div>
+          <Empty title={t(`${fmtDate(ctx.today, lang)}, 아직 오늘 기록이 없어요`, `${fmtDate(ctx.today, lang)} — nothing recorded yet today`)}>
+            <div>
+              {lang === "en"
+                ? <>Say <code>/howami</code> in Claude Code — it takes under five minutes.</>
+                : <>Claude Code 에서 <code>/howami</code> 라고 말하면 5분 안에 끝나요.</>}
+            </div>
             {ctx.last_entry && (
               <div className="small" style={{ marginTop: 10 }}>
-                마지막 기록: {fmtDate(ctx.last_entry.date)} {ctx.last_entry.time ?? ""}
-                {ctx.streak_days > 0 && ` · 연속 ${ctx.streak_days}일`}
+                {t("마지막 기록:", "Last record:")} {fmtDate(ctx.last_entry.date, lang)} {ctx.last_entry.time ?? ""}
+                {ctx.streak_days > 0 && (lang === "en" ? ` · ${ctx.streak_days}-day streak` : ` · 연속 ${ctx.streak_days}일`)}
               </div>
             )}
           </Empty>
@@ -42,8 +51,11 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
     <>
       <div className="grid today-top">
         <Card
-          title="하루를 관통하는 축"
-          hint={primary ? `${primary.time ?? ""} ${KIND_LABEL[primary.kind]} 기준 · ◀ 는 최근 7일 평균` : undefined}
+          title={t("하루를 관통하는 축", "Axes running through the day")}
+          hint={primary
+            ? t(`${primary.time ?? ""} ${kindLabel("ko", primary.kind)} 기준 · ◀ 는 최근 7일 평균`,
+              `From the ${primary.time ?? ""} ${kindLabel("en", primary.kind).toLowerCase()} · ◀ is the 7-day average`)
+            : undefined}
         >
           <div className="ladders">
             {stateKeys.map((key) => (
@@ -62,7 +74,7 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
       </div>
 
       {primary && primary.domains.length > 0 && (
-        <Section title="생활 영역" hint="점수 옆은 그날 남긴 한 줄">
+        <Section title={t("생활 영역", "Life areas")} hint={t("점수 옆은 그날 남긴 한 줄", "The line you left that day sits next to the score")}>
           <Card>
             <div className="domain-rows">
               {[...primary.domains]
@@ -72,7 +84,7 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
                   return (
                     <div className="domain-row" key={d.key}>
                       <span className="label">{labelOf(d.key, questions?.domains)}</span>
-                      <span className="strip" aria-label={`${d.score ?? "점수 없음"}점`}>
+                      <span className="strip" aria-label={d.score !== null ? t(`${d.score}점`, `score ${d.score}`) : t("점수 없음", "no score")}>
                         {[1, 2, 3, 4, 5].map((n) => <i key={n} className={d.score !== null && n <= d.score ? "on" : ""} />)}
                         <span className="strip-num">
                           {d.score ?? "–"}
@@ -84,40 +96,42 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
                   );
                 })}
             </div>
-            <div className="tiny faint" style={{ marginTop: 10 }}>점수 뒤의 회색 숫자는 최근 7일 평균이에요.</div>
+            <div className="tiny faint" style={{ marginTop: 10 }}>
+              {t("점수 뒤의 회색 숫자는 최근 7일 평균이에요.", "The gray number after the score is the 7-day average.")}
+            </div>
           </Card>
         </Section>
       )}
 
-      <Section title={`오늘의 세션 ${sessions.length}개`} hint="시간순">
+      <Section title={t(`오늘의 세션 ${sessions.length}개`, `Today's sessions: ${sessions.length}`)} hint={t("시간순", "In order")}>
         <Card>
           <div className="session-list">
             {sessions.map((s) => (
               <div className="session" key={s.id}>
                 <div className="session-head">
-                  <span className="time">{s.time ?? "시각 없음"}</span>
-                  <span className="chip">{KIND_LABEL[s.kind]}{s.slot && ` · ${SLOT_LABEL[s.slot]}`}</span>
+                  <span className="time">{s.time ?? t("시각 없음", "No time")}</span>
+                  <span className="chip">{kindLabel(lang, s.kind)}{s.slot && ` · ${slotLabel(lang, s.slot)}`}</span>
                   {s.flags.map((f) => <span className="chip" key={f}>{f}</span>)}
                   {s.prev_prescription_done !== null && (
                     <span className={`badge ${s.prev_prescription_done ? "done" : "undone"}`}>
-                      {s.prev_prescription_done ? "✓ 지난 처방 했음" : "✗ 지난 처방 못 했음"}
+                      {s.prev_prescription_done ? t("✓ 지난 처방 했음", "✓ Did the last step") : t("✗ 지난 처방 못 했음", "✗ Missed the last step")}
                     </span>
                   )}
                   <span style={{ marginLeft: "auto" }}>
-                    <ChatButton body={s.body} title={`${fmtDate(s.date)} ${s.time ?? ""}`} />
+                    <ChatButton body={s.body} title={`${fmtDate(s.date, lang)} ${s.time ?? ""}`} />
                   </span>
                 </div>
                 {s.methods.length > 0 && (
                   <div className="chips" style={{ marginBottom: 8 }}>
                     {s.methods.map((m) => (
                       <button type="button" key={m} className="chip accent" onClick={() => onOpenMethod(m)}
-                        title="기법 설명 보기" style={{ cursor: "pointer" }}>
+                        title={t("기법 설명 보기", "See what this technique is")} style={{ cursor: "pointer" }}>
                         {methodName(m)}
                       </button>
                     ))}
                   </div>
                 )}
-                {s.body ? <SessionBody body={s.body} /> : <div className="faint small">본문 없음</div>}
+                {s.body ? <SessionBody body={s.body} /> : <div className="faint small">{t("본문 없음", "No body")}</div>}
               </div>
             ))}
           </div>
@@ -128,30 +142,34 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
 }
 
 function PrescriptionCard({ ctx, primary }: { ctx: Context; primary: Session | null }) {
+  const { lang, t } = useI18n();
   const op = ctx.open_prescription;
   return (
-    <Card title="다음 한 걸음" hint={op ? (op.same_day ? "오늘 정한 것" : `${fmtDate(op.from.slice(0, 10))}에 정한 것`) : undefined}>
+    <Card title={t("다음 한 걸음", "The next step")}
+      hint={op ? (op.same_day ? t("오늘 정한 것", "Chosen today") : t(`${fmtDate(op.from.slice(0, 10), lang)}에 정한 것`, `Chosen on ${fmtDate(op.from.slice(0, 10), lang)}`)) : undefined}>
       {op ? (
         <>
           <p className="prescription">{op.text}</p>
           <div className="small muted">
             {op.same_day
-              ? "내일 세션을 시작하면 이걸 했는지 먼저 물어봐요."
-              : "아직 열려 있어요. 오늘 세션을 시작하면 먼저 확인해요."}
+              ? t("내일 세션을 시작하면 이걸 했는지 먼저 물어봐요.", "Tomorrow's session starts by asking whether this happened.")
+              : t("아직 열려 있어요. 오늘 세션을 시작하면 먼저 확인해요.", "Still open. Today's session starts by checking on it.")}
           </div>
         </>
       ) : (
-        <div className="muted">정해둔 다음 한 걸음이 없어요.</div>
+        <div className="muted">{t("정해둔 다음 한 걸음이 없어요.", "No next step is set.")}</div>
       )}
       {primary?.prev_prescription_done !== null && primary?.prev_prescription_done !== undefined && (
         <div style={{ marginTop: 12 }}>
           <span className={`badge ${primary.prev_prescription_done ? "done" : "undone"}`}>
-            {primary.prev_prescription_done ? "✓ 지난 처방을 실행했어요" : "✗ 지난 처방은 못 했어요"}
+            {primary.prev_prescription_done ? t("✓ 지난 처방을 실행했어요", "✓ The last step happened") : t("✗ 지난 처방은 못 했어요", "✗ The last step didn't happen")}
           </span>
         </div>
       )}
       <div className="tiny faint" style={{ marginTop: 14 }}>
-        연속 {ctx.streak_days}일 · 기록한 날 {ctx.total_days}일 · 세션 {ctx.total_entries}개
+        {lang === "en"
+          ? `${ctx.streak_days}-day streak · ${ctx.total_days} days recorded · ${ctx.total_entries} sessions`
+          : `연속 ${ctx.streak_days}일 · 기록한 날 ${ctx.total_days}일 · 세션 ${ctx.total_entries}개`}
       </div>
     </Card>
   );

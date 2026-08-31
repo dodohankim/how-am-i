@@ -1,14 +1,8 @@
-import type { KeyStats, Methods, Questions, Slot, Stats } from "../types";
+import type { KeyStats, Lang, Methods, Questions, Slot, Stats } from "../types";
 import { Card, Empty, RangePicker, Section } from "./ui";
 import { Sparkline } from "./Sparkline";
-import { SLOT_LABEL, WEEKDAY_KO, addDays, fmtNum, labelOf, rampStep, seriesVar, todayIso } from "../lib/format";
-
-const RANGES = [
-  { label: "14일", value: 14 },
-  { label: "30일", value: 30 },
-  { label: "90일", value: 90 },
-  { label: "전체", value: 0 },
-];
+import { addDays, fmtNum, labelOf, rampStep, seriesVar, slotLabel, todayIso, weekdays } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 
 export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }: {
   stats: Stats;
@@ -18,13 +12,24 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
   methods: Methods | null;
   onOpenMethod: (id: string) => void;
 }) {
+  const { lang, t, pick } = useI18n();
+  const RANGES = [
+    { label: t("14일", "14d"), value: 14 },
+    { label: t("30일", "30d"), value: 30 },
+    { label: t("90일", "90d"), value: 90 },
+    { label: t("전체", "All"), value: 0 },
+  ];
   const picker = <RangePicker value={days} onChange={onDays} options={RANGES} />;
 
   if (!stats.entries || !stats.range) {
     return (
       <>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>{picker}</div>
-        <Card><Empty title="이 기간에는 기록이 없어요">기간을 넓혀 보거나, 오늘 첫 기록을 남겨 보세요.</Empty></Card>
+        <Card>
+          <Empty title={t("이 기간에는 기록이 없어요", "No records in this range")}>
+            {t("기간을 넓혀 보거나, 오늘 첫 기록을 남겨 보세요.", "Widen the range, or leave today's first record.")}
+          </Empty>
+        </Card>
       </>
     );
   }
@@ -34,7 +39,10 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
   const stateKeys = orderKeys(Object.keys(stats.scores ?? {}), questions?.states.map((q) => q.key) ?? []);
   const domainKeys = orderKeys(Object.keys(stats.domains ?? {}), questions?.domains.map((q) => q.key) ?? []);
   const follow = stats.prescription_follow_through ?? { n: 0, done: 0 };
-  const methodName = (id: string) => methods?.methods.find((m) => m.id === id)?.name.ko ?? id;
+  const methodName = (id: string) => {
+    const m = methods?.methods.find((x) => x.id === id);
+    return m ? pick(m.name) || id : id;
+  };
   const SLOT_ORDER: Slot[] = ["morning", "day", "evening", "night"];
   const slots = SLOT_ORDER.filter((s) => (stats.by_slot ?? []).some((r) => r.slot === s));
 
@@ -42,9 +50,13 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
     <>
       <div className="section" style={{ marginTop: 0 }}>
         <div className="section-head">
-          <h2>하루를 관통하는 축</h2>
+          <h2>{t("하루를 관통하는 축", "Axes running through the day")}</h2>
           <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <span className="hint">{stats.days}일 · 세션 {stats.entries}개 · 하루 평균 {fmtNum(stats.sessions_per_day, 1)}회</span>
+            <span className="hint">
+              {lang === "en"
+                ? `${stats.days} days · ${stats.entries} sessions · ${fmtNum(stats.sessions_per_day, 1)}/day`
+                : `${stats.days}일 · 세션 ${stats.entries}개 · 하루 평균 ${fmtNum(stats.sessions_per_day, 1)}회`}
+            </span>
             {picker}
           </span>
         </div>
@@ -59,7 +71,7 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
       </div>
 
       {domainKeys.length > 0 && (
-        <Section title="생활 영역" hint="점수를 매긴 날만 표시">
+        <Section title={t("생활 영역", "Life areas")} hint={t("점수를 매긴 날만 표시", "Only days with a score")}>
           <div className="grid cols-3">
             {domainKeys.map((key) => (
               <Card key={key}>
@@ -71,10 +83,11 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
         </Section>
       )}
 
-      <Section title="요일별 평균" hint="진할수록 높다 · 칸 위에 올리면 기록 수">
+      <Section title={t("요일별 평균", "Averages by weekday")} hint={t("진할수록 높다 · 칸 위에 올리면 기록 수", "Darker is higher · hover a cell for the count")}>
         <Card>
           <div style={{ overflowX: "auto" }}>
             <WeekdayHeat
+              lang={lang}
               rows={[
                 ...stateKeys.map((k) => ({ key: k, label: labelOf(k, questions?.states), s: stats.scores![k] })),
                 ...domainKeys.map((k) => ({ key: k, label: labelOf(k, questions?.domains), s: stats.domains![k] })),
@@ -90,10 +103,14 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
       </Section>
 
       <div className="grid cols-3" style={{ marginTop: 24 }}>
-        <Card title="처방 실행률" hint="확인한 것 중">
+        <Card title={t("처방 실행률", "Follow-through")} hint={t("확인한 것 중", "Of steps checked")}>
           <div className="stat-tile">
             <div className="big">{follow.n ? `${Math.round((follow.done / follow.n) * 100)}%` : "–"}</div>
-            <div className="cap">{follow.n ? `${follow.n}번 확인, ${follow.done}번 실행` : "아직 확인한 처방이 없어요"}</div>
+            <div className="cap">
+              {follow.n
+                ? t(`${follow.n}번 확인, ${follow.done}번 실행`, `${follow.n} checked, ${follow.done} done`)
+                : t("아직 확인한 처방이 없어요", "No steps checked yet")}
+            </div>
           </div>
           {(stats.recent_prescriptions?.length ?? 0) > 0 && (
             <ul className="small muted" style={{ margin: "12px 0 0", paddingLeft: 18 }}>
@@ -104,7 +121,7 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
           )}
         </Card>
 
-        <Card title="자주 쓴 기법" hint="누르면 설명">
+        <Card title={t("자주 쓴 기법", "Most-used techniques")} hint={t("누르면 설명", "Click for details")}>
           {stats.methods?.length ? (
             <div className="bars">
               {stats.methods.slice(0, 8).map((m) => {
@@ -121,14 +138,15 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
                 );
               })}
             </div>
-          ) : <div className="muted small">기록된 기법이 없어요.</div>}
+          ) : <div className="muted small">{t("기록된 기법이 없어요.", "No techniques recorded.")}</div>}
         </Card>
 
-        <Card title={slots.length > 1 ? "시간대별 평균" : "신호"} hint={slots.length > 1 ? "하루에 여러 번 쓸 때 의미가 생겨요" : "자동 감지된 것"}>
+        <Card title={slots.length > 1 ? t("시간대별 평균", "Averages by time of day") : t("신호", "Signals")}
+          hint={slots.length > 1 ? t("하루에 여러 번 쓸 때 의미가 생겨요", "Meaningful with several sessions a day") : t("자동 감지된 것", "Detected automatically")}>
           {slots.length > 1 ? (
             <div style={{ overflowX: "auto" }}>
               <table className="heat">
-                <thead><tr><th className="row"></th>{slots.map((s) => <th key={s}>{SLOT_LABEL[s]}</th>)}</tr></thead>
+                <thead><tr><th className="row"></th>{slots.map((s) => <th key={s}>{slotLabel(lang, s)}</th>)}</tr></thead>
                 <tbody>
                   {stateKeys.map((k) => (
                     <tr key={k}>
@@ -146,7 +164,7 @@ export function Trends({ stats, days, onDays, questions, methods, onOpenMethod }
             <div className="chips">
               {stats.flags.map((f) => <span className="chip" key={f.flag}>{f.flag} <b className="num">{f.n}</b></span>)}
             </div>
-          ) : <div className="muted small">이 기간에는 급락이나 낮은 점수 신호가 없었어요.</div>}
+          ) : <div className="muted small">{t("이 기간에는 급락이나 낮은 점수 신호가 없었어요.", "No drops or low-score signals in this range.")}</div>}
         </Card>
       </div>
     </>
@@ -163,20 +181,21 @@ function orderKeys(keys: string[], preferred: string[]): string[] {
   });
 }
 
-function WeekdayHeat({ rows }: { rows: { key: string; label: string; s: KeyStats }[] }) {
+function WeekdayHeat({ rows, lang }: { rows: { key: string; label: string; s: KeyStats }[]; lang: Lang }) {
+  const wds = weekdays(lang);
   return (
     <table className="heat">
       <thead>
         <tr>
           <th className="row"></th>
-          {WEEKDAY_KO.map((w) => <th key={w}>{w}</th>)}
+          {wds.map((w) => <th key={w}>{w}</th>)}
         </tr>
       </thead>
       <tbody>
         {rows.map((r) => (
           <tr key={r.key}>
             <th className="row">{r.label}</th>
-            {WEEKDAY_KO.map((_, wd) => {
+            {wds.map((_, wd) => {
               const cell = r.s.by_weekday.find((b) => b.weekday === wd);
               return <HeatCell key={wd} v={cell?.mean ?? null} n={cell?.n ?? 0} />;
             })}
@@ -188,11 +207,12 @@ function WeekdayHeat({ rows }: { rows: { key: string; label: string; s: KeyStats
 }
 
 function HeatCell({ v, n }: { v: number | null; n: number }) {
-  if (v === null) return <td className="empty" title="기록 없음">·</td>;
+  const { t } = useI18n();
+  if (v === null) return <td className="empty" title={t("기록 없음", "No record")}>·</td>;
   const step = rampStep(v);
   const dark = step >= 400;
   return (
-    <td title={`${n}개 세션 평균`} style={{ background: `var(--seq-${step})`, color: dark ? "#ffffff" : "var(--ink)" }}>
+    <td title={t(`${n}개 세션 평균`, `Average of ${n} sessions`)} style={{ background: `var(--seq-${step})`, color: dark ? "#ffffff" : "var(--ink)" }}>
       {fmtNum(v)}
     </td>
   );

@@ -14,6 +14,7 @@
 #               applied   심리학 밖(경영·철학)에서 왔지만 널리 검증된 절차
 #               local     howami가 쌓은 개인 기록에서만 성립하는 관찰
 #   say_it_as 마무리에 사용자에게 알려줄 때 쓰는 문장 틀
+#   origin_en · use_when_en   한국어 전용 필드의 영어판. 웹 화면의 언어 전환이 읽는다
 #
 # 주의: 임상 척도나 치료 기법의 이름을 빌려 왔더라도, howami는 그것을 일상 언어로
 # 재작성해 참고할 뿐이다. 치료를 대신하지 않는다.
@@ -31,8 +32,10 @@ methods:
       ko: 점수부터 묻지 않고 하루를 사용자의 말로 먼저 풀어놓게 한다
       en: Lets the day come out in the user's own words before any scoring
     origin: 동기면담(Motivational Interviewing)의 OARS 중 Open question — 밀러와 롤닉
+    origin_en: "Open questions from OARS in Motivational Interviewing - Miller & Rollnick"
     evidence: clinical
     use_when: 세션을 시작할 때 거의 항상
+    use_when_en: "Almost always, at the start of a session"
     say_it_as:
       ko: 먼저 하루를 편하게 풀어놓게 하고, 거기서 나온 말을 따라갔어요
       en: I let the day come out in your own words first, then followed it
@@ -44,8 +47,10 @@ methods:
       ko: 사용자가 한 말을 정리해 되돌려주고, 틀렸으면 사용자가 고치게 한다
       en: Reflects the user's words back so they can correct the picture
     origin: 인간중심 상담의 공감적 반영 — 칼 로저스
+    origin_en: "Empathic reflection in person-centered counseling - Carl Rogers"
     evidence: clinical
     use_when: 사용자가 길게 이야기한 직후
+    use_when_en: "Right after the user has talked at length"
     say_it_as:
       ko: 말씀한 걸 정리해서 되돌려 드리고, 어긋난 부분을 직접 고치게 했어요
       en: I reflected what you said back and let you correct what didn't fit
@@ -60,8 +65,10 @@ methods:
       ko: 하루를 시간과 생활 영역으로 갈라 어디서 무슨 일이 있었는지 펼친다
       en: Splits the day by time and life domain to see where things happened
     origin: 인지행동치료의 활동 기록지(activity monitoring) — 벡의 우울 치료 매뉴얼
+    origin_en: "Activity monitoring in CBT - Beck's depression treatment manual"
     evidence: clinical
     use_when: 하루 전체를 다루는 세션의 앞부분에서 항상
+    use_when_en: "Always, early in a whole-day session"
     say_it_as:
       ko: 하루를 아침·낮·저녁과 생활 영역으로 갈라서 어디서 무슨 일이 있었는지 펼쳐 봤어요
       en: I laid the day out across morning, work, and evening to see where things happened
@@ -73,8 +80,10 @@ methods:
       ko: 가족·일·혼자 있는 시간 같은 영역마다 따로 점수를 매겨 차이를 드러낸다
       en: Scores each life domain separately so the gaps between them show
     origin: 해결중심 단기치료의 척도 질문(scaling question) — 드 셰이저와 김인수
+    origin_en: "Scaling questions in solution-focused brief therapy - de Shazer & Insoo Kim Berg"
     evidence: clinical
     use_when: 하루를 여러 관점으로 볼 때
+    use_when_en: "When looking at the day from several angles"
     say_it_as:
       ko: 영역마다 따로 점수를 매겨 봤더니 {gap}이 눈에 띄었어요
       en: Scoring each domain separately made {gap} stand out
@@ -86,8 +95,10 @@ methods:
       ko: 한 영역의 상태가 다른 영역으로 넘어갔는지를 사용자에게 확인한다
       en: Checks whether one domain's state carried over into another
     origin: 일-가정 전이(work-family spillover) 연구의 관찰 틀
+    origin_en: "The observational frame of work-family spillover research"
     evidence: applied
     use_when: 영역 점수가 서로 크게 다르거나, 시간 순서상 이어져 보일 때
+    use_when_en: "When area scores differ sharply, or one seems to follow another in time"
     say_it_as:
       ko: '{from_domain}의 상태가 {to_domain}까지 넘어간 것으로 보이는지 확인했어요'
       en: I checked whether {from_domain} carried over into {to_domain}
@@ -99,8 +110,10 @@ methods:
       ko: 오늘 점수를 최근 7일 평균과 견줘 어디가 떨어졌는지 찾는다
       en: Compares today's scores against the 7-day average to spot what dropped
     origin: 개인 시계열 기준선 (임상 척도가 아니라 본인의 평소값이 기준이다)
+    origin_en: "A personal time-series baseline (the reference is your own usual, not a clinical scale)"
     evidence: local
     use_when: 점수를 다 받았을 때마다 자동으로
+    use_when_en: "Automatically, whenever scores are in"
     say_it_as:
       ko: 평소 평균과 비교해서 {item}이 눈에 띄게 떨어진 걸 먼저 잡았어요
       en: I started from {item} standing out against your usual average
@@ -112,8 +125,10 @@ methods:
       ko: 지난번에 정한 행동을 실제로 했는지 확인해 기록을 루프로 닫는다
       en: Checks whether the last action happened, closing the record into a loop
     origin: 자기 점검(self-monitoring) 루프 — 행동치료의 기본 절차
+    origin_en: "The self-monitoring loop - a basic procedure of behavior therapy"
     evidence: clinical
     use_when: 이전 기록에 처방이 남아 있을 때
+    use_when_en: "When a prescription is open from a previous record"
     say_it_as:
       ko: 지난번에 정한 걸 했는지부터 확인하고 시작했어요
       en: I started by checking whether the last action happened
@@ -128,8 +143,10 @@ methods:
       ko: 오늘 깊이 볼 영역 하나를 상담자가 아니라 사용자가 고르게 한다
       en: Lets the user, not the agent, pick the one thing to go into
     origin: 인지행동치료 회기 구조화의 협력적 의제 설정 — 벡
+    origin_en: "Collaborative agenda setting in CBT session structure - Beck"
     evidence: clinical
     use_when: 파고들 후보가 둘 이상일 때
+    use_when_en: "When more than one candidate is worth digging into"
     say_it_as:
       ko: 오늘 더 볼 곳은 직접 고르게 했어요
       en: I let you pick which one we went into
@@ -144,8 +161,10 @@ methods:
       ko: 언제·어디서·무슨 상황이었는지를 좁혀 변화가 시작된 지점을 찾는다
       en: Narrows down when, where, and in what situation the change began
     origin: 행동 분석의 선행사건-행동-결과(ABC) 관찰
+    origin_en: "Antecedent-behavior-consequence (ABC) observation in behavior analysis"
     evidence: clinical
     use_when: 점수가 떨어진 영역을 파기 시작할 때
+    use_when_en: "When starting to dig into an area whose score dropped"
     say_it_as:
       ko: 언제부터였는지를 좁혀서 시작 지점을 {trigger}로 잡았어요
       en: I narrowed the starting point down to {trigger}
@@ -157,8 +176,10 @@ methods:
       ko: 상황 → 그때 스친 생각 → 감정 → 그다음 행동 순서로 하나씩 분리한다
       en: Separates situation, automatic thought, feeling, and following behavior
     origin: 인지행동치료(CBT)의 사고기록지를 일상 언어로 옮긴 것 — 벡
+    origin_en: "The CBT thought record, rewritten into everyday language - Beck"
     evidence: clinical
     use_when: 기분이나 자책이 얽혀 있어 원인이 뭉뚱그려질 때
+    use_when_en: "When mood and self-blame are tangled and the cause is a blur"
     say_it_as:
       ko: 상황과 생각과 감정을 따로 떼어 놓고 봤어요
       en: I pulled the situation, the thought, and the feeling apart
@@ -170,8 +191,10 @@ methods:
       ko: 뭉뚱그린 기분에 구체적인 감정 이름을 붙여 강도를 낮춘다
       en: Puts a specific name on a vague feeling, which lowers its intensity
     origin: 감정 명명 연구 — 리버먼 외(2007)의 정서 조절 실험
+    origin_en: "Affect labeling research - Lieberman et al. (2007) on emotion regulation"
     evidence: clinical
     use_when: '"그냥 좀 그랬다"처럼 감정이 뭉뚱그려져 있을 때'
+    use_when_en: "When feelings are lumped together, as in \"it was just kind of off\""
     say_it_as:
       ko: 뭉뚱그려진 기분에 이름을 붙여 봤어요
       en: We put a name on the feeling instead of leaving it vague
@@ -183,8 +206,10 @@ methods:
       ko: 흑백논리·확대해석·독심술 같은 익숙한 치우침이 섞였는지 함께 본다
       en: Checks the thought for familiar tilts like all-or-nothing or mind reading
     origin: 인지 왜곡 목록 — 벡, 번스의 정리
+    origin_en: "Lists of cognitive distortions - Beck, and Burns's compilation"
     evidence: clinical
     use_when: 자동적 사고가 사실보다 세게 단정하고 있을 때
+    use_when_en: "When an automatic thought asserts more than the facts do"
     say_it_as:
       ko: 그 생각에 익숙한 치우침이 섞였는지 같이 봤어요
       en: We checked that thought for a familiar tilt
@@ -196,8 +221,10 @@ methods:
       ko: 그 생각을 뒷받침하는 사실과 어긋나는 사실을 각각 꺼내 견준다
       en: Weighs the facts for and against the thought, side by side
     origin: 소크라테스식 질문 — 인지치료의 유도된 발견(guided discovery)
+    origin_en: "Socratic questioning - guided discovery in cognitive therapy"
     evidence: clinical
     use_when: 단정적인 생각이 하나 잡혔을 때
+    use_when_en: "Once one categorical thought has been caught"
     say_it_as:
       ko: 그 생각을 뒷받침하는 사실과 어긋나는 사실을 나란히 놓고 견줬어요
       en: I put the evidence for and against that thought side by side
@@ -209,8 +236,10 @@ methods:
       ko: '"왜?"를 반복해 표면 증상에서 근본 원인까지 내려간다'
       en: Repeats "why" to descend from the surface symptom to the root cause
     origin: 도요타 생산 시스템 — 도요다 사키치
+    origin_en: "The Toyota Production System - Sakichi Toyoda"
     evidence: applied
     use_when: 트리거는 찾았지만 그게 왜 생겼는지가 남아 있을 때
+    use_when_en: "When the trigger is found but why it arose remains"
     say_it_as:
       ko: 왜를 {depth}번 따라 내려가서 근본 원인을 {root}로 봤어요
       en: I followed "why" {depth} times down to {root}
@@ -222,8 +251,10 @@ methods:
       ko: 같은 상황인데 괜찮았던 날을 찾아 무엇이 달랐는지 본다
       en: Finds a day the same situation went fine, and asks what was different
     origin: 해결중심 단기치료의 예외 질문 — 드 셰이저
+    origin_en: "The exception question in solution-focused brief therapy - de Shazer"
     evidence: clinical
     use_when: 원인이 잘 안 잡히거나, 문제가 늘 그렇지는 않을 때
+    use_when_en: "When the cause won't pin down, or the problem isn't constant"
     say_it_as:
       ko: 같은 상황인데 괜찮았던 날을 찾아서 뭐가 달랐는지 봤어요
       en: We found a day it went fine and looked at what was different
@@ -235,8 +266,10 @@ methods:
       ko: 그 일이 왜 불편했는지를 사용자가 중요하게 여기는 것과 견줘 본다
       en: Weighs the discomfort against what the user actually cares about
     origin: 수용전념치료(ACT)의 가치 명료화 — 헤이즈
+    origin_en: "Values clarification in ACT - Hayes"
     evidence: clinical
     use_when: 불편함의 크기가 사건의 크기보다 클 때
+    use_when_en: "When the discomfort is bigger than the event"
     say_it_as:
       ko: 그게 왜 그만큼 불편했는지를, 중요하게 여기는 것과 견줘 봤어요
       en: We weighed the discomfort against what matters to you
@@ -248,8 +281,10 @@ methods:
       ko: 찾아낸 원인을 내가 바꿀 수 있는 것과 없는 것으로 가른다
       en: Splits the causes into what you can change and what you cannot
     origin: 스토아 철학의 통제 구분 — 에픽테토스
+    origin_en: "The Stoic dichotomy of control - Epictetus"
     evidence: applied
     use_when: 원인에 타인의 결정이나 이미 지난 일이 섞여 있을 때
+    use_when_en: "When the causes include other people's decisions or things already past"
     say_it_as:
       ko: 바꿀 수 있는 것과 없는 것을 갈라서, 바꿀 수 있는 쪽만 처방으로 뒀어요
       en: I split what you can change from what you can't, and only prescribed the former
@@ -261,8 +296,10 @@ methods:
       ko: 걱정하는 일의 최악·최선·가장 그럴듯한 경우를 나누고, 최악이 와도 어떻게 할지 묻는다
       en: Splits a worry into worst, best, and most likely cases, then asks how you'd cope with the worst
     origin: 합리정서행동치료(REBT)의 파국화 줄이기 — 엘리스; 벡의 인지치료에도 같은 절차가 있다
+    origin_en: "Decatastrophizing in REBT - Ellis; Beck's cognitive therapy has the same procedure"
     evidence: clinical
     use_when: 이미 일어난 일이 아니라 앞으로 올 일을 걱정하고 있을 때
+    use_when_en: "When the worry is about what's ahead, not what already happened"
     say_it_as:
       ko: 최악의 경우와 가장 그럴듯한 경우를 나눠 놓고, 최악이 와도 어떻게 할지까지 봤어요
       en: We split the worst case from the likely case, and looked at how you'd handle the worst
@@ -274,8 +311,10 @@ methods:
       ko: 붙어 있는 생각을 "나는 ~라는 생각을 하고 있다"로 바꿔 말해, 생각과 나 사이에 거리를 만든다
       en: Restates a sticky thought as "I'm having the thought that..." to put distance between you and it
     origin: 수용전념치료(ACT)의 탈융합 — 헤이즈
+    origin_en: "Defusion in ACT - Hayes"
     evidence: clinical
     use_when: 같은 생각이 며칠째 붙어서 떨어지지 않을 때
+    use_when_en: "When the same thought has been stuck for days"
     say_it_as:
       ko: 그 생각을 지우려 하지 않고, "그런 생각을 하고 있구나"로 한 걸음 떨어져서 봤어요
       en: We didn't fight the thought - we stepped back and watched it as a thought
@@ -290,8 +329,10 @@ methods:
       ko: 정리한 해석을 한 문단으로 되돌려주고 맞는지 틀린지 사용자에게 받는다
       en: Hands the interpretation back in one paragraph for the user to confirm or correct
     origin: 동기면담 OARS의 요약(Summarize) — 밀러와 롤닉
+    origin_en: "Summarizing from OARS in Motivational Interviewing - Miller & Rollnick"
     evidence: clinical
     use_when: 탐색을 마치고 저장하기 전에 항상
+    use_when_en: "Always, after probing and before saving"
     say_it_as:
       ko: 정리한 해석을 그대로 되돌려 드리고 맞는지 확인받았어요
       en: I handed the interpretation back to you and had you confirm it
@@ -303,8 +344,10 @@ methods:
       ko: 같은 사실을 설명하는 다른 해석을 하나 더 놓고 어느 쪽이 맞는지 고르게 한다
       en: Puts a second explanation beside the first and lets the user choose
     origin: 인지치료의 대안적 해석 생성 — 벡
+    origin_en: "Generating alternative interpretations in cognitive therapy - Beck"
     evidence: clinical
     use_when: 해석이 하나뿐인데 근거가 얇을 때
+    use_when_en: "When there's only one interpretation and the evidence is thin"
     say_it_as:
       ko: 같은 사실을 설명할 다른 해석도 하나 놓고 어느 쪽이 가까운지 골라 보게 했어요
       en: I offered a second reading of the same facts and let you pick
@@ -319,8 +362,10 @@ methods:
       ko: 기분이 올라오길 기다리지 않고 작은 행동을 먼저 놓는다
       en: Places a small action first instead of waiting for mood to lift
     origin: 우울 개입 연구의 행동 활성화 — 르윈슨, 제이컵슨
+    origin_en: "Behavioral activation from depression intervention research - Lewinsohn, Jacobson"
     evidence: clinical
     use_when: 기분이나 에너지가 낮아 아무것도 하기 싫다고 할 때
+    use_when_en: "When mood or energy is low and nothing feels worth doing"
     say_it_as:
       ko: 기분이 회복되길 기다리는 대신 작은 행동을 먼저 잡았어요
       en: Instead of waiting for the mood, we put a small action first
@@ -332,8 +377,10 @@ methods:
       ko: 처방이 부담스러우면 실패할 수 없을 만큼 작게 자른다
       en: Cuts the prescription down to a size that cannot fail
     origin: 작은 습관 설계 — BJ 포그
+    origin_en: "Tiny habit design - BJ Fogg"
     evidence: applied
     use_when: 사용자가 정한 처방이 커서 다음번에 못 지킬 것 같을 때
+    use_when_en: "When the chosen step looks too big to survive until next time"
     say_it_as:
       ko: 처방을 실패하기 어려운 크기로 줄였어요
       en: I shrank the prescription to a size that's hard to miss
@@ -345,8 +392,10 @@ methods:
       ko: '"언제·어디서 무엇을 한다"까지 붙여 실행 확률을 올린다'
       en: Attaches when and where to the action to raise follow-through
     origin: 실행 의도 연구 — 골비처(1999)
+    origin_en: "Implementation intention research - Gollwitzer (1999)"
     evidence: clinical
     use_when: 처방이 정해진 뒤 항상
+    use_when_en: "Always, once a step has been chosen"
     say_it_as:
       ko: 언제 어디서 할지까지 붙여 뒀어요
       en: We pinned down when and where it happens
@@ -358,8 +407,10 @@ methods:
       ko: 원인은 찾았는데 다음 걸음이 안 떠오를 때, 후보를 여러 개 꺼낸 뒤 하나를 고르게 한다
       en: When the cause is clear but the next step isn't, lists several options before picking one
     origin: 문제해결치료(Problem-Solving Therapy) — 드주릴라와 네주
+    origin_en: "Problem-Solving Therapy - D'Zurilla & Nezu"
     evidence: clinical
     use_when: 원인은 분명한데 무엇을 해볼지 바로 안 나올 때
+    use_when_en: "When the cause is clear but no next move comes to mind"
     say_it_as:
       ko: 해볼 수 있는 걸 {n}개 꺼내 놓고 그중 하나를 직접 고르게 했어요
       en: We laid out {n} options and you picked one
@@ -371,8 +422,10 @@ methods:
       ko: 증거로 결론이 안 나는 생각을, 예상 결과를 미리 적어 둔 작은 실험으로 확인해 보게 한다
       en: Turns a thought the evidence can't settle into a small test, with the prediction written down first
     origin: 인지행동치료의 행동 실험 — 베넷-레비 외(2004)
+    origin_en: "Behavioral experiments in CBT - Bennett-Levy et al. (2004)"
     evidence: clinical
     use_when: 증거 검토를 했는데도 그 생각이 맞는지 결론이 안 날 때
+    use_when_en: "When reviewing the evidence still doesn't settle whether the thought is true"
     say_it_as:
       ko: '"{prediction}"이 맞는지 작은 실험으로 확인해 보기로 하고, 예상 결과를 미리 적어 뒀어요'
       en: 'We set up a small test of "{prediction}" and wrote down what you expect first'
@@ -384,8 +437,10 @@ methods:
       ko: 처방을 정한 뒤 무엇이 막을지를 먼저 떠올리고, 그러면 어떻게 할지를 붙인다
       en: Names what is likely to get in the way of the action, then attaches an if-then for it
     origin: 정신적 대조와 실행 의도의 결합(WOOP) — 외팅겐과 골비처
+    origin_en: "Mental contrasting combined with implementation intentions (WOOP) - Oettingen & Gollwitzer"
     evidence: clinical
     use_when: 같은 처방을 두 번 이상 못 지켰을 때, 또는 처방이 막힐 이유가 뻔히 보일 때
+    use_when_en: "When the same step has been missed twice or more, or the obstacle is plain to see"
     say_it_as:
       ko: '{obstacle}이 막을 것 같아서, 그러면 어떻게 할지까지 붙여 뒀어요'
       en: '{obstacle} looked likely to get in the way, so we planned for that too'
@@ -400,8 +455,10 @@ methods:
       ko: 잘 지나간 날에는 무엇이 그렇게 만들었는지를 되짚어 남긴다
       en: On a good day, records what actually made it good
     origin: 긍정심리학 개입 연구 — 셀리그먼 외(2005)
+    origin_en: "Positive psychology intervention research - Seligman et al. (2005)"
     evidence: clinical
     use_when: 점수가 전반적으로 높아 팔 것이 없을 때
+    use_when_en: "When scores are high across the board and there's nothing to dig into"
     say_it_as:
       ko: 오늘은 뭘 잘한 날인지 쪽으로 짚어 뒀어요
       en: Today we looked at what made it go well instead
@@ -413,8 +470,10 @@ methods:
       ko: 자책이 강할 때, 같은 상황의 친구에게 할 말을 자신에게 해보게 한다
       en: When self-blame is heavy, asks what you'd say to a friend in the same spot
     origin: 자기자비 연구 — 크리스틴 네프
+    origin_en: "Self-compassion research - Kristin Neff"
     evidence: clinical
     use_when: 사용자가 자기를 심하게 탓하고 있을 때
+    use_when_en: "When the user is blaming themselves hard"
     say_it_as:
       ko: 같은 상황의 친구에게 할 말을 자신에게도 해보게 했어요
       en: I had you say to yourself what you'd say to a friend
@@ -429,8 +488,10 @@ methods:
       ko: 쌓인 기록에서 요일·영역·추세·처방 실행률 같은 반복을 찾는다
       en: Looks for weekday, domain, trend, and follow-through patterns across records
     origin: 개인 기록 시계열 관찰
+    origin_en: "Time-series observation of personal records"
     evidence: local
     use_when: 주간 회고나 "요즘 어때" 같은 요청일 때
+    use_when_en: "For weekly reviews or \"how have I been lately\" requests"
     say_it_as:
       ko: 최근 {days}일 기록을 모아서 반복되는 패턴을 봤어요
       en: I looked across the last {days} days for repeating patterns
@@ -442,8 +503,10 @@ methods:
       ko: 같은 날 여러 번 기록했을 때 오전과 저녁 사이에 무엇이 달라졌는지 본다
       en: Compares check-ins from the same day to see what shifted between them
     origin: 경험 표집법(experience sampling) — 칙센트미하이의 하루 내 반복 측정
+    origin_en: "Experience sampling - Csikszentmihalyi's repeated within-day measurement"
     evidence: clinical
     use_when: 같은 날에 이미 기록이 있을 때
+    use_when_en: "When the same day already has a record"
     say_it_as:
       ko: 오늘 {time} 기록과 견줘서 그사이에 뭐가 달라졌는지 봤어요
       en: I compared this with your {time} check-in to see what shifted
@@ -455,8 +518,10 @@ methods:
       ko: 나빠지기 전에 반복해서 먼저 나타나는 신호를 사용자의 말로 목록에 남긴다
       en: Records, in the user's own words, the signs that tend to show up before things go down
     origin: 재발 예방의 재발 신호 — 말랫; 안전 계획의 경고 신호 — 스탠리와 브라운(2012)
+    origin_en: "Relapse signatures in relapse prevention - Marlatt; warning signs in safety planning - Stanley & Brown (2012)"
     evidence: clinical
     use_when: 누적 패턴에서 같은 하강이 두 번 이상 보이고, 그 앞에 먼저 오는 것이 있을 때
+    use_when_en: "When the same decline shows twice or more in the pattern, with something arriving first"
     say_it_as:
       ko: '{sign}이 먼저 오더라는 걸 신호로 적어 두고, 다음에 그게 보이면 짚기로 했어요'
       en: 'We noted {sign} as a sign that tends to come first, and will flag it next time'

@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import type { SeriesPoint } from "../types";
 import { addDays, daysBetween, fmtDate, fmtNum, fmtShort } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 
 /**
  * 작은 다중 차트 한 칸. x 축은 달력 날짜라서 기록이 없는 날은 빈 자리로 남는다.
@@ -14,6 +15,7 @@ export function Sparkline({ name, color, series, from, to, mean }: {
   to: string;
   mean: number | null;
 }) {
+  const { lang, t } = useI18n();
   const W = 320, H = 96, PL = 18, PR = 8, PT = 8, PB = 18;
   const span = Math.max(1, daysBetween(from, to));
   const ref = useRef<HTMLDivElement>(null);
@@ -62,10 +64,10 @@ export function Sparkline({ name, color, series, from, to, mean }: {
       <div className="spark-head">
         <span className="name"><i style={{ background: color }} />{name}</span>
         <span className="stat">
-          최근 <b>{latest ? fmtNum(latest.v) : "–"}</b> · 평균 {fmtNum(mean)}
+          {t("최근", "Latest")} <b>{latest ? fmtNum(latest.v) : "–"}</b> · {t("평균", "avg")} {fmtNum(mean)}
         </span>
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${name} 추이`}
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t(`${name} 추이`, `${name} trend`)}
         onMouseMove={onMove} onMouseLeave={() => setHover(null)}>
         {[1, 3, 5].map((g) => {
           const y = PT + ((5 - g) / 4) * (H - PT - PB);
@@ -93,10 +95,10 @@ export function Sparkline({ name, color, series, from, to, mean }: {
       </svg>
       {hp && (
         <div className="tooltip" style={{ left: `${(hp.x / W) * 100}%`, top: `${(hp.y / H) * 100}%` }}>
-          {fmtDate(hp.date)} · {fmtNum(hp.v)}
+          {fmtDate(hp.date, lang)} · {fmtNum(hp.v)}
         </div>
       )}
-      {!pts.length && <div className="faint tiny" style={{ marginTop: -60, textAlign: "center", position: "relative" }}>이 기간에 기록이 없어요</div>}
+      {!pts.length && <div className="faint tiny" style={{ marginTop: -60, textAlign: "center", position: "relative" }}>{t("이 기간에 기록이 없어요", "No records in this range")}</div>}
     </div>
   );
 }

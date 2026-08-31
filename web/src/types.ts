@@ -136,6 +136,7 @@ export type Bilingual = Partial<Record<Lang, string>>;
 
 export interface MethodLink {
   label: string;
+  label_en?: string;
   url: string;
   source?: string;
 }
@@ -147,8 +148,10 @@ export interface Method {
   summary: Bilingual;
   say_it_as?: Bilingual;
   origin?: string;
+  origin_en?: string;
   evidence?: "clinical" | "applied" | "local" | string;
   use_when?: string;
+  use_when_en?: string;
   effect: Bilingual;
   links: MethodLink[];
 }
@@ -193,8 +196,11 @@ export interface StruggleHelp {
   strength: HelpStrength;
   method?: string;
   process?: string;
+  process_en?: string;
   evidence?: string;
+  evidence_en?: string;
   caveat?: string;
+  caveat_en?: string;
   links: MethodLink[];
 }
 
@@ -203,8 +209,11 @@ export interface StruggleItem {
   region?: string;
   name: Bilingual;
   summary?: string;
+  summary_en?: string;
   figure?: string;
+  figure_en?: string;
   variation?: string;
+  variation_en?: string;
   domains: string[];
   states: string[];
   links: MethodLink[];
@@ -215,6 +224,7 @@ export interface StruggleGroup {
   id: string;
   title: Bilingual;
   note?: string;
+  note_en?: string;
   layout: "cards" | "table" | string;
   items: StruggleItem[];
 }
@@ -225,7 +235,9 @@ export interface Struggles {
   sources_reviewed?: string;
   subagents?: string;
   helps_note?: string;
+  helps_note_en?: string;
   intro: Bilingual;
   groups: StruggleGroup[];
   patterns: string[];
+  patterns_en?: string[];
 }

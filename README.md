@@ -252,7 +252,8 @@ are rejected.
 
 ### The web view
 
-A built-in screen lets you browse the records in a browser. A small server running only on your
+A built-in screen lets you browse the records in a browser. A button at the top right switches
+the screen between English and Korean; on first open it follows the browser language. A small server running only on your
 machine reads `~/howami` and shows it — nothing goes out (it binds to `127.0.0.1` only).
 
 | Tab | What it shows |

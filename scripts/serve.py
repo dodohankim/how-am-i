@@ -190,7 +190,7 @@ def load_methods():
                     else:
                         block = key
                         current.setdefault(key, {})
-                elif key in ("stage", "origin", "evidence", "use_when"):
+                elif key in ("stage", "origin", "origin_en", "evidence", "use_when", "use_when_en"):
                     current[key] = _unquote(val)
             elif block and indent > 4 and key in ("ko", "en"):
                 current[block][key] = _unquote(val)
@@ -263,7 +263,7 @@ def load_struggles():
     helps 항목 10, helps 필드 12, helps 링크 14).
     """
     path = os.path.join(QUESTIONS_DIR, "struggles.yaml")
-    result = {"intro": {}, "groups": [], "patterns": []}
+    result = {"intro": {}, "groups": [], "patterns": [], "patterns_en": []}
     if not os.path.exists(path):
         return result
     section, group, item, block = None, None, None, None
@@ -287,9 +287,9 @@ def load_struggles():
             if section == "intro":
                 key, _, val = stripped.partition(":")
                 result["intro"][key.strip()] = _unquote(val)
-            elif section == "patterns":
+            elif section in ("patterns", "patterns_en"):
                 if stripped.startswith("- "):
-                    result["patterns"].append(_unquote(stripped[2:]))
+                    result[section].append(_unquote(stripped[2:]))
             elif section == "groups":
                 if indent == 2 and stripped.startswith("- id:"):
                     group = {"id": _unquote(stripped[len("- id:"):]), "title": {}, "layout": "cards", "items": []}
@@ -302,7 +302,7 @@ def load_struggles():
                     key = key.strip()
                     if key == "title":
                         group["title"] = _inline_map(val) or {}
-                    elif key in ("note", "layout"):
+                    elif key in ("note", "note_en", "layout"):
                         group[key] = _unquote(val)
                     item, block = None, None  # `items:` 머리줄은 여기서 흘려보낸다
                 elif indent == 6 and stripped.startswith("- id:"):
@@ -322,7 +322,7 @@ def load_struggles():
                         item[key] = [p.strip() for p in val.split(",") if p.strip()]
                     elif key in ("links", "helps"):
                         block = key
-                    elif key in ("region", "summary", "figure", "variation"):
+                    elif key in ("region", "summary", "summary_en", "figure", "figure_en", "variation", "variation_en"):
                         item[key] = _unquote(val)
                 elif block == "links" and indent > 8 and stripped.startswith("- "):
                     link = _inline_map(stripped[2:])
@@ -345,7 +345,7 @@ def load_struggles():
                             help_item["name"] = _inline_map(val) or {}
                         elif key == "links":
                             help_block = "links"
-                        elif key in ("strength", "method", "process", "evidence", "caveat"):
+                        elif key in ("strength", "method", "process", "process_en", "evidence", "evidence_en", "caveat", "caveat_en"):
                             help_item[key] = _unquote(val)
                     elif help_block == "links" and indent > 12 and stripped.startswith("- "):
                         link = _inline_map(stripped[2:])

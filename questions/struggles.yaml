@@ -18,6 +18,8 @@
 #   items[].states    상태 축 (core.*.yaml 의 state_scan key, 쉼표 구분)
 #   items[].links     더 읽을 곳. source: who | apa | nimh | gallup | ipsos | wellcome | gbd | journal | survey | press | official | wikipedia | other
 #   items[].helps     임상시험·메타분석에서 이 어려움에 도움이 된 과정. 카드에 "이런 과정을 거치면 나아졌다"로 보인다
+#   *_en              한국어 전용 서술 필드(summary·figure·variation·note·process·evidence·caveat·helps_note·patterns,
+#                     links 의 label)의 영어판. 웹 화면의 언어 전환이 이 병렬 키를 읽는다
 #     name            { ko, en }
 #     strength        strong | moderate | weak | none   근거 등급
 #                       strong    여러 RCT 나 메타분석에서 중간 이상 효과가 반복 확인됨
@@ -45,352 +47,462 @@ intro:
   en: "The pressure is universal; only the name is local. Work exhaustion, money worry, fear of falling behind and disconnection show up everywhere."
 
 helps_note: "각 카드의 '이런 과정을 거치면 나아졌다'는 임상시험과 메타분석에서 확인된 것만 적었다. d·g·SMD 는 표준편차 단위의 차이로 0.2 는 작음, 0.5 는 중간, 0.8 은 큼이다. 대기자 명단 대비 수치는 부풀려지기 쉬워서 통상 치료 대비 수치를 우선 적었고, 시험이 없는 항목은 없다고 적었다."
+helps_note_en: "Each card's \"what helped in trials\" lists only what clinical trials and meta-analyses confirmed. d, g, and SMD are differences in standard-deviation units: 0.2 is small, 0.5 medium, 0.8 large. Waitlist-controlled numbers inflate easily, so figures against usual care are given first, and items with no trials say so."
 
 groups:
   - id: universal
     title: { ko: 어디서나 확인되는 어려움, en: Seen everywhere }
     note: "144개국 이상을 함께 조사한 자료 기준이다. 정신질환 전체로는 204개 지역에서 인구 10만 명당 약 14,200명이 겪고 있으며 장애 원인 1위(YLD 의 17.3%)다. 31개국 성인 45%가 정신건강을 자기 나라의 가장 큰 건강 문제로 꼽는다(스웨덴·칠레 59~63%, 일본 15%)."
+    note_en: "Based on surveys covering 144+ countries at once. Across all mental disorders, about 14,200 per 100,000 people in 204 regions are affected - the leading cause of disability (17.3% of YLD). 45% of adults in 31 countries name mental health as their country's biggest health problem (Sweden and Chile 59-63%, Japan 15%)."
     layout: cards
     items:
       - id: worry
         name: { ko: 걱정, en: Worry }
         summary: "머릿속에서 내일 일이 계속 돌아가서 지금에 머물지 못하는 상태"
+        summary_en: "Tomorrow keeps spinning in your head and you can't stay in the present"
         figure: "144개국 성인 39%가 어제 하루의 많은 시간을 걱정하며 보냈다 (Gallup 2024)"
+        figure_en: "39% of adults across 144 countries spent much of yesterday worrying (Gallup 2024)"
         variation: "우크라이나·레바논 57% 로 분쟁이 끌어올리고 동아시아는 약 20% 로 낮다"
+        variation_en: "Conflict pushes it to 57% in Ukraine and Lebanon; East Asia sits low at about 20%"
         domains: work, money, family
         states: mood
         links:
-          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: Gallup — 세계 감정 보고서, label_en: Gallup — Global Emotions Report, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
         helps:
           - name: { ko: 걱정을 다루는 CBT, en: CBT for worry }
             strength: strong
             method: decatastrophizing
             process: "걱정을 글로 꺼내고 → 최악·최선·현실적 결과를 나눠 보고 → 확인할 수 있는 것은 확인하고 → 통제 밖의 것은 걱정 시간을 따로 정해 미룬다"
+            process_en: "Put the worry into writing → split worst, best, and realistic outcomes → verify what can be verified → schedule a separate worry time for what's out of your control"
             evidence: "범불안장애 65개 RCT 5,048명 네트워크 메타분석: 통상 치료 대비 SMD −0.74. 3~12개월 뒤에도 −0.60 으로 유일하게 효과가 남았다 (Papola 2023)"
+            evidence_en: "Network meta-analysis of 65 GAD RCTs, 5,048 people: SMD −0.74 vs usual care. The only treatment still at −0.60 after 3-12 months (Papola 2023)"
             caveat: "대기자 명단 대비 수치(g 약 0.8)는 부풀려진 것이고 통상 치료 대비 중간 효과가 실제에 가깝다"
+            caveat_en: "Waitlist-controlled numbers (g ≈ 0.8) are inflated; a medium effect against usual care is closer to reality"
             links:
-              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
+              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, label_en: Papola 2023 — JAMA Psychiatry network meta-analysis, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
           - name: { ko: 받아들이고 행동하기 (ACT·마음챙김 계열), en: Third-wave CBT }
             strength: moderate
             method: values_check
             process: "생각을 없애려 하지 않고 → 알아차리고 거리를 두며 → 가치에 맞는 행동을 그대로 한다"
+            process_en: "Don't try to erase the thought → notice it and keep your distance → do the valued action anyway"
             evidence: "같은 메타분석에서 급성기 SMD −0.76 으로 CBT 와 동등"
+            evidence_en: "In the same meta-analysis, acute-phase SMD −0.76, on par with CBT"
             caveat: "3~12개월 추적에서는 효과가 작아졌다. 단기에는 같고 오래가는 것은 CBT 쪽이다"
+            caveat_en: "The effect shrank at 3-12 months. Equal short-term; CBT is what lasts"
             links:
-              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
+              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, label_en: Papola 2023 — JAMA Psychiatry network meta-analysis, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
 
       - id: stress
         name: { ko: 스트레스, en: Stress }
         summary: "요구가 감당할 수 있는 범위를 넘어서서 몸이 긴장한 채로 하루를 보내는 상태"
+        summary_en: "Demands exceed what you can carry and the body stays tense all day"
         figure: "144개국 37%가 어제 많은 스트레스를 겪었고 직장인은 40%가 매일 심한 스트레스를 겪는다 (Gallup 2024·2025)"
+        figure_en: "37% across 144 countries felt a lot of stress yesterday; 40% of workers feel severe stress daily (Gallup 2024-2025)"
         variation: "키프로스 65% 에서 키르기스스탄 8% 까지 편차가 크다. 팬데믹 이전 수준으로 아직 돌아오지 않았다"
+        variation_en: "Ranges widely, from 65% in Cyprus to 8% in Kyrgyzstan. Still not back to pre-pandemic levels"
         domains: work
         states: energy
         links:
-          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
-          - { label: Gallup — 세계 직장 현황, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
+          - { label: Gallup — 세계 감정 보고서, label_en: Gallup — Global Emotions Report, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: Gallup — 세계 직장 현황, label_en: Gallup — State of the Global Workplace, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
         helps:
           - name: { ko: 구조 바꾸기 (근무시간·업무량·결정권), en: Organizational change }
             strength: strong
             method: control_dichotomy
             process: "스트레스의 원인을 개인 기술이 아니라 구조에서 찾고 → 근무시간 경계·업무량·결정권 중 바꿀 수 있는 것을 하나 정해 → 조직이나 관계와 협상한다"
+            process_en: "Look for the cause in the structure, not in personal skills → pick one changeable thing among hours, workload, and decision rights → negotiate with the organization or the relationship"
             evidence: "의사 대상 20개 연구: 조직 개입 SMD −0.45 vs 개인 개입 −0.18 (Panagioti 2017). 141개 조직 2,896명 주 4일제 시험에서 번아웃·수면·직무 만족 개선 (Nature Human Behaviour 2025)"
+            evidence_en: "20 studies of physicians: organizational interventions SMD −0.45 vs individual −0.18 (Panagioti 2017). A four-day-week trial across 141 organizations, 2,896 people, improved burnout, sleep, and job satisfaction (Nature Human Behaviour 2025)"
             caveat: "혼자 바꾸기 어렵고 6개월 넘는 추적이 드물다"
+            caveat_en: "Hard to change alone, and follow-up beyond six months is rare"
             links:
               - { label: Panagioti 2017 — JAMA Internal Medicine, url: "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2588814", source: journal }
-              - { label: 주 4일제 시험 — Nature Human Behaviour 2025, url: "https://www.nature.com/articles/s41562-025-02259-6", source: journal }
+              - { label: 주 4일제 시험 — Nature Human Behaviour 2025, label_en: Four-day week trial — Nature Human Behaviour 2025, url: "https://www.nature.com/articles/s41562-025-02259-6", source: journal }
           - name: { ko: 몸을 푸는 연습 (마음챙김·요가·이완), en: Mindfulness and relaxation }
             strength: moderate
             method: affect_labeling
             process: "하루 10~20분 몸의 긴장을 알아차리고 푸는 연습을 6~8주 이어간다"
+            process_en: "Practice noticing and releasing bodily tension 10-20 minutes a day for 6-8 weeks"
             evidence: "직장 마음챙김 91개 RCT 4,927명: 스트레스 SMD 0.72 (Michaelsen 2023). 의료진 요가·근육 이완 네트워크 메타분석: SMD 1.36"
+            evidence_en: "91 workplace mindfulness RCTs, 4,927 people: stress SMD 0.72 (Michaelsen 2023). Network meta-analysis of yoga and muscle relaxation for health workers: SMD 1.36"
             caveat: "12주 뒤 효과가 줄어든다. 습관으로 남겨야 하고 구조가 그대로면 되돌아간다"
+            caveat_en: "The effect fades after 12 weeks. It has to become a habit, and if the structure stays the same it comes back"
             links:
-              - { label: Michaelsen 2023 — Mindfulness 메타분석, url: "https://link.springer.com/content/pdf/10.1007/s12671-023-02130-7.pdf", source: journal }
-              - { label: 요가·이완 네트워크 메타분석 2024, url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11337641/", source: journal }
+              - { label: Michaelsen 2023 — Mindfulness 메타분석, label_en: Michaelsen 2023 — Mindfulness meta-analysis, url: "https://link.springer.com/content/pdf/10.1007/s12671-023-02130-7.pdf", source: journal }
+              - { label: 요가·이완 네트워크 메타분석 2024, label_en: Yoga and relaxation network meta-analysis 2024, url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11337641/", source: journal }
 
       - id: anxiety
         name: { ko: 불안, en: Anxiety }
         summary: "뚜렷한 이유 없이도 가슴이 조이고 최악을 먼저 떠올리게 되는 상태"
+        summary_en: "The chest tightens and the worst case comes to mind first, even without a clear reason"
         figure: "전 세계 인구 4.4% 약 3억 5천9백만 명이 불안장애를 겪는다. 가장 흔한 정신질환이다 (WHO 2021)"
+        figure_en: "4.4% of the world's population, about 359 million people, have an anxiety disorder - the most common mental disorder (WHO 2021)"
         variation: "미국 성인은 한 해 19.1% (여성 23.4% 남성 14.3%). 10년 전 3.6% 에서 4.4% 로 늘었다"
+        variation_en: "19.1% of US adults in a year (women 23.4%, men 14.3%). Up from 3.6% to 4.4% over a decade"
         domains: work, people, money
         states: mood, sleep
         links:
-          - { label: WHO — 불안장애 팩트시트, url: "https://www.who.int/news-room/fact-sheets/detail/anxiety-disorders", source: who }
-          - { label: NIMH — 불안장애 통계, url: "https://www.nimh.nih.gov/health/statistics/any-anxiety-disorder", source: nimh }
+          - { label: WHO — 불안장애 팩트시트, label_en: WHO — Anxiety disorders fact sheet, url: "https://www.who.int/news-room/fact-sheets/detail/anxiety-disorders", source: who }
+          - { label: NIMH — 불안장애 통계, label_en: NIMH — Anxiety disorder statistics, url: "https://www.nimh.nih.gov/health/statistics/any-anxiety-disorder", source: nimh }
         helps:
           - name: { ko: 사고기록과 단계적 접근 (CBT), en: CBT }
             strength: strong
             method: cbt_thought_record
             process: "불안한 순간의 생각을 적고 → 증거를 검토해 현실적인 결론으로 바꾸고 → 피하던 상황에 작은 단계부터 다가간다"
+            process_en: "Write down the thought in the anxious moment → review the evidence and revise to a realistic conclusion → approach avoided situations in small steps"
             evidence: "범불안장애 65개 RCT 5,048명: 통상 치료 대비 SMD −0.74, 3~12개월 뒤 −0.60 (Papola 2023). 1차 치료로 권고"
+            evidence_en: "65 GAD RCTs, 5,048 people: SMD −0.74 vs usual care, −0.60 at 3-12 months (Papola 2023). Recommended as first-line treatment"
             caveat: "다른 심리치료와 급성기 효과는 같다. 오래가는 것이 CBT 의 차이다"
+            caveat_en: "Other psychotherapies match it in the acute phase. Lasting is what sets CBT apart"
             links:
-              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
+              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, label_en: Papola 2023 — JAMA Psychiatry network meta-analysis, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
           - name: { ko: 마음챙김 기반 인지치료 (MBCT), en: MBCT }
             strength: moderate
             process: "8주 동안 명상으로 불안 신호를 알아차리고 → 자동 반응 대신 머무는 연습을 한다"
+            process_en: "Over 8 weeks, use meditation to notice anxiety signals → practice staying instead of reacting automatically"
             evidence: "21개 RCT 약 1,600명: 대조군 대비 불안 SMD −0.48. CBT 와 직접 비교하면 차이가 없다"
+            evidence_en: "21 RCTs, about 1,600 people: anxiety SMD −0.48 vs controls. No difference in head-to-head comparison with CBT"
             caveat: "스트레스 완화만 하는 MBSR 은 불안에 CBT 보다 약하다 (SMD 0.50 만큼 CBT 우세)"
+            caveat_en: "MBSR, which only targets stress relief, is weaker than CBT for anxiety (CBT ahead by SMD 0.50)"
 
       - id: depression
         name: { ko: 우울, en: Depression }
         summary: "기분이 가라앉는 것을 넘어 아무것도 하고 싶지 않고 즐겁던 일이 더는 즐겁지 않은 상태"
+        summary_en: "Beyond low mood: nothing feels worth doing and what used to be enjoyable no longer is"
         figure: "전 세계 성인 5.7% 약 3억 3천2백만 명 (여성 6.9% 남성 4.6%) (WHO 2021)"
+        figure_en: "5.7% of adults worldwide, about 332 million (women 6.9%, men 4.6%) (WHO 2021)"
         variation: "미국 성인 한 해 8.3%. 동아시아는 진단 유병률이 낮게 나오지만(한국 1.7%) 자가보고 증상은 높다(서울 26.2%). 낙인으로 인한 과소보고 가능성이 크다"
+        variation_en: "8.3% of US adults in a year. East Asia shows low diagnosed prevalence (Korea 1.7%) but high self-reported symptoms (Seoul 26.2%) - likely under-reporting due to stigma"
         domains: solo
         states: mood, energy
         links:
-          - { label: WHO — 우울증 팩트시트, url: "https://www.who.int/news-room/fact-sheets/detail/depression", source: who }
-          - { label: NIMH — 주요우울 통계, url: "https://www.nimh.nih.gov/health/statistics/major-depression", source: nimh }
-          - { label: 서울연구원 — 서울시민 정신건강 실태 2023, url: "https://www.si.re.kr/node/67705", source: survey }
+          - { label: WHO — 우울증 팩트시트, label_en: WHO — Depression fact sheet, url: "https://www.who.int/news-room/fact-sheets/detail/depression", source: who }
+          - { label: NIMH — 주요우울 통계, label_en: NIMH — Major depression statistics, url: "https://www.nimh.nih.gov/health/statistics/major-depression", source: nimh }
+          - { label: 서울연구원 — 서울시민 정신건강 실태 2023, label_en: Seoul Institute — Mental health of Seoul residents 2023, url: "https://www.si.re.kr/node/67705", source: survey }
         helps:
           - name: { ko: 행동 활성화, en: Behavioral activation }
             strength: strong
             method: behavioral_activation
             process: "기분이 나아지기를 기다리지 않고 → 가치 있는 활동을 아주 작게 계획해 실행하고 → 실행을 기록하고 → 막히면 문제 해결로 넘긴다"
+            process_en: "Don't wait for the mood to lift → plan a valued activity very small and do it → record the doing → if stuck, switch to problem solving"
             evidence: "COBRA RCT 680명: CBT 와 동등한 효과를 하급 인력이 60% 비용으로 냈다 (Richards 2016). 105개 시험 13,933명 메타분석: SMD 0.67, 12개월 유지"
+            evidence_en: "COBRA RCT, 680 people: matched CBT at 60% of the cost, delivered by junior staff (Richards 2016). Meta-analysis of 105 trials, 13,933 people: SMD 0.67, held at 12 months"
             caveat: "혼자 하는 자가 시행형은 0.36 으로 작다. 사람이 함께 볼 때 더 낫다"
+            caveat_en: "Self-guided versions are smaller at 0.36. It works better with another person looking on"
             links:
-              - { label: COBRA 시험 — Lancet 2016, url: "https://doi.org/10.1016/s0140-6736(16)31140-0", source: journal }
-              - { label: 행동 활성화 메타분석 2026 — UCL, url: "https://discovery.ucl.ac.uk/id/eprint/10228668/", source: journal }
+              - { label: COBRA 시험 — Lancet 2016, label_en: COBRA trial — Lancet 2016, url: "https://doi.org/10.1016/s0140-6736(16)31140-0", source: journal }
+              - { label: 행동 활성화 메타분석 2026 — UCL, label_en: Behavioral activation meta-analysis 2026 — UCL, url: "https://discovery.ucl.ac.uk/id/eprint/10228668/", source: journal }
           - name: { ko: 인지행동치료 (CBT), en: CBT }
             strength: strong
             method: evidence_check
             process: "자동으로 떠오르는 생각을 적고 → 증거를 검토하고 → 행동 실험으로 확인한다"
+            process_en: "Write down the automatic thought → review the evidence → test it with a behavioral experiment"
             evidence: "409개 시험 52,702명(역대 최대 메타분석): 대조군 대비 g 0.79. 항우울제와 동등 (Cuijpers 2023)"
+            evidence_en: "409 trials, 52,702 people (the largest meta-analysis to date): g 0.79 vs controls. On par with antidepressants (Cuijpers 2023)"
             caveat: "다른 심리치료와의 차이는 g 0.06 이다. 우울로 가는 길은 여러 개이고 어느 것이든 지지치료보다는 낫다"
+            caveat_en: "The gap over other psychotherapies is g 0.06. There are many roads out of depression; any of them beats supportive care"
             links:
               - { label: Cuijpers 2023 — World Psychiatry, url: "https://doi.org/10.1002/wps.21069", source: journal }
           - name: { ko: 짧은 표현적 글쓰기, en: Brief expressive writing }
             strength: none
             process: "감정을 20분씩 3회 쓰는 표준 절차"
+            process_en: "The standard procedure: write about the feelings for 20 minutes, three times"
             evidence: "39개 RCT: 추적 효과 g 0.03 으로 유의하지 않다 (Reinhold 2018)"
+            evidence_en: "39 RCTs: follow-up effect g 0.03, not significant (Reinhold 2018)"
             caveat: "4회 이상에 치료자 피드백이 붙어야 g 0.4~0.7 이 나온다. 혼자 짧게 쓰는 것만으로는 효과가 없다"
+            caveat_en: "It takes 4+ sessions with therapist feedback to reach g 0.4-0.7. Brief solo writing alone doesn't work"
             links:
-              - { label: Reinhold 2018 — 표현적 글쓰기 메타분석, url: "https://paulbuerkner.com/publications/pdf/2018__Reinhold_et_al__Clinical_Psychology_Science_and_Practice.pdf", source: journal }
+              - { label: Reinhold 2018 — 표현적 글쓰기 메타분석, label_en: Reinhold 2018 — Expressive writing meta-analysis, url: "https://paulbuerkner.com/publications/pdf/2018__Reinhold_et_al__Clinical_Psychology_Science_and_Practice.pdf", source: journal }
 
       - id: impairment
         name: { ko: 불안·우울로 인한 기능 저하, en: Anxiety or depression that stops daily life }
         summary: "걱정이나 가라앉음 때문에 일이나 관계가 평소처럼 돌아가지 않는 상태"
+        summary_en: "Worry or low mood is keeping work or relationships from running as usual"
         figure: "113개국 성인 19%가 일상이 멈출 정도의 불안이나 우울을 겪은 적이 있다 (Wellcome 2020)"
+        figure_en: "19% of adults in 113 countries have had anxiety or depression severe enough to halt daily life (Wellcome 2020)"
         variation: "라틴아메리카 33% 로 세계 최고, 동아시아 9% 로 최저. 동아시아의 낮은 수치는 공개를 꺼리는 문화의 영향으로 본다"
+        variation_en: "Latin America highest at 33%, East Asia lowest at 9%. The low East Asian figure is read as a culture of non-disclosure"
         domains: work, people
         states: execution
         links:
-          - { label: Wellcome Global Monitor — 정신건강, url: "https://wellcome.org/insights/reports/wellcome-global-monitor-mental-health/2020", source: wellcome }
+          - { label: Wellcome Global Monitor — 정신건강, label_en: Wellcome Global Monitor — Mental health, url: "https://wellcome.org/insights/reports/wellcome-global-monitor-mental-health/2020", source: wellcome }
         helps:
           - name: { ko: 문제 해결 치료 (비전문가가 시행), en: Problem-solving therapy }
             strength: strong
             method: problem_solving
             process: "지금 일상을 막는 문제를 하나 고르고 → 해결책을 여럿 꺼내고 → 하나를 골라 실행하고 → 다음 회기에 결과를 함께 본다. 6회기"
+            process_en: "Pick one problem blocking daily life → generate several solutions → choose one and act → review the result together next session. Six sessions"
             evidence: "짐바브웨 Friendship Bench 군집 RCT 573명: 훈련받은 지역 할머니 보건요원이 시행해 우울 13.7% vs 49.9% (Chibanda 2016)"
+            evidence_en: "Zimbabwe's Friendship Bench cluster RCT, 573 people: delivered by trained community grandmothers, depression 13.7% vs 49.9% (Chibanda 2016)"
             caveat: "여성·HIV 양성 표본에 편중. 감독과 매뉴얼이 붙어 있어야 효과가 났다"
+            caveat_en: "Sample skewed to women and HIV-positive participants. It worked with supervision and a manual attached"
             links:
               - { label: Friendship Bench — JAMA 2016, url: "https://jamanetwork.com/journals/jama/fullarticle/2594719", source: journal }
 
       - id: loneliness
         name: { ko: 외로움, en: Loneliness }
         summary: "사람들 사이에 있어도 나를 아는 사람이 없다고 느끼는 상태"
+        summary_en: "Even among people, feeling that no one really knows you"
         figure: "전 세계 직장인 22%가 매일 외로움을 느낀다 (Gallup 2025)"
+        figure_en: "22% of workers worldwide feel lonely every day (Gallup 2025)"
         variation: "미국 성인 54%가 고립감을 느끼고 69%가 받는 것보다 더 많은 정서적 지지가 필요하다고 답했다 (APA 2025). 1인 가구에서 급증한다(서울 1인 가구 62.1%)"
+        variation_en: "54% of US adults feel isolated and 69% say they need more emotional support than they get (APA 2025). Surges in one-person households (62.1% of Seoul's single households)"
         domains: people, solo, family
         states: mood
         links:
-          - { label: Gallup — 세계 직장 현황, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
+          - { label: Gallup — 세계 직장 현황, label_en: Gallup — State of the Global Workplace, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
           - { label: APA — Stress in America 2025, url: "https://www.apa.org/pubs/reports/stress-in-america/2025/full-report.pdf", source: apa }
         helps:
           - name: { ko: 만남을 막는 해석 바꾸기, en: Addressing maladaptive social cognition }
             strength: moderate
             method: cognitive_distortion_check
             process: "'거부당할 것이다'같은 예상을 적고 → 근거를 검토하고 → 작은 접촉으로 시험해 본다"
+            process_en: "Write down the expectation ('I'll be rejected') → review the evidence → test it with a small contact"
             evidence: "무작위 연구 중 가장 효과적인 유형 (Masi 2011). 외로움 심리 개입 전체 28개 RCT 3,039명: g 0.43 (Hickin 2021)"
+            evidence_en: "The most effective type among randomized studies (Masi 2011). All 28 RCTs of psychological loneliness interventions, 3,039 people: g 0.43 (Hickin 2021)"
             caveat: "만남 기회만 제공하면 d −0.27 로 작고 참여가 끊긴다. 사람을 만나게 하는 것보다 만남을 막는 해석을 바꾸는 쪽이 효과적이다"
+            caveat_en: "Merely providing meeting opportunities is small (d −0.27) and participation lapses. Changing the interpretations that block meetings beats arranging meetings"
             links:
               - { label: Hickin 2021 — Clinical Psychology Review, url: "https://www.sciencedirect.com/science/article/abs/pii/S0272735821001094", source: journal }
-              - { label: Masi 2011 — 외로움 개입 메타분석, url: "https://journals.sagepub.com/doi/10.1177/1088868310377394", source: journal }
+              - { label: Masi 2011 — 외로움 개입 메타분석, label_en: Masi 2011 — Loneliness intervention meta-analysis, url: "https://journals.sagepub.com/doi/10.1177/1088868310377394", source: journal }
           - name: { ko: 집단 프로그램 (기술 + 만남 + 지지), en: Multicomponent group programs }
             strength: moderate
             process: "대화 기술 훈련과 만남 기회와 지지를 주 1회 집단으로 2~4개월 이어간다"
+            process_en: "Conversation-skills training plus meeting opportunities plus support, weekly in a group, for 2-4 months"
             evidence: "추적에서 효과가 유지된 연구 57.6%. 노인에서 가장 크다 (Hickin 2021)"
+            evidence_en: "Effects held at follow-up in 57.6% of studies. Largest in older adults (Hickin 2021)"
             caveat: "집단이 개인 형식보다 낫다. 촉진자가 없으면 참여가 끊긴다"
+            caveat_en: "Groups beat individual formats. Without a facilitator, participation lapses"
             links:
               - { label: Hickin 2021 — Clinical Psychology Review, url: "https://www.sciencedirect.com/science/article/abs/pii/S0272735821001094", source: journal }
 
       - id: burnout
         name: { ko: 번아웃, en: Burnout }
         summary: "쉬어도 회복되지 않고 노력이 결과로 이어지지 않는다고 느끼는 소진"
+        summary_en: "Exhaustion that rest doesn't repair, with effort no longer leading anywhere"
         figure: "전 세계 직장인 56%가 고전 중이거나 고통받고 있으며 잘 지내는 사람은 34%뿐이다 (Gallup 2025)"
+        figure_en: "56% of workers worldwide are struggling or suffering; only 34% are thriving (Gallup 2025)"
         variation: "한국 직장인 69% (30대 75.3%). 일본의 과로사, 중국의 내권, 인도의 경력 압박이 같은 뿌리다"
+        variation_en: "69% of Korean workers (75.3% in their 30s). Japan's karoshi, China's involution, and India's career pressure share the same root"
         domains: work, side
         states: energy, execution
         links:
-          - { label: Gallup — 세계 직장 현황, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
-          - { label: 위키백과 — Occupational burnout, url: "https://en.wikipedia.org/wiki/Occupational_burnout", source: wikipedia }
+          - { label: Gallup — 세계 직장 현황, label_en: Gallup — State of the Global Workplace, url: "https://www.gallup.com/workplace/697904/state-of-the-global-workplace-global-data.aspx", source: gallup }
+          - { label: 위키백과 — Occupational burnout, label_en: Wikipedia — Occupational burnout, url: "https://en.wikipedia.org/wiki/Occupational_burnout", source: wikipedia }
         helps:
           - name: { ko: 구조 바꾸기 (근무시간·업무량·결정권), en: Organizational change }
             strength: strong
             method: control_dichotomy
             process: "쉬는 기술을 더 배우기 전에 → 근무시간·업무량·결정권 중 바꿀 수 있는 것을 특정하고 → 조직과 협상하거나 경계를 세운다"
+            process_en: "Before learning more rest techniques → identify what can change among hours, workload, and decision rights → negotiate with the organization or set boundaries"
             evidence: "의사 대상 20개 연구: 조직 개입 SMD −0.45 vs 개인 개입 −0.18 로 2배 이상 (Panagioti 2017). 52개 연구 3,600명: 번아웃 54% → 44% (West 2016). 주 4일제 2,896명 시험에서 번아웃·수면 개선"
+            evidence_en: "20 studies of physicians: organizational SMD −0.45 vs individual −0.18, more than double (Panagioti 2017). 52 studies, 3,600 people: burnout 54% → 44% (West 2016). A four-day-week trial of 2,896 people improved burnout and sleep"
             caveat: "기관의 결단이 필요하고 6개월 넘는 추적이 드물다. 그래도 근거는 개인보다 구조를 가리킨다"
+            caveat_en: "It takes institutional resolve, and follow-up beyond six months is rare. Still, the evidence points to structure over the individual"
             links:
               - { label: Panagioti 2017 — JAMA Internal Medicine, url: "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2588814", source: journal }
               - { label: West 2016 — Lancet, url: "https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(16)31279-X/abstract", source: journal }
-              - { label: 주 4일제 시험 — Nature Human Behaviour 2025, url: "https://www.nature.com/articles/s41562-025-02259-6", source: journal }
+              - { label: 주 4일제 시험 — Nature Human Behaviour 2025, label_en: Four-day week trial — Nature Human Behaviour 2025, url: "https://www.nature.com/articles/s41562-025-02259-6", source: journal }
           - name: { ko: 개인 회복 기술 (마음챙김·CBT·코칭), en: Individual-level interventions }
             strength: weak
             method: tiny_habit
             process: "6~12주 마음챙김이나 스트레스 관리 훈련 또는 1:1 코칭"
+            process_en: "6-12 weeks of mindfulness or stress-management training, or 1:1 coaching"
             evidence: "코칭 16개 RCT: 정서적 소진 d −0.24. 직장 마음챙김 56개 RCT: 번아웃 g 0.48~0.77 이지만 12주 뒤 감소"
+            evidence_en: "16 coaching RCTs: emotional exhaustion d −0.24. 56 workplace mindfulness RCTs: burnout g 0.48-0.77, but fading after 12 weeks"
             caveat: "구조가 그대로면 되돌아간다. 보조 수단으로만"
+            caveat_en: "If the structure stays the same it comes back. A supplement only"
             links:
-              - { label: 코칭 메타분석 2024 — BMC, url: "https://link.springer.com/article/10.1186/s12909-024-06195-3", source: journal }
-              - { label: 직장 마음챙김 메타분석 2020 — Mindfulness, url: "https://link.springer.com/article/10.1007/s12671-020-01328-3", source: journal }
+              - { label: 코칭 메타분석 2024 — BMC, label_en: Coaching meta-analysis 2024 — BMC, url: "https://link.springer.com/article/10.1186/s12909-024-06195-3", source: journal }
+              - { label: 직장 마음챙김 메타분석 2020 — Mindfulness, label_en: Workplace mindfulness meta-analysis 2020 — Mindfulness, url: "https://link.springer.com/article/10.1007/s12671-020-01328-3", source: journal }
           - name: { ko: 가치 중심으로 방향 다시 잡기 (ACT), en: Values-based redirection (ACT) }
             strength: moderate
             method: values_check
             process: "지금 하는 일과 내가 중요하게 여기는 것 사이의 거리를 확인하고 → 붙어 있는 생각과는 거리를 두고 → 가치에 맞는 작은 행동을 하나 고른다"
+            process_en: "Check the distance between the work you do and what you value → step back from the thoughts that cling → choose one small action that fits your values"
             evidence: "번아웃 진단자 168명 RCT: 통상치료 대비 d 0.36~0.76 이 1년 추적까지 유지 (Puolakanaho 2020). 직장 ACT 17개 RCT 에서도 추적 시점까지 효과 유지 (Unruh 2022)"
+            evidence_en: "RCT of 168 people diagnosed with burnout: d 0.36-0.76 vs usual care, held through 1-year follow-up (Puolakanaho 2020). 17 workplace ACT RCTs also held their effect at follow-up (Unruh 2022)"
             caveat: "개인 번아웃 개입 중 1년을 버틴 드문 사례다. 다만 보건의료직에서는 효과가 거의 없었다"
+            caveat_en: "A rare individual burnout intervention that lasted a year. It barely worked for healthcare workers, though"
             links:
               - { label: Puolakanaho 2020 — Journal of Contextual Behavioral Science, url: "https://doi.org/10.1016/j.jcbs.2019.11.007", source: journal }
-              - { label: Unruh 2022 — 직장 ACT 메타분석, url: "https://doi.org/10.1016/j.jcbs.2022.09.003", source: journal }
+              - { label: Unruh 2022 — 직장 ACT 메타분석, label_en: Unruh 2022 — Workplace ACT meta-analysis, url: "https://doi.org/10.1016/j.jcbs.2022.09.003", source: journal }
           - name: { ko: 일의 구성 스스로 바꾸기 (잡 크래프팅), en: Job crafting }
             strength: moderate
             method: problem_solving
             process: "하는 일을 전부 나열하고 → 소모시키는 일과 살리는 일을 가르고 → 도움 요청이나 피드백처럼 자원을 구하는 행동을 하나 정해 몇 주 실행한 뒤 점검한다"
+            process_en: "List everything you do → separate what drains from what sustains → pick one resource-seeking action like asking for help or feedback, run it for a few weeks, then review"
             evidence: "심리치료사 135명 RCT: 번아웃 d 0.43 (Delgadillo 2026). 다만 281명 RCT 에서는 전체 효과가 없었다 (Sakuraya 2020)"
+            evidence_en: "RCT of 135 psychotherapists: burnout d 0.43 (Delgadillo 2026). But a 281-person RCT found no overall effect (Sakuraya 2020)"
             caveat: "요구를 줄이기만 하는 크래프팅은 오히려 긴장 증가와 연관된다 (Holman 2024). 자원을 구하는 쪽을 반드시 함께 간다. 효과가 저절로 유지되지 않아 몇 주 뒤 점검이 필요하다"
+            caveat_en: "Crafting that only cuts demands is linked to more strain (Holman 2024) - always pair it with seeking resources. The effect doesn't hold on its own; check back in a few weeks"
             links:
               - { label: Delgadillo 2026 — Journal of Consulting and Clinical Psychology, url: "https://doi.org/10.1037/ccp0000992", source: journal }
               - { label: Sakuraya 2020 — Frontiers in Psychology, url: "https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2020.00235/full", source: journal }
-              - { label: Holman 2024 — 잡 크래프팅 메타분석, url: "https://doi.org/10.1111/joop.12450", source: journal }
+              - { label: Holman 2024 — 잡 크래프팅 메타분석, label_en: Holman 2024 — Job crafting meta-analysis, url: "https://doi.org/10.1111/joop.12450", source: journal }
           - name: { ko: 퇴근 후 일 생각 끊기 (심리적 분리), en: Psychological detachment }
             strength: weak
             method: implementation_intention
             process: "퇴근 후 일 생각이 몇 번 찾아오는지 알아차리고 → 저녁의 회복 활동을 언제 무엇으로 할지 미리 정하고 → 수면과 함께 관찰한다"
+            process_en: "Notice how often work thoughts visit after hours → decide in advance when and how you'll recover in the evening → track it alongside sleep"
             evidence: "분리 개입 30편 메타분석: 분리 d 0.36 (Karabinski 2021). 반추·수면을 함께 겨냥한 온라인 회복 훈련은 효과가 6개월 유지 (Thiart 2015)"
+            evidence_en: "Meta-analysis of 30 detachment interventions: detachment d 0.36 (Karabinski 2021). Online recovery training that also targeted rumination and sleep held its effect for 6 months (Thiart 2015)"
             caveat: "분리는 늘어도 소진 자체는 잘 줄지 않았다 (Hahn 2011 에서 소진 무효). 퇴근 후에도 일이 머리에서 안 떠나는 사람에게 효과가 집중된다"
+            caveat_en: "Detachment rises but exhaustion itself barely moved (null for exhaustion in Hahn 2011). The effect concentrates in people whose work follows them home"
             links:
-              - { label: Karabinski 2021 — 분리 개입 메타분석, url: "https://doi.org/10.1037/ocp0000280", source: journal }
+              - { label: Karabinski 2021 — 분리 개입 메타분석, label_en: Karabinski 2021 — Detachment intervention meta-analysis, url: "https://doi.org/10.1037/ocp0000280", source: journal }
               - { label: Thiart 2015 — Scandinavian Journal of Work Environment and Health, url: "https://doi.org/10.5271/sjweh.3478", source: journal }
-              - { label: Hahn 2011 — 회복 훈련 RCT, url: "https://doi.org/10.1037/a0022169", source: journal }
+              - { label: Hahn 2011 — 회복 훈련 RCT, label_en: Hahn 2011 — Recovery training RCT, url: "https://doi.org/10.1037/a0022169", source: journal }
 
       - id: sleep
         name: { ko: 수면 문제, en: Sleep problems }
         summary: "잠들기 어렵거나 자주 깨거나 자고 나도 개운하지 않은 밤이 이어지는 상태"
+        summary_en: "Nights of struggling to fall asleep, waking often, or waking unrefreshed"
         figure: "상담 플랫폼에서 불면을 이유로 찾아온 사람이 한 해 만에 151% 늘었다 (Grow Therapy 2025)"
+        figure_en: "People coming to counseling platforms for insomnia rose 151% in one year (Grow Therapy 2025)"
         variation: "한국 수면장애 진료 인원은 5년간 24% 늘어 124만 명(2023)"
+        variation_en: "Koreans treated for sleep disorders rose 24% in five years to 1.24 million (2023)"
         domains: body
         states: sleep
         links:
-          - { label: Grow Therapy — 정신건강 트렌드, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
-          - { label: 위키백과 — Insomnia, url: "https://en.wikipedia.org/wiki/Insomnia", source: wikipedia }
+          - { label: Grow Therapy — 정신건강 트렌드, label_en: Grow Therapy — Mental health trends, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
+          - { label: 위키백과 — Insomnia, label_en: Wikipedia — Insomnia, url: "https://en.wikipedia.org/wiki/Insomnia", source: wikipedia }
         helps:
           - name: { ko: 불면증 인지행동치료 (CBT-I), en: CBT-I }
             strength: strong
             method: behavioral_experiment
             process: "잠자리에 누워 있는 시간을 실제로 잔 시간에 맞춰 줄이고(수면 제한) → 침대는 잠에만 쓰고(자극 조절) → 잠에 대한 파국적 생각을 검토한다. 4~8주"
+            process_en: "Cut time in bed down to time actually slept (sleep restriction) → use the bed only for sleep (stimulus control) → examine catastrophic thoughts about sleep. 4-8 weeks"
             evidence: "13개 시험 네트워크 메타분석: 장기(평균 10개월) 대조군 대비 SMD −0.48. 장기에서 수면제보다 우수. 미국수면학회 1차 치료"
+            evidence_en: "Network meta-analysis of 13 trials: long-term (mean 10 months) SMD −0.48 vs controls. Beats sleeping pills long-term. First-line per the American Academy of Sleep Medicine"
             caveat: "처음 1~2주는 오히려 더 졸리다. 약은 단기에 강하고 끊으면 사라지는데 CBT-I 는 유지된다"
+            caveat_en: "The first week or two you're sleepier. Pills are strong short-term and fade when stopped; CBT-I holds"
             links:
-              - { label: CBT-I 장기 효과 네트워크 메타분석 2023, url: "https://www.mdpi.com/2227-9032/11/15/2207", source: journal }
+              - { label: CBT-I 장기 효과 네트워크 메타분석 2023, label_en: CBT-I long-term network meta-analysis 2023, url: "https://www.mdpi.com/2227-9032/11/15/2207", source: journal }
 
       - id: money
         name: { ko: 경제적 불안, en: Financial anxiety }
         summary: "돈 걱정이 다른 모든 걱정 밑에 깔려 있는 상태"
+        summary_en: "Money worry sitting underneath every other worry"
         figure: "미국 성인 69%가 재정 불확실성 때문에 우울하거나 불안했다 (Northwestern Mutual 2025). 남미·인도·아프리카에서는 정신건강 악화의 1차 요인이다"
+        figure_en: "69% of US adults felt depressed or anxious over financial uncertainty (Northwestern Mutual 2025). In South America, India, and Africa it's the top driver of worsening mental health"
         variation: "페루 노동자 조사에서 고용 불안은 불안을 1.43배 우울을 1.71배 높였다"
+        variation_en: "In a Peruvian worker survey, job insecurity raised anxiety 1.43x and depression 1.71x"
         domains: money, work
         states: mood
         links:
           - { label: Northwestern Mutual — Planning and Progress Study 2025, url: "https://news.northwesternmutual.com/planning-and-progress-study-2025", source: survey }
-          - { label: MDPI — 페루 노동자 고용 불안 연구, url: "https://www.mdpi.com/2071-1050/14/22/14799", source: journal }
+          - { label: MDPI — 페루 노동자 고용 불안 연구, label_en: MDPI — Job insecurity among Peruvian workers, url: "https://www.mdpi.com/2071-1050/14/22/14799", source: journal }
         helps:
           - name: { ko: 원인을 직접 다루기 (채무 조정·수당·소득), en: Addressing the money itself }
             strength: strong
             method: problem_solving
             process: "돈 걱정을 생각으로만 다루지 않고 → 채무 상담·수당 신청·지출 재설계 같은 실제 재정 조치를 한 가지 골라 → 실행한다"
+            process_en: "Don't treat money worry as thought alone → pick one real financial move - debt counseling, benefit applications, spending redesign → carry it out"
             evidence: "독일 기본소득 RCT: 정신건강 0.31 SD 개선, 종료 18개월 뒤에도 효과의 91% 유지. 케냐 RCT 에서 심리치료(PM+) 단독은 1년 뒤 효과가 0 이었고 현금 이전만 효과가 있었다 (Haushofer 2020)"
+            evidence_en: "German basic-income RCT: mental health improved 0.31 SD, with 91% of the effect intact 18 months after it ended. In a Kenyan RCT, psychotherapy alone (PM+) was at zero after a year while cash transfers worked (Haushofer 2020)"
             caveat: "개인이 현금 이전을 만들 수는 없다. 할 수 있는 것은 채무 상담·수당·제도 접근이다. 원인이 돈이면 마음만 다뤄서는 안 된다는 것이 핵심이다"
+            caveat_en: "An individual can't create a cash transfer. What you can do: debt counseling, benefits, access to programs. The point is that when money is the cause, treating only the mind isn't enough"
             links:
-              - { label: 독일 기본소득 시험 — DIW Berlin 2025, url: "https://www.diw-berlin.de/documents/publikationen/73/diw_01.c.968161.de/dp2129.pdf", source: journal }
+              - { label: 독일 기본소득 시험 — DIW Berlin 2025, label_en: German basic income trial — DIW Berlin 2025, url: "https://www.diw-berlin.de/documents/publikationen/73/diw_01.c.968161.de/dp2129.pdf", source: journal }
           - name: { ko: 심리치료와 재정 상담을 함께, en: Integrated CBT and money advice }
             strength: moderate
             method: decatastrophizing
             process: "돈에 대한 파국적 사고를 검토하면서 → 같은 기간에 채무·예산 상담을 병행한다"
+            process_en: "Examine catastrophic thoughts about money → run debt and budget counseling in the same period"
             evidence: "NHS 타당성 연구 32명: 우울·불안 동시 회복 33% (이 집단의 기준선 22%)"
+            evidence_en: "NHS feasibility study, 32 people: simultaneous recovery from depression and anxiety in 33% (baseline for this group: 22%)"
             caveat: "소규모. 조기 선별과 부서 간 협력이 조건"
+            caveat_en: "Small. Depends on early screening and cross-department cooperation"
             links:
-              - { label: NHS 통합 개입 타당성 연구 — BJPsych Open 2025, url: "https://www.cambridge.org/core/journals/bjpsych-open/article/feasibility-and-potential-effects-of-a-combined-money-advice-and-psychological-therapy-intervention-within-national-health-service-talking-therapies-services/C825870B721FB75051FD29177AAF0B73", source: journal }
+              - { label: NHS 통합 개입 타당성 연구 — BJPsych Open 2025, label_en: NHS integrated intervention feasibility study — BJPsych Open 2025, url: "https://www.cambridge.org/core/journals/bjpsych-open/article/feasibility-and-potential-effects-of-a-combined-money-advice-and-psychological-therapy-intervention-within-national-health-service-talking-therapies-services/C825870B721FB75051FD29177AAF0B73", source: journal }
 
       - id: sadness_anger
         name: { ko: 슬픔과 분노, en: Sadness and anger }
         summary: "이유를 대기 어려운 슬픔이나 사소한 일에 터지는 화가 하루를 물들이는 상태"
+        summary_en: "Sadness that's hard to explain, or anger that erupts at small things, coloring the day"
         figure: "144개국에서 어제 슬픔을 느낀 사람 26% 분노를 느낀 사람 22% (Gallup 2024)"
+        figure_en: "Across 144 countries, 26% felt sadness yesterday and 22% felt anger (Gallup 2024)"
         variation: "차드 슬픔 52% 분노 47%. 요르단·아르메니아·이라크도 분쟁으로 높다"
+        variation_en: "Chad: sadness 52%, anger 47%. Jordan, Armenia, and Iraq also run high with conflict"
         domains: family, people
         states: mood
         links:
-          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: Gallup — 세계 감정 보고서, label_en: Gallup — Global Emotions Report, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
         helps:
           - name: { ko: 분노를 다루는 CBT, en: CBT for anger }
             strength: strong
             method: trigger_mapping
             process: "화가 터지는 상황과 직전의 생각을 특정하고 → 해석을 검토하고 → 다른 반응을 미리 연습한다"
+            process_en: "Pinpoint the situations where anger erupts and the thought just before → examine the interpretation → rehearse a different response in advance"
             evidence: "50개 연구 1,640명: d 0.70. 메타분석들의 범위 0.61~0.90 (Beck & Fernandez 1998)"
+            evidence_en: "50 studies, 1,640 people: d 0.70. Meta-analyses range 0.61-0.90 (Beck & Fernandez 1998)"
             caveat: "컴퓨터로 편향을 훈련하는 방식은 g −0.18 로 작다. 사람과 하는 다요소 치료가 낫다"
+            caveat_en: "Computerized bias training is small at g −0.18. Multi-component treatment with a person is better"
             links:
-              - { label: Beck & Fernandez 1998 — 분노 CBT 메타분석, url: "https://link.springer.com/article/10.1023/A:1018763902991", source: journal }
+              - { label: Beck & Fernandez 1998 — 분노 CBT 메타분석, label_en: Beck & Fernandez 1998 — Anger CBT meta-analysis, url: "https://link.springer.com/article/10.1023/A:1018763902991", source: journal }
           - name: { ko: 이어지는 슬픔을 위한 애도 치료, en: Grief therapy }
             strength: strong
             process: "상실을 피하지 않고 → 이야기로 다시 구성하며 → 끊어진 사회적 지지를 다시 잇는다"
+            process_en: "Don't avoid the loss → reconstruct it as a story → reconnect the social support that was cut"
             evidence: "지속성 애도 55개 연구 10,330명 네트워크 메타분석: 행동치료 SMD −1.05, 3세대 CBT −1.00"
+            evidence_en: "Network meta-analysis of 55 prolonged-grief studies, 10,330 people: behavior therapy SMD −1.05, third-wave CBT −1.00"
             caveat: "웹 기반은 −0.30 으로 작다. 혼자 20분씩 세 번 쓰는 표현적 글쓰기는 효과가 없다"
+            caveat_en: "Web-based is small at −0.30. Solo expressive writing, 20 minutes three times, doesn't work"
             links:
-              - { label: 지속성 애도 네트워크 메타분석 — Psychiatry Research 2024, url: "https://www.sciencedirect.com/science/article/abs/pii/S1876201824002260", source: journal }
+              - { label: 지속성 애도 네트워크 메타분석 — Psychiatry Research 2024, label_en: Prolonged grief network meta-analysis — Psychiatry Research 2024, url: "https://www.sciencedirect.com/science/article/abs/pii/S1876201824002260", source: journal }
 
       - id: pain
         name: { ko: 몸으로 나오는 고통, en: Physical pain }
         summary: "마음의 부담이 두통·소화불량·근육 통증으로 몸에 먼저 나타나는 상태"
+        summary_en: "The mind's load showing up in the body first - headaches, indigestion, muscle pain"
         figure: "144개국 32%가 어제 신체 통증을 느꼈다 (Gallup 2024)"
+        figure_en: "32% across 144 countries felt physical pain yesterday (Gallup 2024)"
         variation: "시에라리온 77% 로 Gallup 16년 추적 중 최고치. 분쟁과 보건 체계 붕괴가 겹친 곳에서 정신적 고통이 몸으로 나온다"
+        variation_en: "Sierra Leone at 77%, the highest in Gallup's 16-year tracking. Where conflict and collapsed health systems overlap, mental distress comes out through the body"
         domains: body
         states: energy
         links:
-          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
-          - { label: GBD — 정신질환 유병과 부담 1990~2023, url: "https://www.healthdata.org/index%2Ephp/research-analysis/library/updated-trends-global-prevalence-and-burden-mental-disorders-1990-2023", source: gbd }
+          - { label: Gallup — 세계 감정 보고서, label_en: Gallup — Global Emotions Report, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: GBD — 정신질환 유병과 부담 1990~2023, label_en: GBD — Mental disorder prevalence and burden 1990-2023, url: "https://www.healthdata.org/index%2Ephp/research-analysis/library/updated-trends-global-prevalence-and-burden-mental-disorders-1990-2023", source: gbd }
         helps:
           - name: { ko: 통증 재처리 치료, en: Pain reprocessing therapy }
             strength: strong
             method: alternative_hypothesis
             process: "의학적 원인을 먼저 확인한 뒤 → 통증을 조직 손상이 아니라 뇌의 오경보로 다시 해석하고 → 두려움 없이 움직이는 연습을 한다. 4주 8회기"
+            process_en: "Rule out medical causes first → reinterpret the pain as the brain's false alarm rather than tissue damage → practice moving without fear. 8 sessions over 4 weeks"
             evidence: "만성 요통 151명 RCT: 통증 소실·거의 소실 66% vs 위약 20% vs 통상 치료 10%. 1년 유지 (Ashar 2022)"
+            evidence_en: "RCT of 151 people with chronic back pain: pain gone or nearly gone in 66% vs 20% placebo vs 10% usual care. Held at 1 year (Ashar 2022)"
             caveat: "요통 외 통증으로의 일반화는 미확인. 파국적 통증 신념이 줄어드는 것이 효과를 매개했다"
+            caveat_en: "Generalization beyond back pain unconfirmed. Reduced catastrophic pain beliefs mediated the effect"
             links:
               - { label: Ashar 2022 — JAMA Psychiatry, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2784694", source: journal }
 
   - id: regional
     title: { ko: 같은 압력에 지역마다 다르게 붙은 이름, en: Same pressure and different names }
     note: "일·경쟁·경제·관계라는 압력은 어디서나 같지만 문화마다 다른 이름으로 드러난다. 이름을 알면 그 지역 사람이 무엇을 말하고 있는지 빨리 알아들을 수 있다. '그곳에서 통한 것' 열은 그 지역에서 실제로 시험돼 효과가 확인된 것이다."
+    note_en: "The pressures - work, competition, money, relationships - are the same everywhere, but each culture surfaces them under a different name. Knowing the name helps you hear quickly what someone from that region is saying. The \"what worked there\" column lists what was actually tested and confirmed in that region."
     layout: table
     items:
       - id: jp_karoshi
         region: 일본
         name: { ko: 과로사와 장시간 노동, en: Karoshi }
         summary: "조직을 위한 자기희생이 정상으로 여겨져 주 55시간 이상 일하는 사람이 많다"
+        summary_en: "Self-sacrifice for the organization is treated as normal, with many working 55+ hours a week"
         variation: "주 55시간 이상 근무자는 정신질환 위험이 유의하게 높고 비정규직·여성·관리자에서 가장 크다. 과로사는 산재로 법적 인정을 받는다"
+        variation_en: "Working 55+ hours carries significantly higher mental illness risk, largest for non-regular workers, women, and managers. Karoshi is legally recognized as an occupational injury"
         links:
-          - { label: 후생노동성 — 과로사 방지 백서 2024, url: "https://www.mhlw.go.jp/content/11200000/2024Summary.pdf", source: official }
-          - { label: MDPI — 일본 장시간 노동과 정신건강, url: "https://www.mdpi.com/1660-4601/21/7/842", source: journal }
+          - { label: 후생노동성 — 과로사 방지 백서 2024, label_en: Japan MHLW — Karoshi prevention white paper 2024, url: "https://www.mhlw.go.jp/content/11200000/2024Summary.pdf", source: official }
+          - { label: MDPI — 일본 장시간 노동과 정신건강, label_en: MDPI — Long working hours and mental health in Japan, url: "https://www.mdpi.com/1660-4601/21/7/842", source: journal }
         helps:
           - name: { ko: 잔업 할증 인상 (정책), en: Overtime premium reform }
             strength: moderate
             process: "2010년 노동기준법 개정으로 월 60시간 초과 잔업의 할증을 25% 에서 50% 로 올려 고용주가 잔업을 줄이게 했다"
+            process_en: "A 2010 Labor Standards Act revision raised the overtime premium past 60 hours a month from 25% to 50%, pushing employers to cut overtime"
             evidence: "자연 실험: 근무시간이 줄고 젊은 노동자의 정신건강이 개선됐다 (Kohara & Noda 2023)"
+            evidence_en: "Natural experiment: working hours fell and young workers' mental health improved (Kohara & Noda 2023)"
             caveat: "대기업·남성 편중. 문화 자체는 바꾸지 못했다"
+            caveat_en: "Skewed to large firms and men. The culture itself didn't change"
             links:
               - { label: Kohara & Noda 2023, url: "https://doi.org/10.1111/1468-0106.12441", source: journal }
 
@@ -398,68 +510,86 @@ groups:
         region: 중국
         name: { ko: 996과 내권 그리고 탕핑, en: Involution and lying flat }
         summary: "끝없는 경쟁적 자기계발이 성과로 이어지지 않는 데서 오는 소진. 탕핑은 이에 대한 의도적 철수다"
+        summary_en: "Exhaustion from endless competitive self-improvement that no longer converts into results; tang ping is deliberate withdrawal from it"
         variation: "Z세대 노동자 676명 연구에서 996 문화와 업무 과부하가 직무 만족을 거쳐 번아웃과 심리적 고통으로 이어졌다"
+        variation_en: "In a study of 676 Gen-Z workers, 996 culture and overload ran through job satisfaction into burnout and psychological distress"
         links:
-          - { label: Nature HSSC — 중국 Z세대와 996, url: "https://www.nature.com/articles/s41599-023-02371-w", source: journal }
-          - { label: Frontiers — 내권과 청년 정신건강, url: "https://doi.org/10.3389/fpsyg.2022.909423", source: journal }
+          - { label: Nature HSSC — 중국 Z세대와 996, label_en: Nature HSSC — China's Gen Z and 996, url: "https://www.nature.com/articles/s41599-023-02371-w", source: journal }
+          - { label: Frontiers — 내권과 청년 정신건강, label_en: Frontiers — Involution and youth mental health, url: "https://doi.org/10.3389/fpsyg.2022.909423", source: journal }
 
       - id: in_pressure
         region: 인도
         name: { ko: 생활비 압박과 가족의 기대, en: Cost of living and family expectation }
         summary: "경력의 성공이 가족의 명예와 묶여 있어서 개인의 선택이 곧 가족의 문제가 된다"
+        summary_en: "Career success is tied to family honor, so a personal choice becomes the family's problem"
         variation: "젊은 세대가 의미 있는 일·경제적 안정·웰빙을 동시에 찾기 어렵다고 답했고 잦은 이직으로 이어진다 (Deloitte 2025)"
+        variation_en: "Young people report struggling to find meaningful work, financial stability, and well-being at once, feeding frequent job changes (Deloitte 2025)"
         links:
-          - { label: Deloitte — 인도 Z세대·밀레니얼 조사 2025, url: "https://www.deloitte.com/content/dam/assets-zone1/in/en/docs/campaigns/2025/in-hc-2025genzmillennialsurveycountryreport-india.pdf", source: survey }
+          - { label: Deloitte — 인도 Z세대·밀레니얼 조사 2025, label_en: Deloitte — Gen Z and millennial survey in India 2025, url: "https://www.deloitte.com/content/dam/assets-zone1/in/en/docs/campaigns/2025/in-hc-2025genzmillennialsurveycountryreport-india.pdf", source: survey }
         helps:
           - name: { ko: 비전문 상담사의 행동 활성화 (Healthy Activity Program), en: Lay counsellor behavioral activation }
             strength: strong
             method: behavioral_activation
             process: "훈련받은 일반인 상담사가 6~8회기 동안 활동 계획과 문제 해결을 함께 한다"
+            process_en: "A trained lay counselor works through activity planning and problem solving over 6-8 sessions"
             evidence: "Lancet 2017 RCT (Patel). 저자원 지역 메타분석에서 가장 큰 효과 중 하나로 인용된다"
+            evidence_en: "Lancet 2017 RCT (Patel). Cited among the largest effects in low-resource-setting meta-analyses"
             caveat: "중증 우울(PHQ-9 20 이상)만 대상. 산후 우울에 동료가 시행한 판은 효과가 작았다(SMD −0.13)"
+            caveat_en: "Only severe depression (PHQ-9 ≥ 20). The peer-delivered postpartum version was small (SMD −0.13)"
 
       - id: kr_burnout
         region: 한국
         name: { ko: 번아웃과 진로 불안, en: Burnout and career anxiety }
         summary: "직장인 대다수가 번아웃을 겪지만 도움을 구하는 비율은 낮다"
+        summary_en: "Most workers experience burnout but few seek help"
         variation: "직장인 69% 번아웃. 청년 번아웃 원인 1위는 진로 불안 39.1%. 정신질환을 경험한 성인 중 12.1%만 전문가 도움을 받았다"
+        variation_en: "69% of workers burned out. The top cause of youth burnout is career anxiety at 39.1%. Only 12.1% of adults who experienced mental illness got professional help"
         links:
-          - { label: 국무조정실 — 청년 삶 실태조사 2024, url: "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583", source: official }
-          - { label: 동아일보 — 직장인 번아웃 조사 2024, url: "https://www.donga.com/news/Economy/article/all/20240612/125388807/1", source: press }
+          - { label: 국무조정실 — 청년 삶 실태조사 2024, label_en: Korea OPC — Youth life survey 2024, url: "https://www.opm.go.kr/opm/news/press1.do?articleNo=158583", source: official }
+          - { label: 동아일보 — 직장인 번아웃 조사 2024, label_en: Dong-A Ilbo — Worker burnout survey 2024, url: "https://www.donga.com/news/Economy/article/all/20240612/125388807/1", source: press }
 
       - id: latam_precarity
         region: 라틴아메리카
         name: { ko: 고용 불안과 폭력이 겹친 불안정, en: Job insecurity and violence }
         summary: "경제적 불안정 위에 치안과 정치 불안이 겹쳐서 자가보고 불안·우울이 세계에서 가장 높다"
+        summary_en: "Economic precarity stacked with insecurity and political instability - the world's highest self-reported anxiety and depression"
         variation: "페루 노동자 1,855명 중 30% 불안 16% 우울. 지역 전체 자가보고 불안·우울 33% (Wellcome)"
+        variation_en: "Of 1,855 Peruvian workers, 30% anxious and 16% depressed. Region-wide self-reported anxiety/depression: 33% (Wellcome)"
         links:
-          - { label: MDPI — 페루 노동자 연구, url: "https://www.mdpi.com/2071-1050/14/22/14799", source: journal }
-          - { label: Wellcome Global Monitor — 정신건강, url: "https://wellcome.org/insights/reports/wellcome-global-monitor-mental-health/2020", source: wellcome }
+          - { label: MDPI — 페루 노동자 연구, label_en: MDPI — Study of Peruvian workers, url: "https://www.mdpi.com/2071-1050/14/22/14799", source: journal }
+          - { label: Wellcome Global Monitor — 정신건강, label_en: Wellcome Global Monitor — Mental health, url: "https://wellcome.org/insights/reports/wellcome-global-monitor-mental-health/2020", source: wellcome }
 
       - id: me_stigma
         region: 중동
         name: { ko: 낙인과 치료 격차, en: Stigma and treatment gap }
         summary: "정신건강을 말하는 것 자체가 조직 안에서 억제되어 겪고 있어도 드러내지 못한다"
+        summary_en: "Talking about mental health is itself suppressed inside organizations, so people suffer without showing it"
         variation: "사우디 직장인 4,050명 조사에서 조직 문화가 정신건강 공개를 억제하고 관련 복지가 부족했다"
+        variation_en: "A survey of 4,050 Saudi workers found organizational culture suppressing disclosure and little related welfare"
         links:
-          - { label: Tuhoon — 사우디 직장 웰니스 보고서 2022, url: "https://tuhoon.com/pdf/State_of_Wellness_at_the_Workplace_2022_Tuhoon_en.pdf", source: survey }
+          - { label: Tuhoon — 사우디 직장 웰니스 보고서 2022, label_en: Tuhoon — Saudi workplace wellness report 2022, url: "https://tuhoon.com/pdf/State_of_Wellness_at_the_Workplace_2022_Tuhoon_en.pdf", source: survey }
 
       - id: africa_untreated
         region: 사하라 이남 아프리카
         name: { ko: 치료받지 못하는 우울과 복합 고통, en: Untreated depression }
         summary: "분쟁·경제 붕괴·보건 체계 부재가 겹쳐서 고통이 진단 이전에 몸과 감정으로 나온다"
+        summary_en: "Conflict, economic collapse, and absent health systems overlap; distress surfaces in body and emotion before any diagnosis"
         variation: "차드 슬픔 52% 분노 47%. 시에라리온 신체 통증 77%. 아프리카 지역 1억 5천만 명이 정신건강 문제를 겪지만 1인당 정신건강 예산은 0.5달러(세계 평균 7.5달러) 정신건강 인력은 10만 명당 1.6명이다 (WHO AFRO)"
+        variation_en: "Chad: sadness 52%, anger 47%. Sierra Leone: physical pain 77%. 150 million people in the African region face mental health problems, but per-capita mental health spending is $0.50 (world average $7.50) and staffing is 1.6 per 100,000 (WHO AFRO)"
         links:
-          - { label: Gallup — 세계 감정 보고서, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
-          - { label: WHO 아프리카 — 정신건강 대시보드 발표, url: "https://www.afro.who.int/news/mental-health-conditions-affect-150-million-africa-amid-insufficient-care-services", source: who }
-          - { label: WHO 아프리카 — 정신건강 돌봄의 장벽, url: "https://www.afro.who.int/news/barriers-mental-health-care-africa", source: who }
+          - { label: Gallup — 세계 감정 보고서, label_en: Gallup — Global Emotions Report, url: "https://www.gallup.com/analytics/349280/state-of-worlds-emotional-health.aspx", source: gallup }
+          - { label: WHO 아프리카 — 정신건강 대시보드 발표, label_en: WHO Africa — Mental health dashboard launch, url: "https://www.afro.who.int/news/mental-health-conditions-affect-150-million-africa-amid-insufficient-care-services", source: who }
+          - { label: WHO 아프리카 — 정신건강 돌봄의 장벽, label_en: WHO Africa — Barriers to mental health care, url: "https://www.afro.who.int/news/barriers-mental-health-care-africa", source: who }
         helps:
           - name: { ko: Friendship Bench (벤치 위의 문제 해결 치료), en: Friendship Bench }
             strength: strong
             method: problem_solving
             process: "진료소 앞 벤치에서 훈련받은 지역 할머니 보건요원이 6회기 문제 해결 치료를 한다"
+            process_en: "On a bench outside the clinic, trained community grandmothers deliver six sessions of problem-solving therapy"
             evidence: "짐바브웨 군집 RCT 573명: 6개월 뒤 우울 13.7% vs 49.9% (위험비 0.28). 불안도 −5.73점 (Chibanda 2016)"
+            evidence_en: "Zimbabwe cluster RCT, 573 people: depression at six months 13.7% vs 49.9% (risk ratio 0.28); anxiety down 5.73 points too (Chibanda 2016)"
             caveat: "여성 86%·HIV 양성 42% 표본. 장기 유지와 전국 확산은 미확인"
+            caveat_en: "Sample 86% women, 42% HIV-positive. Long-term retention and national scale-up unconfirmed"
             links:
               - { label: Friendship Bench — JAMA 2016, url: "https://jamanetwork.com/journals/jama/fullarticle/2594719", source: journal }
 
@@ -467,229 +597,293 @@ groups:
         region: 유럽·북미
         name: { ko: 높은 진단률과 임상 부담, en: High diagnosis rates }
         summary: "진단과 통계가 촘촘해서 임상 부담이 가장 크게 잡힌다. 실제 고통이 더 크다는 뜻은 아니다"
+        summary_en: "Dense diagnosis and statistics make the clinical burden look largest; it doesn't mean the suffering is greater"
         variation: "GBD 장애보정수명 아메리카 2,380 유럽 2,162 (10만 명당). 네덜란드 3,556 으로 최고"
+        variation_en: "GBD disability-adjusted years per 100,000: Americas 2,380, Europe 2,162. Netherlands highest at 3,556"
         links:
-          - { label: GBD — 정신질환 유병과 부담 1990~2023, url: "https://www.healthdata.org/index%2Ephp/research-analysis/library/updated-trends-global-prevalence-and-burden-mental-disorders-1990-2023", source: gbd }
+          - { label: GBD — 정신질환 유병과 부담 1990~2023, label_en: GBD — Mental disorder prevalence and burden 1990-2023, url: "https://www.healthdata.org/index%2Ephp/research-analysis/library/updated-trends-global-prevalence-and-burden-mental-disorders-1990-2023", source: gbd }
 
   - id: everyday
     title: { ko: 상담 현장에서 가장 자주 나오는 일상적 어려움, en: What people actually bring to counseling }
     note: "진단 기준에는 못 미치지만 상담사들이 가장 자주 마주치는 것들이다. 주로 영어권 상담 데이터에 근거하지만 일·경쟁·관계라는 압력은 위의 모든 지역과 겹친다. howami 의 대화가 실제로 다루는 층위가 여기다. 흔한 항목일수록 개입 연구가 얇은 역설이 있어서, 시험이 없는 것은 없다고 적었다."
+    note_en: "Below diagnostic thresholds, but what counselors meet most often. Mostly grounded in English-language counseling data, though the pressures of work, competition, and relationships overlap with every region above. This is the layer howami's conversations actually work in. There's a paradox: the more common the item, the thinner the intervention research - items without trials say so."
     layout: cards
     items:
       - id: everyday_anxiety
         name: { ko: 만성적 일상 불안, en: Everyday anxiety }
         summary: "진단 기준에는 못 미치지만 걱정과 압도감이 늘 배경에 깔려 있는 상태"
+        summary_en: "Below diagnostic thresholds, but worry and overwhelm always in the background"
         figure: "상담을 찾는 이유 1위 34% (Grow Therapy 2025)"
+        figure_en: "The #1 reason for seeking counseling, 34% (Grow Therapy 2025)"
         domains: work, people
         states: mood, sleep
         links:
-          - { label: Grow Therapy — 정신건강 트렌드, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
+          - { label: Grow Therapy — 정신건강 트렌드, label_en: Grow Therapy — Mental health trends, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
         helps:
           - name: { ko: 사고기록과 걱정 시간 (CBT), en: CBT }
             strength: strong
             method: cbt_thought_record
             process: "걱정이 올라오는 순간의 생각을 적고 → 증거를 검토하고 → 통제 밖의 걱정은 정해진 시간으로 미루고 → 피하던 일에 작은 단계부터 다가간다"
+            process_en: "Write the thought as the worry rises → review the evidence → defer out-of-control worries to a set time → approach what you've avoided in small steps"
             evidence: "범불안장애 65개 RCT 5,048명: 통상 치료 대비 SMD −0.74, 3~12개월 뒤 −0.60 (Papola 2023)"
+            evidence_en: "65 GAD RCTs, 5,048 people: SMD −0.74 vs usual care, −0.60 at 3-12 months (Papola 2023)"
             caveat: "진단 기준 이하의 일상 불안을 따로 시험한 연구는 적다. 범불안장애 근거를 빌려 적었다"
+            caveat_en: "Few studies test everyday, subthreshold anxiety directly; GAD evidence is borrowed here"
             links:
-              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
+              - { label: Papola 2023 — JAMA Psychiatry 네트워크 메타분석, label_en: Papola 2023 — JAMA Psychiatry network meta-analysis, url: "https://jamanetwork.com/journals/jamapsychiatry/fullarticle/2810866", source: journal }
 
       - id: overwhelm
         name: { ko: 압도감, en: Overwhelm }
         summary: "일상의 요구를 감당하지 못한다는 느낌. 사건 자체보다 그에 대한 내 반응을 감당하기 어렵다"
+        summary_en: "The feeling that daily demands can't be carried - your reaction is harder to bear than the events themselves"
         figure: "인생 전환기를 이유로 한 상담 +168% 대처 기술을 이유로 한 상담 +152% (한 해 증가율)"
+        figure_en: "Counseling for life transitions +168%, for coping skills +152% (one-year growth)"
         domains: work, family
         states: execution, energy
         links:
-          - { label: Grow Therapy — 정신건강 트렌드, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
-          - { label: ReachLink — 상담에서 자주 나오는 문제, url: "https://www.reachlink.com/advice/mental-health-of-men-and-boys/mental-health-challenges-faced-by-therapy-clients/", source: other }
+          - { label: Grow Therapy — 정신건강 트렌드, label_en: Grow Therapy — Mental health trends, url: "https://growtherapy.com/blog/mental-health-trends/", source: survey }
+          - { label: ReachLink — 상담에서 자주 나오는 문제, label_en: ReachLink — Common issues in counseling, url: "https://www.reachlink.com/advice/mental-health-of-men-and-boys/mental-health-challenges-faced-by-therapy-clients/", source: other }
         helps:
           - name: { ko: 문제 해결 단계, en: Problem-solving therapy }
             strength: moderate
             method: problem_solving
             process: "압도하는 것을 전부 목록으로 꺼내고 → 하나만 고르고 → 해결책을 여럿 꺼낸 뒤 → 첫 걸음 하나를 정한다"
+            process_en: "List everything that overwhelms → pick just one → generate several solutions → choose a single first step"
             evidence: "우울 7개 심리치료 네트워크 비교: 문제해결치료는 CBT·대인관계치료와 동급 (Barth 2013). 짐바브웨 573명 RCT 의 핵심 절차이기도 하다"
+            evidence_en: "Network comparison of 7 depression psychotherapies: problem-solving therapy on par with CBT and interpersonal therapy (Barth 2013). Also the core procedure of the 573-person Zimbabwe RCT"
             caveat: "압도감 자체를 겨냥한 시험은 드물다. 우울 근거를 빌려 적었다"
+            caveat_en: "Trials targeting overwhelm itself are rare; depression evidence is borrowed here"
             links:
-              - { label: Barth 2013 — PLoS Medicine 네트워크 메타분석, url: "https://doi.org/10.1371/journal.pmed.1001454", source: journal }
+              - { label: Barth 2013 — PLoS Medicine 네트워크 메타분석, label_en: Barth 2013 — PLoS Medicine network meta-analysis, url: "https://doi.org/10.1371/journal.pmed.1001454", source: journal }
 
       - id: languishing
         name: { ko: 무기력, en: Languishing }
         summary: "우울도 아니고 잘 지내는 것도 아닌 정체 상태. 아무것도 잘못되지 않았는데 아무것도 좋지 않다"
+        summary_en: "Neither depressed nor doing well - stalled. Nothing is wrong, and nothing is good"
         figure: "Adam Grant 가 2021년에 대중화했고 긍정심리학에서 구성 개념으로 정립됐다"
+        figure_en: "Popularized by Adam Grant in 2021; established as a construct in positive psychology"
         domains: solo
         states: energy, execution
         links:
           - { label: PMC — Languishing in critical perspective, url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9186784/", source: journal }
-          - { label: 위키백과 — Languishing, url: "https://en.wikipedia.org/wiki/Languishing", source: wikipedia }
+          - { label: 위키백과 — Languishing, label_en: Wikipedia — Languishing, url: "https://en.wikipedia.org/wiki/Languishing", source: wikipedia }
         helps:
           - name: { ko: 행동 활성화, en: Behavioral activation }
             strength: strong
             method: behavioral_activation
             process: "의욕이 생기기를 기다리지 않고 → 조금이라도 가치 있는 활동을 작게 계획해 실행하고 → 실행 뒤의 기분을 기록한다"
+            process_en: "Don't wait for motivation → plan even a slightly valued activity small and do it → record the mood afterward"
             evidence: "105개 시험 13,933명: SMD 0.67, 12개월 유지. 자가 시행형 0.36"
+            evidence_en: "105 trials, 13,933 people: SMD 0.67, held at 12 months. Self-guided: 0.36"
             caveat: "우울 근거다. 무기력(languishing) 자체를 겨냥한 시험은 아직 적다"
+            caveat_en: "Depression evidence; trials targeting languishing itself are still few"
             links:
-              - { label: 행동 활성화 메타분석 2026 — UCL, url: "https://discovery.ucl.ac.uk/id/eprint/10228668/", source: journal }
+              - { label: 행동 활성화 메타분석 2026 — UCL, label_en: Behavioral activation meta-analysis 2026 — UCL, url: "https://discovery.ucl.ac.uk/id/eprint/10228668/", source: journal }
           - name: { ko: 긍정심리 개입 (좋았던 것 세 가지·강점·감사), en: Positive psychology interventions }
             strength: weak
             method: three_good_things
             process: "좋았던 일 세 가지를 매일 적거나 → 강점을 찾아 쓰거나 → 감사 편지를 쓰는 것을 2~4주 이상 이어간다"
+            process_en: "Write three good things daily → or identify and use a strength → or write a gratitude letter, kept up for 2-4+ weeks"
             evidence: "39개 RCT 6,139명: 주관적 웰빙 d 0.34, 심리적 웰빙 0.20, 우울 0.23. 3~6개월 뒤 웰빙은 작게 유지 (Bolier 2013)"
+            evidence_en: "39 RCTs, 6,139 people: subjective well-being d 0.34, psychological well-being 0.20, depression 0.23. Well-being holds small at 3-6 months (Bolier 2013)"
             caveat: "작은 효과. 길고 개인 형식일 때 더 크다. 출판 편향 징후가 있다"
+            caveat_en: "Small effects. Bigger when longer and individual. Signs of publication bias"
             links:
-              - { label: Bolier 2013 — BMC Public Health 메타분석, url: "https://doi.org/10.1186/1471-2458-13-119", source: journal }
+              - { label: Bolier 2013 — BMC Public Health 메타분석, label_en: Bolier 2013 — BMC Public Health meta-analysis, url: "https://doi.org/10.1186/1471-2458-13-119", source: journal }
 
       - id: relationship
         name: { ko: 관계 갈등과 단절, en: Relationship strain }
         summary: "가까운 사람에게 이해받지 못하고 같은 충돌이 반복되는 상태"
+        summary_en: "Not feeling understood by the people closest to you, with the same conflicts repeating"
         figure: "상담사들이 꼽는 반복적 호소 문제. 직무 스트레스 원인 중 인간관계가 4분의 1을 차지한다"
+        figure_en: "A recurring complaint counselors name. Relationships account for a quarter of job-stress causes"
         domains: family, people
         states: mood
         links:
-          - { label: GoodTherapy — 상담에서 다루는 문제들, url: "https://www.goodtherapy.org/learn-about-therapy/issues", source: other }
+          - { label: GoodTherapy — 상담에서 다루는 문제들, label_en: GoodTherapy — Issues counseling addresses, url: "https://www.goodtherapy.org/learn-about-therapy/issues", source: other }
         helps:
           - name: { ko: 정서 중심 부부·관계 치료 (EFT), en: Emotionally focused therapy }
             strength: strong
             method: affect_labeling
             process: "충돌 밑에 있는 애착 두려움('버려질까' '무시당할까')을 찾아 → 비난 대신 그 두려움을 안전하게 말하고 → 상대가 반응하는 경험을 쌓는다"
+            process_en: "Find the attachment fear under the conflict ('will I be abandoned' 'am I being dismissed') → say the fear safely instead of blaming → build experiences of the other person responding"
             evidence: "20개 RCT 332쌍: 종료 시 g 0.73, 추적 시 0.86. 약 70% 가 증상 없음 (Dalgleish 2025)"
+            evidence_en: "20 RCTs, 332 couples: g 0.73 at completion, 0.86 at follow-up. About 70% symptom-free (Dalgleish 2025)"
             caveat: "훈련된 치료자가 필요하다. 의사소통 기술을 가르치는 행동 부부치료는 g 0.53 이고 12개월에 줄어든다"
+            caveat_en: "Needs a trained therapist. Behavioral couple therapy that teaches communication skills is g 0.53 and fades by 12 months"
             links:
-              - { label: Dalgleish 2025 — EFT 메타분석, url: "https://www.ovid.com/journals/cfprp/fulltext/10.1037/cfp0000233", source: journal }
-              - { label: 행동 부부치료 메타분석 2018 — JMFT, url: "https://onlinelibrary.wiley.com/doi/10.1111/jmft.12336", source: journal }
+              - { label: Dalgleish 2025 — EFT 메타분석, label_en: Dalgleish 2025 — EFT meta-analysis, url: "https://www.ovid.com/journals/cfprp/fulltext/10.1037/cfp0000233", source: journal }
+              - { label: 행동 부부치료 메타분석 2018 — JMFT, label_en: Behavioral couple therapy meta-analysis 2018 — JMFT, url: "https://onlinelibrary.wiley.com/doi/10.1111/jmft.12336", source: journal }
 
       - id: behind
         name: { ko: 뒤처졌다는 감각, en: Feeling behind }
         summary: "남들 기준의 인생 이정표에 못 미친다는 자책. 중국의 내권과 같은 뿌리다"
+        summary_en: "Self-blame for missing other people's life milestones - the same root as China's involution"
         figure: "상담사들이 일관되게 마주치는 주제. 스스로를 탓하는 방식으로 내면화된다"
+        figure_en: "A theme counselors meet consistently, internalized as self-blame"
         domains: work, study, side
         states: mood
         links:
-          - { label: Verywell Mind — 상담에서 가장 흔한 문제, url: "https://www.verywellmind.com/most-common-issues-in-therapy-8547822", source: other }
+          - { label: Verywell Mind — 상담에서 가장 흔한 문제, label_en: Verywell Mind — Most common issues in therapy, url: "https://www.verywellmind.com/most-common-issues-in-therapy-8547822", source: other }
         helps:
           - name: { ko: 직접 겨냥한 시험 없음, en: No direct trials }
             strength: none
             method: cognitive_distortion_check
             process: "가장 가까운 근거는 두 가지다. 비교의 해석('나만 뒤처졌다')을 검토하는 사회 인지 개입과 → 주의를 자기 것으로 돌리는 감사 개입"
+            process_en: "The nearest evidence is twofold: social-cognitive work examining the comparison ('only I am behind') → and gratitude practice turning attention back to your own life"
             evidence: "감사 개입 25개 RCT 6,745명: g 0.22 (Kirca 2023). 외로움의 사회 인지 개입 g 0.43 (Hickin 2021)"
+            evidence_en: "25 gratitude RCTs, 6,745 people: g 0.22 (Kirca 2023). Social-cognitive loneliness interventions: g 0.43 (Hickin 2021)"
             caveat: "'뒤처짐' 자체를 결과로 잰 시험은 찾지 못했다. 연구 공백이다"
+            caveat_en: "No trial measures 'falling behind' itself as an outcome - a research gap"
             links:
-              - { label: Kirca 2023 — 감사 개입 메타분석, url: "https://doi.org/10.1007/s41042-023-00086-6", source: journal }
+              - { label: Kirca 2023 — 감사 개입 메타분석, label_en: Kirca 2023 — Gratitude intervention meta-analysis, url: "https://doi.org/10.1007/s41042-023-00086-6", source: journal }
 
       - id: comparison
         name: { ko: 사회적 비교와 FoMO, en: Social comparison and FoMO }
         summary: "타인의 편집된 삶과 나를 끊임없이 비교하고 놓치고 있다는 불안에 시달리는 상태"
+        summary_en: "Endlessly comparing yourself to others' edited lives, anxious about missing out"
         figure: "수동적으로 SNS 를 훑으며 비교하는 방식이 총 사용 시간보다 정신건강 악화를 더 강하게 예측한다 (1,707명 연구)"
+        figure_en: "Passive scrolling-and-comparing predicts worse mental health more strongly than total time does (a 1,707-person study)"
         domains: solo, people
         states: mood
         links:
-          - { label: Nature Scientific Reports — SNS 사용과 성인 웰빙, url: "https://www.nature.com/articles/s41598-026-40371-3", source: journal }
+          - { label: Nature Scientific Reports — SNS 사용과 성인 웰빙, label_en: Nature Scientific Reports — Social media use and adult well-being, url: "https://www.nature.com/articles/s41598-026-40371-3", source: journal }
         helps:
           - name: { ko: 감사 개입, en: Gratitude interventions }
             strength: weak
             method: three_good_things
             process: "비교로 가던 주의를 → 매일 좋았던 것이나 고마운 것 몇 가지를 적는 쪽으로 2~4주 돌린다"
+            process_en: "Redirect the attention that went to comparison → toward writing a few good or grateful things daily, for 2-4 weeks"
             evidence: "25개 RCT 6,745명: g 0.22. 단회기보다 2~4주가 낫다 (Kirca 2023)"
+            evidence_en: "25 RCTs, 6,745 people: g 0.22. 2-4 weeks beats a single session (Kirca 2023)"
             caveat: "작지만 안정적인 효과"
+            caveat_en: "Small but stable"
             links:
-              - { label: Kirca 2023 — 감사 개입 메타분석, url: "https://doi.org/10.1007/s41042-023-00086-6", source: journal }
+              - { label: Kirca 2023 — 감사 개입 메타분석, label_en: Kirca 2023 — Gratitude intervention meta-analysis, url: "https://doi.org/10.1007/s41042-023-00086-6", source: journal }
           - name: { ko: SNS 시간 제한, en: Limiting social media }
             strength: weak
             method: behavioral_experiment
             process: "하루 30분 같은 상한을 정해 3주 시험하고 → 기분과 외로움의 변화를 기록한다"
+            process_en: "Set a cap like 30 minutes a day and test it for 3 weeks → record changes in mood and loneliness"
             evidence: "32개 RCT 5,544명: g 0.17 (Burnell 2025). 대학생 143명 RCT: 3주 제한으로 외로움·우울 감소 (Hunt 2018)"
+            evidence_en: "32 RCTs, 5,544 people: g 0.17 (Burnell 2025). RCT of 143 students: a 3-week limit cut loneliness and depression (Hunt 2018)"
             caveat: "끝나면 사용량이 되돌아간다. 다른 기술과 짝지어야 유지된다"
+            caveat_en: "Usage rebounds when it ends. It holds only when paired with another skill"
             links:
-              - { label: Burnell 2025 — SNS 제한 메타분석, url: "https://www.sciencedirect.com/science/article/pii/S2666560325000714", source: journal }
+              - { label: Burnell 2025 — SNS 제한 메타분석, label_en: Burnell 2025 — Social media reduction meta-analysis, url: "https://www.sciencedirect.com/science/article/pii/S2666560325000714", source: journal }
 
       - id: rumination
         name: { ko: 반추와 둠스크롤링, en: Rumination and doomscrolling }
         summary: "같은 생각을 되돌리고 나쁜 뉴스를 멈추지 못하고 읽는 상태. 잠을 가장 먼저 앗아간다"
+        summary_en: "Replaying the same thoughts and reading bad news you can't stop reading. Sleep goes first"
         figure: "Z세대가 윗세대보다 2~3배 높다"
+        figure_en: "Gen Z runs 2-3x higher than older generations"
         domains: solo
         states: sleep, mood
         links:
-          - { label: Nature Scientific Reports — SNS 사용과 성인 웰빙, url: "https://www.nature.com/articles/s41598-026-40371-3", source: journal }
-          - { label: 위키백과 — Doomscrolling, url: "https://en.wikipedia.org/wiki/Doomscrolling", source: wikipedia }
+          - { label: Nature Scientific Reports — SNS 사용과 성인 웰빙, label_en: Nature Scientific Reports — Social media use and adult well-being, url: "https://www.nature.com/articles/s41598-026-40371-3", source: journal }
+          - { label: 위키백과 — Doomscrolling, label_en: Wikipedia — Doomscrolling, url: "https://en.wikipedia.org/wiki/Doomscrolling", source: wikipedia }
         helps:
           - name: { ko: 반추 초점 CBT, en: Rumination-focused CBT }
             strength: moderate
             method: five_whys
             process: "되새김이 시작되는 순간을 알아차리고 → '왜 나는'에서 '지금 어떻게'로 질문을 바꾸고 → 구체적인 행동 하나로 옮긴다"
+            process_en: "Notice the moment rumination starts → switch the question from 'why me' to 'how now' → move into one concrete action"
             evidence: "잔류 우울 42명 RCT: 통상 치료에 더했을 때 증상과 관해율이 개선됐고 반추 감소가 효과를 매개했다 (Watkins 2011)"
+            evidence_en: "RCT of 42 people with residual depression: added to usual care, symptoms and remission improved, with reduced rumination mediating the effect (Watkins 2011)"
             caveat: "첫 RCT 라 표본이 작고 주의 대조군이 없다"
+            caveat_en: "A first RCT: small sample, no attention control"
             links:
               - { label: Watkins 2011 — British Journal of Psychiatry, url: "https://www.cambridge.org/core/journals/the-british-journal-of-psychiatry/article/ruminationfocused-cognitivebehavioural-therapy-for-residual-depression-phase-ii-randomised-controlled-trial/8A7837A95E24712C034EB101FD53F41A", source: journal }
           - name: { ko: SNS·뉴스 시간 제한, en: Limiting social media and news }
             strength: weak
             method: behavioral_experiment
             process: "상한을 정해 3주 시험하고 → 잠과 기분의 변화를 기록한다"
+            process_en: "Set a cap and test it for 3 weeks → record changes in sleep and mood"
             evidence: "32개 RCT 5,544명: g 0.17 (Burnell 2025)"
+            evidence_en: "32 RCTs, 5,544 people: g 0.17 (Burnell 2025)"
             caveat: "둠스크롤링만 겨냥한 시험은 거의 없다. 끝나면 되돌아간다"
+            caveat_en: "Almost no trials target doomscrolling itself. It rebounds when it ends"
             links:
-              - { label: Burnell 2025 — SNS 제한 메타분석, url: "https://www.sciencedirect.com/science/article/pii/S2666560325000714", source: journal }
+              - { label: Burnell 2025 — SNS 제한 메타분석, label_en: Burnell 2025 — Social media reduction meta-analysis, url: "https://www.sciencedirect.com/science/article/pii/S2666560325000714", source: journal }
 
       - id: perfectionism
         name: { ko: 완벽주의, en: Perfectionism }
         summary: "스스로 세운 비현실적 기준에 못 미치면 전부 실패로 느끼는 상태"
+        summary_en: "Anything short of your own unrealistic standard feels like total failure"
         figure: "완벽주의에서 번아웃으로 이어지는 경로가 실증됐다. 역할 경계가 뚜렷하면 완충된다"
+        figure_en: "The path from perfectionism to burnout is empirically established. Clear role boundaries buffer it"
         domains: work, study
         states: execution
         links:
-          - { label: Taylor and Francis — 완벽주의와 번아웃, url: "https://www.tandfonline.com/doi/full/10.1080/1359432X.2025.2528616", source: journal }
-          - { label: 위키백과 — Perfectionism, url: "https://en.wikipedia.org/wiki/Perfectionism_(psychology)", source: wikipedia }
+          - { label: Taylor and Francis — 완벽주의와 번아웃, label_en: Taylor and Francis — Perfectionism and burnout, url: "https://www.tandfonline.com/doi/full/10.1080/1359432X.2025.2528616", source: journal }
+          - { label: 위키백과 — Perfectionism, label_en: Wikipedia — Perfectionism, url: "https://en.wikipedia.org/wiki/Perfectionism_(psychology)", source: wikipedia }
         helps:
           - name: { ko: 완벽주의 CBT (기준 낮추는 행동 실험), en: CBT for perfectionism }
             strength: moderate
             method: behavioral_experiment
             process: "'실수하면 끝'같은 기준을 적고 → 기준을 일부러 낮춘 행동 실험을 하고 → 실제 결과를 예상과 비교한다. 8주"
+            process_en: "Write the standard ('one mistake and it's over') → run behavioral experiments with the bar deliberately lowered → compare actual results with predictions. 8 weeks"
             evidence: "안내형 인터넷 CBT RCT 156명: 실수 걱정·개인 기준에서 큰 효과, 우울·불안·자기자비도 개선 (Rozental 2017)"
+            evidence_en: "Guided internet CBT RCT, 156 people: large effects on concern over mistakes and personal standards; depression, anxiety, and self-compassion improved too (Rozental 2017)"
             caveat: "중도 탈락 20~30%. 연습을 이어가야 유지된다"
+            caveat_en: "Dropout 20-30%. It holds only with continued practice"
             links:
-              - { label: Rozental 2017 — 완벽주의 인터넷 CBT RCT, url: "https://discovery.ucl.ac.uk/id/eprint/1559373/", source: journal }
+              - { label: Rozental 2017 — 완벽주의 인터넷 CBT RCT, label_en: Rozental 2017 — Internet CBT for perfectionism RCT, url: "https://discovery.ucl.ac.uk/id/eprint/1559373/", source: journal }
 
       - id: imposter
         name: { ko: 가면 증후군, en: Imposter syndrome }
         summary: "성과가 있어도 언젠가 들통날 것 같다는 두려움"
+        summary_en: "The fear of being found out someday, whatever the track record"
         figure: "자신감과 자존감 문제의 밑바탕으로 상담사들이 지목한다"
+        figure_en: "Counselors point to it beneath confidence and self-esteem problems"
         domains: work, side
         states: mood
         links:
-          - { label: BBC Worklife — 가면 증후군과 번아웃, url: "https://www.bbc.com/worklife/article/20220517-the-link-between-imposter-syndrome-and-burnout", source: press }
-          - { label: 위키백과 — Impostor syndrome, url: "https://en.wikipedia.org/wiki/Impostor_syndrome", source: wikipedia }
+          - { label: BBC Worklife — 가면 증후군과 번아웃, label_en: BBC Worklife — Impostor syndrome and burnout, url: "https://www.bbc.com/worklife/article/20220517-the-link-between-imposter-syndrome-and-burnout", source: press }
+          - { label: 위키백과 — Impostor syndrome, label_en: Wikipedia — Impostor syndrome, url: "https://en.wikipedia.org/wiki/Impostor_syndrome", source: wikipedia }
         helps:
           - name: { ko: 치료 시험 없음, en: No treatment trials }
             strength: none
             method: evidence_check
             process: "가장 가까운 근거는 → 성과의 증거를 검토하는 CBT 절차와 → 완벽주의 CBT 와 → 자기자비 연습이다"
+            process_en: "The nearest evidence: CBT procedures that review the evidence of your record → perfectionism CBT → and self-compassion practice"
             evidence: "62개 연구 14,161명 리뷰: 유병률 9~82%, 번아웃·우울과 동반. 그러나 개입을 시험한 연구는 0건 (Bravata 2020)"
+            evidence_en: "Review of 62 studies, 14,161 people: prevalence 9-82%, co-occurring with burnout and depression. Yet zero studies testing an intervention (Bravata 2020)"
             caveat: "널리 알려진 것에 비해 치료 근거가 전무하다. 흔하다고 해서 검증된 처방이 있는 것은 아니다"
+            caveat_en: "For how well-known it is, treatment evidence is nil. Common doesn't mean there's a validated prescription"
             links:
-              - { label: Bravata 2020 — 가면 증후군 체계적 문헌고찰, url: "https://link.springer.com/article/10.1007/s11606-019-05364-1", source: journal }
+              - { label: Bravata 2020 — 가면 증후군 체계적 문헌고찰, label_en: Bravata 2020 — Impostor syndrome systematic review, url: "https://link.springer.com/article/10.1007/s11606-019-05364-1", source: journal }
 
       - id: shame
         name: { ko: 수치심, en: Shame }
         summary: "잘못했다가 아니라 내가 잘못됐다는 느낌. 표면의 불안과 우울 아래에 자주 깔려 있다"
+        summary_en: "Not 'I did wrong' but 'I am wrong'. Often lying beneath surface anxiety and depression"
         figure: "1,500시간 임상 기록을 종합한 상담사가 가장 중요한 중심축으로 꼽았다"
+        figure_en: "A counselor synthesizing 1,500 clinical hours named it the most important axis"
         domains: solo
         states: mood
         links:
-          - { label: One Percent Better — 1500시간 임상에서 배운 것, url: "https://one-percent-better.kit.com/posts/8-lessons-from-1-500-hours-with-clients-in-2025", source: other }
+          - { label: One Percent Better — 1500시간 임상에서 배운 것, label_en: One Percent Better — Lessons from 1500 clinical hours, url: "https://one-percent-better.kit.com/posts/8-lessons-from-1-500-hours-with-clients-in-2025", source: other }
         helps:
           - name: { ko: 자비 초점 치료, en: Compassion-focused therapy }
             strength: weak
             method: self_compassion
             process: "자기비판의 목소리를 알아차리고 → 친구에게 하듯 말을 바꾸고 → 몸을 진정시키는 호흡과 심상을 연습한다"
+            process_en: "Notice the self-critical voice → change the words to how you'd speak to a friend → practice breathing and imagery that settle the body"
             evidence: "7개 RCT 640명 메타분석: 자기비판 감소, 자기위로 능력 증가 (Vidal & Soldevilla 2022)"
+            evidence_en: "Meta-analysis of 7 RCTs, 640 people: self-criticism down, capacity for self-soothing up (Vidal & Soldevilla 2022)"
             caveat: "RCT 가 적고 결과 척도가 제각각이다. CBT 와 직접 비교한 연구가 없다"
+            caveat_en: "Few RCTs and inconsistent outcome measures. No head-to-head comparison with CBT"
             links:
-              - { label: Vidal & Soldevilla 2022 — CFT 메타분석, url: "https://doi.org/10.1111/bjc.12394", source: journal }
+              - { label: Vidal & Soldevilla 2022 — CFT 메타분석, label_en: Vidal & Soldevilla 2022 — CFT meta-analysis, url: "https://doi.org/10.1111/bjc.12394", source: journal }
 
       - id: career
         name: { ko: 경력 정체와 직무 불만, en: Career distress }
         summary: "안정 때문에 해로운 직장에 머물면서 매일 조금씩 닳는 상태"
+        summary_en: "Staying in a harmful job for stability and wearing down a little every day"
         figure: "고성과자의 조용한 위기로 불린다. 중국의 탕핑과 인도의 잦은 이직이 같은 뿌리다"
+        figure_en: "Called the quiet crisis of high performers. China's tang ping and India's frequent job changes share the root"
         domains: work, side
         states: energy, execution
         links:
@@ -699,30 +893,38 @@ groups:
             strength: weak
             method: problem_solving
             process: "머무는 이유와 떠나지 못하는 이유를 나누어 적고 → 근무 조건 중 바꿀 수 있는 것을 특정하고 → 하나를 시험한다"
+            process_en: "Write the reasons for staying and the reasons you can't leave in two columns → identify which working conditions can change → test one"
             evidence: "경력 정체를 직접 겨냥한 시험은 드물다. 문제해결치료는 우울에서 CBT 와 동급 (Barth 2013). 구조 개입은 번아웃에 SMD −0.45 (Panagioti 2017)"
+            evidence_en: "Trials targeting career stagnation directly are rare. Problem-solving therapy matches CBT for depression (Barth 2013). Structural interventions hit burnout at SMD −0.45 (Panagioti 2017)"
             caveat: "빌려 온 근거다"
+            caveat_en: "Borrowed evidence"
             links:
-              - { label: Barth 2013 — PLoS Medicine 네트워크 메타분석, url: "https://doi.org/10.1371/journal.pmed.1001454", source: journal }
+              - { label: Barth 2013 — PLoS Medicine 네트워크 메타분석, label_en: Barth 2013 — PLoS Medicine network meta-analysis, url: "https://doi.org/10.1371/journal.pmed.1001454", source: journal }
               - { label: Panagioti 2017 — JAMA Internal Medicine, url: "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2588814", source: journal }
 
       - id: meaning
         name: { ko: 의미와 목적 상실, en: Loss of meaning }
         summary: "성취해도 약속된 행복이 오지 않고 왜 하는지 모르겠는 상태"
+        summary_en: "Achievement doesn't deliver the promised happiness and you no longer know why you're doing it"
         figure: "인도 젊은 세대의 의미 있는 일 결핍과 같은 호소. 인생 전환기 상담 +168% 와 겹친다"
+        figure_en: "The same complaint as young India's lack of meaningful work; overlaps with life-transition counseling +168%"
         domains: solo, side
         states: mood, execution
         links:
-          - { label: GoodTherapy — 상담에서 다루는 문제들, url: "https://www.goodtherapy.org/learn-about-therapy/issues", source: other }
+          - { label: GoodTherapy — 상담에서 다루는 문제들, label_en: GoodTherapy — Issues counseling addresses, url: "https://www.goodtherapy.org/learn-about-therapy/issues", source: other }
         helps:
           - name: { ko: 가치 확인과 의미 중심 치료, en: Values work and logotherapy }
             strength: weak
             method: values_check
             process: "무엇이 중요한지 가치를 확인하고 → 고통 속에서도 선택할 수 있는 태도와 작은 행동을 찾는다"
+            process_en: "Check what matters - your values → find the stance and the small actions still choosable inside the pain"
             evidence: "집단 로고테라피 RCT 20명: 우울 감소·삶의 목적 증가, 1개월 유지 (Robatmili 2014). 긍정심리 개입 39개 RCT: 웰빙 d 0.34 (Bolier 2013)"
+            evidence_en: "Group logotherapy RCT, 20 people: depression down, purpose up, held 1 month (Robatmili 2014). 39 positive-psychology RCTs: well-being d 0.34 (Bolier 2013)"
             caveat: "의미 중심 치료는 표본이 극히 작다. 긍정심리 개입이 가장 가까운 근거다"
+            caveat_en: "Meaning-centered therapy samples are tiny. Positive-psychology interventions are the nearest evidence"
             links:
-              - { label: Robatmili 2014 — 집단 로고테라피 RCT, url: "https://doi.org/10.1007/s10447-014-9225-0", source: journal }
-              - { label: Bolier 2013 — BMC Public Health 메타분석, url: "https://doi.org/10.1186/1471-2458-13-119", source: journal }
+              - { label: Robatmili 2014 — 집단 로고테라피 RCT, label_en: Robatmili 2014 — Group logotherapy RCT, url: "https://doi.org/10.1007/s10447-014-9225-0", source: journal }
+              - { label: Bolier 2013 — BMC Public Health 메타분석, label_en: Bolier 2013 — BMC Public Health meta-analysis, url: "https://doi.org/10.1186/1471-2458-13-119", source: journal }
 
 patterns:
   - "보편적인 것은 압력이고 지역적인 것은 이름이다. 일에서 오는 소진, 경제 불안, 경쟁에서 뒤처질 두려움, 관계의 단절은 모든 지역에서 나타나고, 과로사·내권·탕핑·번아웃은 그 압력에 각 문화가 붙인 이름이다."
@@ -734,3 +936,15 @@ patterns:
   - "해석을 바꾸는 것이 상황을 바꾸는 것보다 나은 영역도 있다. 외로움은 만남 기회 제공(−0.27)보다 거부당할 것이라는 해석 수정이 효과적이고, 통증은 손상이 아니라 오경보라는 재해석이 66% 소실을 만들었다. 어디를 바꿔야 하는지가 어려움마다 다르다."
   - "흔한 항목일수록 개입 근거가 얇은 역설이 있다. 가면 증후군은 치료 시험 0건, 의미 상실은 20명 시험 하나, 뒤처졌다는 감각은 직접 시험 없음, 수치심은 RCT 7건이다. 흔하다고 해서 검증된 처방이 있는 것은 아니다."
   - "모든 지역에서 젊은 세대(Z세대·밀레니얼)와 여성이 더 높은 수치를 보이고, 정서적 지지의 수요와 공급 간극이 외로움과 불안을 동시에 키운다."
+
+
+patterns_en:
+  - "What's universal is the pressure; what's local is the name. Work exhaustion, money worry, fear of falling behind, and disconnection appear in every region - karoshi, involution, tang ping, and burnout are the names each culture gave the same pressure."
+  - "The dominant pressure differs by stage of development: economic precarity in lower-income regions (South America, India, Africa), culturally normalized overwork in high-income ones (Japan, Korea, Europe), competitive intensity in fast-growing ones (China)."
+  - "East Asia's low self-reported numbers likely reflect stigma and non-disclosure, not less suffering. Clinical prevalence resembles other regions, and in Korea only 12.1% of those who experienced a disorder got help."
+  - "Counselors point to a chain: perfectionism → burnout → overwhelm → shame and failure → rumination, avoidance, doomscrolling. The view is that shame and a sense of falling behind sit beneath surface anxiety and depression."
+  - "When the cause is structural, structural interventions win. For burnout, organizational beats individual 2-3x (SMD −0.45 vs −0.18); for money worry, cash and debt relief overwhelm psychotherapy alone (PM+ at zero in Kenya). This is why rest and mindfulness don't last."
+  - "Simple behavior-changing procedures travel farthest. Behavioral activation (SMD 0.67, equal to CBT at 60% of the cost), problem solving (Friendship Bench), CBT-I, and pain reprocessing worked even when delivered by non-specialists in Zimbabwe, India, and Pakistan."
+  - "In some areas, changing the interpretation beats changing the situation. For loneliness, revising 'I'll be rejected' beats providing meetings (−0.27); for pain, reinterpreting it as a false alarm rather than damage produced 66% elimination. Where to intervene differs by struggle."
+  - "There's a paradox: the more common the item, the thinner the evidence. Impostor syndrome: zero treatment trials. Loss of meaning: one 20-person trial. Falling behind: no direct trial. Shame: 7 RCTs. Common doesn't mean there's a validated prescription."
+  - "In every region, younger generations (Gen Z, millennials) and women report higher numbers, and the gap between demand and supply of emotional support feeds loneliness and anxiety at once."

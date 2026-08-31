@@ -3,7 +3,8 @@ import { api } from "../api";
 import type { Day, DayRollup, Methods, Questions } from "../types";
 import { Card, Empty, ErrorBox } from "./ui";
 import { ChatButton, SessionBody } from "./Chat";
-import { KIND_LABEL, SLOT_LABEL, fmtDate, fmtNum, labelOf } from "../lib/format";
+import { fmtDate, fmtNum, kindLabel, labelOf, slotLabel } from "../lib/format";
+import { useI18n } from "../lib/i18n";
 
 export function Records({ days, questions, methods, onOpenMethod }: {
   days: DayRollup[];
@@ -11,13 +12,17 @@ export function Records({ days, questions, methods, onOpenMethod }: {
   methods: Methods | null;
   onOpenMethod: (id: string) => void;
 }) {
+  const { lang, t, pick } = useI18n();
   const list = [...days].reverse();
   const [selected, setSelected] = useState<string | null>(list[0]?.date ?? null);
   const [day, setDay] = useState<Day | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showRaw, setShowRaw] = useState<Record<string, string>>({});
   const stateKeys = questions?.states.map((q) => q.key) ?? ["energy", "mood", "sleep", "execution"];
-  const methodName = (id: string) => methods?.methods.find((m) => m.id === id)?.name.ko ?? id;
+  const methodName = (id: string) => {
+    const m = methods?.methods.find((x) => x.id === id);
+    return m ? pick(m.name) || id : id;
+  };
 
   useEffect(() => {
     if (!selected) return;
@@ -28,7 +33,13 @@ export function Records({ days, questions, methods, onOpenMethod }: {
   }, [selected]);
 
   if (!list.length) {
-    return <Card><Empty title="아직 기록이 없어요">첫 세션을 남기면 여기에 날짜별로 쌓여요.</Empty></Card>;
+    return (
+      <Card>
+        <Empty title={t("아직 기록이 없어요", "No records yet")}>
+          {t("첫 세션을 남기면 여기에 날짜별로 쌓여요.", "Leave a first session and days will stack up here.")}
+        </Empty>
+      </Card>
+    );
   }
 
   async function toggleRaw(id: string) {
@@ -51,8 +62,8 @@ export function Records({ days, questions, methods, onOpenMethod }: {
           <button type="button" key={d.date} className="day-item" aria-current={d.date === selected}
             onClick={() => setSelected(d.date)}>
             <span>
-              <span className="d">{fmtDate(d.date)}</span>
-              <span className="faint tiny"> · {d.sessions}회</span>
+              <span className="d">{fmtDate(d.date, lang)}</span>
+              <span className="faint tiny"> · {d.sessions}{t("회", "x")}</span>
             </span>
             <span className="mini" aria-hidden="true">
               {stateKeys.map((k) => {
@@ -67,22 +78,22 @@ export function Records({ days, questions, methods, onOpenMethod }: {
       <div>
         {error && <ErrorBox error={error} />}
         {day && day.entries && (
-          <Card title={`${fmtDate(day.date)} · 세션 ${day.sessions}개`}
+          <Card title={t(`${fmtDate(day.date, lang)} · 세션 ${day.sessions}개`, `${fmtDate(day.date, lang)} · ${day.sessions} sessions`)}
             hint={day.rollup && Object.keys(day.rollup.scores).length ? stateKeys.map((k) => `${labelOf(k, questions?.states)} ${fmtNum(day.rollup!.scores[k])}`).join(" · ") : undefined}>
             <div className="session-list">
               {day.entries.map((s) => (
                 <div className="session" key={s.id}>
                   <div className="session-head">
-                    <span className="time">{s.time ?? "시각 없음"}</span>
-                    <span className="chip">{KIND_LABEL[s.kind]}{s.slot && ` · ${SLOT_LABEL[s.slot]}`}</span>
+                    <span className="time">{s.time ?? t("시각 없음", "No time")}</span>
+                    <span className="chip">{kindLabel(lang, s.kind)}{s.slot && ` · ${slotLabel(lang, s.slot)}`}</span>
                     {stateKeys.filter((k) => s.scores[k] !== undefined).map((k) => (
                       <span className="chip" key={k}>{labelOf(k, questions?.states)} <b className="num">{s.scores[k]}</b></span>
                     ))}
                     <span style={{ marginLeft: "auto" }}>
-                      <ChatButton body={s.body} title={`${fmtDate(s.date)} ${s.time ?? ""}`} />
+                      <ChatButton body={s.body} title={`${fmtDate(s.date, lang)} ${s.time ?? ""}`} />
                     </span>
                     <button type="button" className="raw-toggle" onClick={() => toggleRaw(s.id)}>
-                      {showRaw[s.id] !== undefined ? "본문 보기" : "원본 md"}
+                      {showRaw[s.id] !== undefined ? t("본문 보기", "Show body") : t("원본 md", "Raw md")}
                     </button>
                   </div>
                   {s.domains.length > 0 && (
@@ -107,14 +118,14 @@ export function Records({ days, questions, methods, onOpenMethod }: {
                   )}
                   {showRaw[s.id] !== undefined
                     ? <pre className="raw">{showRaw[s.id]}</pre>
-                    : s.body ? <SessionBody body={s.body} /> : <div className="faint small">본문 없음</div>}
+                    : s.body ? <SessionBody body={s.body} /> : <div className="faint small">{t("본문 없음", "No body")}</div>}
                 </div>
               ))}
             </div>
           </Card>
         )}
-        {day && !day.entries && <Card><Empty title={day.note ?? "그날 기록이 없어요"} /></Card>}
-        {!day && !error && <Card><div className="muted small">불러오는 중…</div></Card>}
+        {day && !day.entries && <Card><Empty title={day.note ?? t("그날 기록이 없어요", "No records that day")} /></Card>}
+        {!day && !error && <Card><div className="muted small">{t("불러오는 중…", "Loading…")}</div></Card>}
       </div>
     </div>
   );
