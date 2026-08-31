@@ -1,222 +1,244 @@
 # howami
 
-> "오늘 나, 어때?"
+**English** · [한국어](README.ko.md)
 
-몸이 아프면 어디가 어떻게 아픈지 말할 수 있다. 마음은 그렇지 않다. 하루가 끝나면
-"그냥 좀 힘들었다"만 남고, 어디에서 무엇 때문에 힘들었는지는 사라진다. 그래서 같은 일이
-되풀이돼도 알아차리지 못하고, 괜찮았던 날은 왜 괜찮았는지도 모른 채 지나간다.
+> "How am I today?"
 
-howami는 그 "그냥"을 풀어 보려고 만들었다. 하루를 내 말로 풀어놓으면 함께 갈라서 보고,
-걸리는 곳 하나를 같이 들여다보고, 내가 확인한 해석만 남긴다. 기록은 내 컴퓨터 안에만 있다.
+When your body hurts, you can say where and how. The mind is different. By the end of a day,
+all that's left is "it was just a rough one" — where it got rough, and why, is gone. So the same
+thing keeps happening without being noticed, and the good days pass without anyone learning
+what made them good.
 
-## 이 프로젝트가 우선하는 것
+howami exists to unpack that "just". You lay the day out in your own words, it splits the day
+open with you, looks into the one thing that snagged, and keeps only the interpretation you
+yourself confirmed. The records never leave your computer.
 
-기능이나 기술보다 먼저 지키려는 것이 세 가지 있다. 나머지는 전부 여기서 따라 나온다.
+## What this project puts first
 
-### 1. 나의 상태를 있는 그대로 본다
+Three things come before any feature or technology. Everything else follows from them.
 
-"오늘 몇 점?"으로 하루를 뭉뚱그리면 아침의 가족과 낮의 일과 밤에 혼자 있던 시간이 숫자 하나로
-뭉개진다. howami는 **가족·일·혼자 있는 시간·사람들·몸**을 따로 묻고, 그것들이 서로 어떻게
-이어졌는지를 본다. 직장의 긴장이 저녁 식탁까지 따라왔는지, 아침의 다툼이 낮까지 남았는지.
+### 1. See my state as it is
 
-하루에 몇 번을 써도 된다. 아침에 짧게, 저녁에 길게 써도 두 기록이 서로를 안다.
-잘했다 못했다를 평가하지 않고, 남과 비교하지도 않는다. 오늘의 나를 있는 그대로 적는 것이 목적이다.
+"How many points today?" flattens the morning with your family, the afternoon at work, and the
+night alone into a single number. howami asks about **family, work, time alone, people, and
+body** separately, and looks at how they connected — whether the tension from work followed you
+to the dinner table, whether the morning argument lingered into the afternoon.
 
-정리된 해석은 언제나 가설이다. 반드시 나에게 되돌려 확인받고, 내가 고치면 고친 쪽이 남는다.
-"자책"이라고 적으려던 것을 내가 "창피함"이라고 고치면, 기록에는 창피함이 남는다.
+Use it as many times a day as you like. A short check-in in the morning and a long session at
+night know about each other. It never grades you, and never compares you to anyone. The goal is
+to record today's you, as is.
 
-### 2. 마음을 다루는 만큼 신중하다
+Every interpretation is a hypothesis. It is always handed back for you to confirm, and if you
+correct it, your correction wins. If it was about to write "self-blame" and you say "no, it was
+embarrassment", embarrassment is what goes on record.
 
-질문을 감으로 던지지 않는다. 사고기록, 감정에 이름 붙이기, 증거 검토, 예외 찾기,
-통제할 수 있는 것과 없는 것 가르기, 실행 의도처럼 상담과 연구에서 검증된 방식만 쓰고,
-하나하나에 어디서 온 방식인지와 근거가 어느 정도인지를 적어 두었다. 그날 실제로 쓴 것만 기록에 남는다.
-전부 괜찮은 날은 파고들지 않고, 무엇이 그 날을 괜찮게 만들었는지만 남긴다.
+### 2. As careful as the subject demands
 
-동시에 howami는 **의료 기기도, 심리 치료도 아니다.** 진단하지 않고 치료를 제안하지 않는다.
-낮은 점수가 2주 이상 이어지거나 위기 신호가 느껴지면 전문가와 상담해야 한다.
-한국에서는 자살예방 상담전화 **109**로 24시간 연결된다. 이 안내는 아래 [고지](#고지)에도 다시 적어 두었다.
+No question is thrown in on a hunch. It only uses procedures validated in counseling practice
+and research — thought records, affect labeling, evidence checks, exception questions, splitting
+what you can control from what you can't, implementation intentions — and each one is annotated
+with where it comes from and how strong the evidence is. Only what was actually used in a
+conversation goes on record. On a day when everything is fine it doesn't dig; it just keeps
+what made the day fine.
 
-### 3. 이 기록은 오직 나만 본다
+At the same time, howami is **not a medical device and not psychotherapy.** It doesn't diagnose
+and doesn't prescribe treatment. If low scores persist for two weeks or more, or anything feels
+like a crisis, see a professional. You can find a local crisis line at
+[findahelpline.com](https://findahelpline.com); in South Korea, the suicide-prevention hotline
+**109** answers 24/7. This is repeated in the [Disclaimer](#disclaimer) below.
 
-감정과 마음 상태는 가장 사적인 정보다. 그래서 howami의 기록은 **내 컴퓨터 안의 글 파일**로만 남는다.
-어떤 서버에도 올라가지 않고, 계정도 없고, 누가 얼마나 쓰는지 세지도 않는다.
-파일은 그냥 열어서 읽을 수 있고, 지우고 싶으면 폴더째 지우면 끝이다.
+### 3. These records are mine alone
 
-한 가지는 정직하게 밝혀 둔다. 대화 자체는 내가 쓰는 AI 에이전트(지금은 Claude Code)를 거치므로,
-대화 중에 주고받는 말은 그 에이전트 제공자에게 전달된다. howami가 약속하는 것은
-**저장과 조회가 내 컴퓨터를 떠나지 않는다**는 것이고, 대화가 어디까지 가는지는 내가 고른 에이전트의
-정책을 따른다. 이것이 걱정된다면 로컬 모델을 쓰는 에이전트와 함께 쓰는 것이 맞다.
-기술적으로 어떻게 지키는지는 아래 [프라이버시를 코드로 지키는 방식](#프라이버시를-코드로-지키는-방식)에 적었다.
+Feelings and mental states are the most private information there is. So howami's records live
+only as **plain text files on your computer.** Nothing is uploaded to any server, there are no
+accounts, and nobody counts how much you use it. The files open in any editor, and if you want
+it all gone, deleting the folder is the end of it.
 
-## 어떤 경험인가
+One thing is stated honestly: the conversation itself runs through whatever AI agent you use
+(currently Claude Code), so what you say during a conversation reaches that agent's provider.
+What howami promises is that **storage and retrieval never leave your machine**; how far the
+conversation travels follows the policy of the agent you chose. If that worries you, pair it
+with an agent that runs a local model. How this is enforced technically is described in
+[How privacy is enforced in code](#how-privacy-is-enforced-in-code).
 
-고정된 설문은 기계적이라 사흘이면 안 하게 되고, 기록만 쌓일 뿐 "왜?"를 파고들지 않는다.
-howami는 설문 대신 대화다. 하루를 내 말로 풀어놓으면, 에이전트가 그것을 영역별로 갈라서 함께 보고,
-한 군데를 검증된 기법으로 파고, 정리한 해석을 나에게 확인받은 뒤 다음 한 걸음을 정한다.
-결과는 글 파일 하나로 남고, 다음 대화는 그 파일을 읽고 시작하므로 같은 걸 또 묻지 않는다.
+## What it feels like
+
+Fixed questionnaires are mechanical — after three days you stop, and they only pile up records
+without ever asking "why?". howami is a conversation instead. You lay the day out in your own
+words; the agent splits it into areas with you, digs into one spot with a validated technique,
+hands its reading back for your confirmation, and then you pick one next step. The result is a
+single text file, and the next conversation starts by reading it, so nothing is asked twice.
 
 ```
 > /howami
 
-오늘 하루 어떻게 흘러갔어요? 순서대로 정리하지 않아도 되니까 편하게 말해 주세요.
-< 아침에 애 등원 준비하다가 와이프랑 좀 부딪혔고, 회사에서는 기획 회의가 있었는데
-< 준비를 못 하고 들어가서 좀 그랬어요. 밤에는 혼자 책 좀 읽었고.
+How did today go? No need to put it in order - just tell it the way it comes.
+< Morning got tense with my wife over daycare prep, then at work I walked into
+< a planning meeting unprepared, which was rough. At night I read alone for a bit.
 
-정리해 볼게요. 아침에는 가족과 등원 준비로 부딪혔고, 낮에는 준비 없이 들어간
-기획 회의가 걸렸고, 밤에는 혼자 읽는 시간이 있었네요. 맞아요?
-< 네, 근데 아침 건은 저녁에 산책하면서 풀렸어요.
+Let me lay that out. Morning: friction with family over daycare prep. Midday: the
+planning meeting you entered unprepared stuck with you. Night: some time reading
+alone. Is that right?
+< Yes - though the morning thing got resolved on an evening walk together.
 
-그럼 그것도 같이 볼게요. 영역별로 점수를 매겨 볼까요. 가족은 1~5 중 몇 점이었어요?
-< 4점이요. 아침은 2점인데 저녁이 좋아서.
-
-...
-
-일(2점)과 가족(4점) 차이가 눈에 띄네요. 어느 쪽을 더 얘기해 볼까요?
-< 일이요.
+Then let's include that too. Shall we score the areas? Family, 1 to 5?
+< A 4. Morning was a 2, but the evening made up for it.
 
 ...
 
-지금까지 나온 걸 정리하면, 회의가 앞당겨진 걸 아침에 몰랐고 그래서 준비 없이
-들어갔고, 거기서 온 자책이 오후 내내 남았던 걸로 보여요. 이렇게 보는 게 맞아요?
-< 자책보다는 그냥 창피했던 것 같아요.
-
-그럼 창피함으로 고칠게요. 아침의 가족 일이 낮까지 넘어간 것 같기도 한데, 그랬어요?
-< 아니요, 그건 따로였어요.
+Work (2) and family (4) stand apart. Which one do you want to look into?
+< Work.
 
 ...
 
-오늘은 하루를 아침·낮·저녁으로 갈라서 펼친 다음, 영역마다 점수를 따로 매겨
-일과 가족의 차이를 먼저 잡았어요. 일 쪽에서 왜를 세 번 따라 내려가
-"아침에 캘린더를 안 본다"까지 갔고, 그 해석을 다시 확인받은 뒤
-바꿀 수 있는 쪽만 다음 걸음으로 뒀어요.
-저장했어요. (~/howami/data/2026-08-27--2210.md)
+Putting together what came up: the meeting was moved up, you didn't know that in
+the morning, so you walked in unprepared, and the self-blame from that stayed all
+afternoon. Is that how you'd put it?
+< Not self-blame exactly - I think I was just embarrassed.
+
+Then I'll write embarrassment. It also looked like the morning family friction may
+have carried into midday - did it feel that way?
+< No, those were separate.
+
+...
+
+Today we spread the day into morning, midday, and evening, scored each area
+separately, and the gap between work and family stood out first. On the work side
+we followed "why" three steps down to "I don't check the calendar in the morning",
+you confirmed that reading, and only the changeable part became the next step.
+Saved. (~/howami/data/2026-08-27--2210.md)
 ```
 
-## 어떻게 동작하나
+## How it works
 
-대화는 두 갈래다.
+There are two kinds of conversation.
 
-| 종류 | 언제 | 길이 |
+| Kind | When | Length |
 |---|---|---|
-| **session** | 하루를 통으로 되짚을 때 (보통 저녁) | 10~15분 |
-| **checkin** | 지금 이 순간만 짚을 때 | 2~3분 |
+| **session** | Reviewing the whole day (usually evening) | 10–15 min |
+| **checkin** | Just this moment | 2–3 min |
 
-긴 쪽은 여덟 단계를 밟는다.
+The long one walks eight stages.
 
-| 단계 | 하는 일 |
+| Stage | What happens |
 |---|---|
-| **열기** | 점수 대신 "오늘 어떻게 흘러갔어요"로 시작한다. 사용자의 말이 먼저 나온다 |
-| **하루 지도** | 그 말을 아침·낮·저녁과 생활 영역으로 갈라 되돌려주고 확인받는다 |
-| **영역 스캔** | 가족·일·혼자 있는 시간·사람들·몸을 각각 1~5로 받는다 |
-| **상태 스캔** | 하루를 관통하는 축(에너지·기분·수면·실행)을 받는다 |
-| **초점** | 걸리는 곳이 여럿이면 **사용자가** 하나를 고른다 |
-| **탐색** | 고른 하나만 기법을 골라 판다 |
-| **검증** | 정리한 해석을 되돌려주고 확인받는다. 영역 간 전이도 여기서 묻는다 |
-| **다음 걸음** | 바꿀 것 딱 하나를 사용자가 정한다. 다음 세션이 실행 여부를 확인한다 |
+| **Open** | Starts with "how did today go", not a score. Your words come first |
+| **Day map** | Splits your account into morning/midday/evening and life areas, hands it back, gets confirmation |
+| **Area scan** | Family, work, time alone, people, body — each scored 1–5 |
+| **State scan** | The axes running through the day: energy, mood, sleep, execution |
+| **Focus** | If several things snagged, **you** pick one |
+| **Probe** | Digs into that one thing with a chosen technique |
+| **Validate** | Hands the interpretation back for confirmation. Cross-area spillover is asked here too |
+| **Next step** | You pick exactly one thing to change. The next session checks whether it happened |
 
-전부 괜찮은 날은 탐색을 건너뛰고, 대신 무엇이 그 날을 괜찮게 만들었는지를 남긴다.
-좋은 날까지 파고들 이유가 없다.
+On a day when everything is fine, the probe is skipped; what's kept instead is what made the
+day fine. There is no reason to dig into a good day.
 
-### 상담 기법은 기록에 남는다
+### The techniques go on record
 
-각 단계에서 실제로 밟은 기법을 [`questions/methods.yaml`](questions/methods.yaml)의
-id로 남긴다. 26가지가 기본으로 들어 있다.
+Each conversation records which techniques it actually used, by their ids in
+[`questions/methods.yaml`](questions/methods.yaml). 32 come built in.
 
-| 갈래 | 기법 |
+| Branch | Techniques |
 |---|---|
-| 열기 | 개방형 질문, 반영적 경청 |
-| 펼치기 | 하루 지도 그리기, 영역별 척도 질문, 영역 간 전이 확인, 기준선 비교 |
-| 파기 | 트리거 특정, 사고기록, 감정에 이름 붙이기, 생각의 치우침 확인, 증거 검토, 5 Whys, 예외 찾기, 가치 확인, 통제 이분법 |
-| 확인 | 요약 후 확인받기, 다른 설명 대보기 |
-| 다음 걸음 | 행동 활성화, 최소 단위로 쪼개기, 실행 의도 |
-| 돌보기 | 좋았던 것 세 가지, 자기자비 |
-| 되짚기 | 누적 패턴 관찰, 하루 안에서의 변화 |
+| Opening | Open question, Reflective listening |
+| Laying out | Day mapping, Domain scaling, Spillover check, Baseline delta, Prescription follow-up, Agenda setting |
+| Digging | Trigger mapping, Thought record, Affect labeling, Distortion check, Evidence check, Five Whys, Exception question, Values check, Dichotomy of control, Decatastrophizing, Cognitive defusion |
+| Validating | Summary validation, Alternative hypothesis |
+| Next step | Behavioral activation, Tiny habit, Implementation intention, Problem solving, Behavioral experiment, Obstacle plan |
+| Caring | Three good things, Self-compassion |
+| Reviewing | Pattern review, Within-day shift, Early warning signs |
 
-각 항목에는 출처(`origin`)와 근거의 성격(`evidence`: `clinical` / `applied` / `local`),
-그리고 "사용자에게 어떻게 설명할지"(`say_it_as`)가 함께 적혀 있다.
+Each entry carries its origin (`origin`), the nature of its evidence
+(`evidence`: `clinical` / `applied` / `local`), and how to explain it back to the user
+(`say_it_as`).
 
-파일 안에서는 그 세션의 `## 참고한 기법`과 `## 확인받은 것`에, 통계에서는 `stats`의 기법 빈도에 남는다.
+Inside a file they appear under that session's `## 참고한 기법` (techniques used) and
+`## 확인받은 것` (validated readings); in statistics, as technique frequencies in `stats`.
 
-임상 척도나 치료 기법의 이름을 빌려 온 항목이 있지만, 전부 일상 언어로 재작성해
-참고할 뿐이다. 치료를 대신하지 않는다.
+Some entries borrow the names of clinical scales or therapeutic techniques, but all of them are
+rewritten into everyday language for reference only. None of this replaces treatment.
 
-## 무엇이 저장되나
+## What gets saved
 
 ```
 ~/howami/
 ├── data/
-│   ├── 2026-08-27--0940.md   # 아침 체크인
-│   ├── 2026-08-27--1830.md   # 퇴근길 체크인
-│   └── 2026-08-27--2210.md   # 밤 세션 (하루 종합)
-└── insights/                 # 주간·월간 패턴 리포트 (요청할 때 생성)
+│   ├── 2026-08-27--0940.md   # morning check-in
+│   ├── 2026-08-27--1830.md   # commute check-in
+│   └── 2026-08-27--2210.md   # night session (whole day)
+└── insights/                 # weekly/monthly pattern reports (generated on request)
 ```
 
-**한 파일이 대화 한 번이다.** 하루에 한 번이라는 제약이 애초에 없다.
-파일은 평범한 글 파일이라 그냥 열어서 읽어도 되고, 에디터로 고쳐도 되고, 다른 기기로 옮겨도 된다.
-고친 것은 다음 대화 때 자동으로 반영된다.
+**One file is one conversation.** There was never a one-per-day limit to begin with.
+The files are ordinary text — read them directly, edit them in any editor, move them to another
+machine. Edits are picked up automatically at the next conversation.
 
-각 파일에는 그날의 영역별 점수와 한 줄 메모, 함께 판 주제와 확인받은 해석, 다음 한 걸음,
-그리고 그 대화에서 실제로 쓴 상담 방식이 남는다. 그래서 나중에 이런 것을 알 수 있다.
+Each file keeps that day's area scores with one-line notes, the topic dug into and the
+confirmed interpretation, the next step, and the counseling techniques actually used. Which
+means later you can ask:
 
-- 이 결론은 어떤 경로로 나왔나
-- 내 해석 중 무엇이 틀렸었나
-- 나는 주로 어떤 방식으로 질문받고 있나
+- Through what path did this conclusion come about?
+- Which of my interpretations turned out wrong?
+- What kinds of questions am I mostly being asked?
 
-## 하지 않는 것
+## What it doesn't do
 
-맨 위의 [세 가지 원칙](#이-프로젝트가-우선하는-것)에서 나온 목록이다.
+This list follows from the [three principles](#what-this-project-puts-first) above.
 
-- 서버, 계정, 클라우드 동기화 (필요하면 git이나 Dropbox로 각자)
-- 광고, 텔레메트리, 데이터 수집
-- 의학적 진단이나 치료 제안
-- 점수로 등수를 매기거나 남과 비교하는 기능
+- Servers, accounts, cloud sync (if you need it, use git or Dropbox yourself)
+- Ads, telemetry, data collection
+- Medical diagnosis or treatment suggestions
+- Rankings or comparisons with other people
 
-## 고지
+## Disclaimer
 
-> howami는 의료 기기나 심리 치료 도구가 아닙니다.
-> 낮은 점수가 2주 이상 지속되거나 위기 신호가 느껴진다면 전문가와 상담하세요.
-> 한국에서는 자살예방 상담전화 **109**로 24시간 연결됩니다.
+> howami is not a medical device or a psychotherapy tool.
+> If low scores persist for two weeks or more, or anything feels like a crisis, see a
+> professional. A local crisis line is at [findahelpline.com](https://findahelpline.com);
+> in South Korea, the suicide-prevention hotline **109** answers 24/7.
 
 ---
 
-## 설치와 실행
+## Install and run
 
-여기서부터는 기술적인 내용이다. 쓰는 데에는 위의 내용으로 충분하고, 설치하거나 위의 원칙을 코드로
-어떻게 지키는지가 궁금할 때만 이어서 읽으면 된다.
+From here on it's technical. The sections above are enough to use it; read on only if you're
+installing it or curious how the principles are enforced in code.
 
-### 설치
+### Install
 
-Python 3.8 이상만 있으면 된다. 외부 패키지는 쓰지 않는다. macOS · Linux · Windows 에서 같은 코드로 동작한다.
+Python 3.8+ is all you need. No external packages. The same code runs on macOS, Linux, and
+Windows.
 
 ```bash
-git clone https://github.com/<user>/howami.git
-cd howami
-./install.sh          # macOS · Linux: 레포를 ~/.claude/skills/howami 로 심볼릭 링크한다
-install.cmd           # Windows (PowerShell·cmd): 심볼릭 링크, 권한이 없으면 정션(mklink /J)으로 만든다
+git clone https://github.com/dodohankim/how-am-i.git
+cd how-am-i
+./install.sh          # macOS · Linux: symlinks the repo to ~/.claude/skills/howami
+install.cmd           # Windows (PowerShell/cmd): symlink, falling back to a junction (mklink /J)
 ```
 
-두 래퍼의 본체는 `install.py`라서 `python3 install.py`로 직접 실행해도 된다.
-Windows 에서 `python3` 명령이 없으면 `python` 또는 `py -3`를 쓴다 (래퍼가 알아서 고른다).
+Both wrappers delegate to `install.py`, so `python3 install.py` works directly too.
+On Windows, if `python3` is missing, use `python` or `py -3` (the wrapper picks one itself).
 
-Claude Code를 재시작한 뒤 `/howami` 또는 "오늘 나 어때"라고 말하면 시작된다.
+Restart Claude Code, then say `/howami` or "how am I today" to begin.
 
-데이터 위치를 옮기고 싶으면 `HOWAMI_HOME` 환경변수를 잡는다.
+To move the data location, set the `HOWAMI_HOME` environment variable.
 
 ```bash
-export HOWAMI_HOME=~/Dropbox/howami          # macOS · Linux — 동기화가 필요하면 이런 식으로 각자 알아서
+export HOWAMI_HOME=~/Dropbox/howami          # macOS · Linux — your own sync setup, if you want one
 $env:HOWAMI_HOME = "$HOME\Dropbox\howami"    # Windows PowerShell
 ```
 
-### CLI로 직접 쓰기
+### Using the CLI directly
 
-에이전트 없이도 데이터를 다룰 수 있다.
+The data is usable without any agent.
 
 ```bash
-python3 scripts/howami.py context --days 14   # 최근 기록 요약 (에이전트가 대화 전에 부른다)
-python3 scripts/howami.py day --date 2026-08-27  # 그날 세션 전부를 본문까지
-python3 scripts/howami.py stats --days 30     # 영역별·요일별 평균, 시간대별 추세, 실행률
-python3 scripts/howami.py sync --rebuild      # md에서 DB 전부 재생성
-python3 scripts/howami.py where               # 경로와 DB 상태 확인
+python3 scripts/howami.py context --days 14   # recent summary (the agent calls this before a conversation)
+python3 scripts/howami.py day --date 2026-08-27  # all of that day's sessions, bodies included
+python3 scripts/howami.py stats --days 30     # area/weekday averages, time-of-day trends, follow-through
+python3 scripts/howami.py sync --rebuild      # rebuild the DB entirely from the md files
+python3 scripts/howami.py where               # paths and DB status
 
 python3 scripts/howami.py query --sql "
   SELECT d.domain, e.weekday, ROUND(AVG(d.score),2) AS mean
@@ -225,118 +247,129 @@ python3 scripts/howami.py query --sql "
   GROUP BY d.domain, e.weekday ORDER BY mean"
 ```
 
-`query`는 `SELECT`와 `WITH`만 통과시킨다. 쓰기·스키마 변경·여러 문장은 거부한다.
+`query` lets only `SELECT` and `WITH` through. Writes, schema changes, and multiple statements
+are rejected.
 
-### 웹 화면으로 보기
+### The web view
 
-기록을 브라우저에서 훑어볼 수 있는 화면이 들어 있다. 내 PC 안에서만 도는 작은 서버가
-`~/howami`를 읽어 보여줄 뿐, 바깥으로 보내는 것은 없다 (`127.0.0.1`에만 바인딩한다).
+A built-in screen lets you browse the records in a browser. A small server running only on your
+machine reads `~/howami` and shows it — nothing goes out (it binds to `127.0.0.1` only).
 
-| 탭 | 보여주는 것 |
+| Tab | What it shows |
 |---|---|
-| **오늘** | 상태 축(에너지·기분·수면·실행)을 최근 7일 평균과 나란히, 생활 영역 점수와 한 줄 메모, 열려 있는 처방, 오늘 세션 본문. 세션마다 있는 말풍선 버튼("대화")을 누르면 그 세션에서 실제로 주고받은 말만 대화창으로 뜬다 (howami 가 물은 것은 왼쪽, 내가 타이핑한 것은 오른쪽) |
-| **흐름** | 14·30·90일·전체 구간의 축별·영역별 추이, 요일별 평균 표, 시간대별 평균, 처방 실행률, 자주 쓴 기법 |
-| **기록** | 날짜별 세션 목록과 본문. 원본 md도 그대로 볼 수 있다 |
-| **기법** | 진단에 쓰이는 기법 사전. 어디서 왔는지, 쓰면 무엇을 기대할 수 있는지, 위키백과·WHO·NHS·APA 등 더 읽을 곳 |
-| **어려움** | 전 세계 성인이 흔히 겪는 정신적 어려움 지도. 어디서나 확인되는 것(걱정·불안·우울·외로움·번아웃 등)과 지역마다 다르게 붙은 이름(과로사·내권·탕핑 등), 상담 현장에서 자주 나오는 일상적 어려움을 다국가 조사 수치·출처와 함께, 하루 지도의 어느 영역에서 드러나는지 칩으로 이어서 보여준다. 항목마다 "이런 과정을 거치면 나아졌다"로 임상시험·메타분석에서 확인된 개입을 효과 크기·근거 등급·단서와 함께 붙였고, 기법 탭의 절차와 맞는 것은 그 기법으로 건너뛸 수 있다 |
-| **설정** | 데이터 루트, 원본 md 폴더, SQLite DB, 인사이트 폴더의 위치와 파일 수·용량. 각 항목마다 경로 복사와 "폴더 열기" 버튼 (macOS Finder · Windows 탐색기 · Linux xdg-open) |
+| **Today** | State axes (energy/mood/sleep/execution) next to their 7-day averages, area scores with one-line notes, open prescriptions, today's session bodies. Each session has a speech-bubble button that opens just the actual exchange as a chat view (howami's questions on the left, what you typed on the right) |
+| **Trends** | Axis and area trends over 14/30/90 days or all time, weekday averages, time-of-day averages, prescription follow-through, most-used techniques |
+| **Records** | Sessions by date, with bodies. The raw md is viewable as-is |
+| **Techniques** | The technique catalog used in conversations: where each comes from, what to expect from it, and further reading (Wikipedia, WHO, NHS, APA, …) |
+| **Struggles** | A map of the mental struggles adults commonly face worldwide: what shows up everywhere (worry, anxiety, depression, loneliness, burnout, …), the local names cultures gave the same pressure (karoshi, involution, tang ping, …), and everyday struggles counselors hear most — with multi-country figures, sources, and chips linking each to the day map's areas. Each item carries "what helped in trials": interventions confirmed in clinical trials and meta-analyses, with effect sizes, evidence grades, and caveats; where one matches a technique in the Techniques tab, it links across |
+| **Settings** | Locations, file counts, and sizes for the data root, raw md folder, SQLite DB, and insights folder — each with copy-path and "open folder" buttons (macOS Finder · Windows Explorer · Linux xdg-open) |
 
-#### 실행 방법
+#### Running it
 
-Node.js 18 이상이 필요하다 (화면을 빌드할 때만 쓴다. 실행 자체는 Python만 있으면 된다).
+Node.js 18+ is needed only to build the screen; running it needs Python alone.
 
 ```bash
-# 1) 화면 빌드 — 처음 한 번, 그리고 web/ 를 고쳤을 때
+# 1) Build the screen — once at first, and whenever web/ changes
 cd web
 npm install
-npm run build          # web/dist 가 생긴다
+npm run build          # produces web/dist
 cd ..
 
-# 2) 서버 실행
-python3 scripts/serve.py --open      # http://127.0.0.1:7788 을 브라우저로 연다
+# 2) Run the server
+python3 scripts/serve.py --open      # opens http://127.0.0.1:7788 in the browser
 ```
 
-포트를 바꾸려면 `--port 9000` 또는 `HOWAMI_WEB_PORT=9000`. 데이터 위치는 다른 명령과 똑같이
-`HOWAMI_HOME`을 따른다. 종료는 `Ctrl+C`.
+Change the port with `--port 9000` or `HOWAMI_WEB_PORT=9000`. The data location follows
+`HOWAMI_HOME`, same as every other command. Stop with `Ctrl+C`.
 
-코드를 고치면서 볼 때는 루트에서 하나로 둘 다 띄운다.
+While editing code, run both from the root with one command.
 
 ```bash
-./dev.sh                 # macOS · Linux: API http://127.0.0.1:7788 + 화면 http://127.0.0.1:5173
+./dev.sh                 # macOS · Linux: API http://127.0.0.1:7788 + screen http://127.0.0.1:5173
 dev.cmd                  # Windows
-python3 dev.py --open    # 어느 OS 든 본체를 직접 실행해도 된다. --open 은 브라우저까지 연다
+python3 dev.py --open    # any OS; --open also opens the browser
 ```
 
-`scripts/*.py`를 고치면 파이썬 서버가 다시 뜨고(`serve.py --reload`와 같은 감독 방식), `web/src`를 고치면
-vite가 브라우저를 바로 갱신한다. `Ctrl+C` 한 번이면 둘 다 종료된다. `node_modules`가 없으면 `npm install`을
-먼저 실행한다. 따로 띄우고 싶으면 `python3 scripts/serve.py --reload`와 `cd web && npm run dev`를 각각 실행한다.
+Editing `scripts/*.py` restarts the Python server (same supervision as `serve.py --reload`);
+editing `web/src` hot-reloads through vite. One `Ctrl+C` stops both. If `node_modules` is
+missing, run `npm install` first. To run them separately: `python3 scripts/serve.py --reload`
+and `cd web && npm run dev`.
 
-> 서버를 띄워 둔 채로 `scripts/serve.py`를 고쳤다면, `--reload` 없이 띄운 서버는 새 코드를 모른다.
-> 화면에 "없는 API 입니다" 같은 오류가 보이면 서버를 다시 실행하거나 `./dev.sh`를 쓴다.
+> If you edited `scripts/serve.py` while a server was already up, a server started without
+> `--reload` won't know the new code. If the screen shows "unknown API" errors, restart the
+> server or use `./dev.sh`.
 
-서버가 내주는 API는 읽기 전용이다. `/api/context`, `/api/stats?days=30`,
-`/api/day/2026-08-27`, `/api/entries/2026-08-27--2130`, `/api/questions`, `/api/methods`, `/api/settings`.
-예외는 설정 화면의 "폴더 열기" 버튼이 쓰는 `POST /api/open` 하나뿐인데, 미리 정한 네 곳
-(`home`·`data`·`db`·`insights`)만 OS 파일 탐색기로 열 수 있고 임의 경로는 받지 않으며 파일을 고치지 않는다.
-차트 라이브러리나 외부 폰트는 쓰지 않는다. 기록이 PC를 떠나지 않는 것과 같은 이유다.
+The API the server exposes is read-only: `/api/context`, `/api/stats?days=30`,
+`/api/day/2026-08-27`, `/api/entries/2026-08-27--2130`, `/api/questions`, `/api/methods`,
+`/api/struggles`, `/api/settings`. The one exception is `POST /api/open` behind the Settings
+tab's "open folder" buttons — it can open only four predefined places (`home`/`data`/`db`/
+`insights`) in the OS file explorer, takes no arbitrary paths, and modifies nothing. No chart
+libraries, no external fonts — for the same reason the records never leave the machine.
 
-기법 사전의 기대 효과와 출처 링크는 [`questions/references.yaml`](questions/references.yaml)에 있다.
-기법을 추가하거나 출처를 보태고 싶으면 그 파일만 고치면 된다.
-어려움 탭의 목록과 수치·출처는 [`questions/struggles.yaml`](questions/struggles.yaml)에 있다.
-대상은 특정 나라가 아니라 전 세계 성인이라서 WHO·Gallup(144개국)·Ipsos(31개국)·Wellcome(113개국)·GBD 같은
-다국가 조사를 근거로 삼고, 단일 국가 자료는 "지역별 이름" 묶음의 사례로만 쓴다.
+Expected effects and further-reading links for each technique live in
+[`questions/references.yaml`](questions/references.yaml); to add a technique or a source, that
+file is the only thing to edit. The Struggles tab's items, figures, and sources live in
+[`questions/struggles.yaml`](questions/struggles.yaml). The audience is adults worldwide, not
+any single country, so it leans on multi-country surveys — WHO, Gallup (144 countries), Ipsos
+(31), Wellcome (113), GBD — and uses single-country data only as examples under "local names".
 
-### 프라이버시를 코드로 지키는 방식
+### How privacy is enforced in code
 
-- 기록은 `~/howami/data/`의 **마크다운 파일**이 원본이다. 옆의 `howami.db`(SQLite)는 그 파일들에서
-  언제든 다시 만들 수 있는 조회용 인덱스일 뿐이다.
-- 웹 화면은 `127.0.0.1`에만 바인딩하는 표준 라이브러리 HTTP 서버가 그 폴더를 읽어 보여준다.
-  외부 폰트, 차트 라이브러리, 분석 스크립트를 일절 불러오지 않는다. 화면의 **설정** 탭에서
-  어디에 무엇이 저장됐는지 확인하고 폴더를 열어 볼 수 있다.
-- 유일한 쓰기 성격의 API는 설정 탭의 "폴더 열기"(`POST /api/open`)이며, 미리 정한 네 곳만 OS 파일
-  탐색기로 열 수 있고 파일을 고치지 않는다.
-- 대화의 전송 범위: 에이전트는 대화를 시작할 때 `howami.py context`로 최근 14일의 요약(점수·메모·열린
-  처방)을 읽어 컨텍스트에 넣는다. 따라서 대화 중의 말과 그 요약은 에이전트 제공자의 API로 간다.
-  howami 자체는 어떤 네트워크 요청도 하지 않는다.
+- The source of truth is the **markdown files** in `~/howami/data/`. The `howami.db` (SQLite)
+  next to them is just a query index that can be rebuilt from those files at any time.
+- The web view is a standard-library HTTP server bound to `127.0.0.1` only, reading that
+  folder. It loads no external fonts, chart libraries, or analytics. The **Settings** tab
+  shows where everything is stored and opens the folders.
+- The only write-shaped API is the Settings tab's "open folder" (`POST /api/open`), limited to
+  four predefined places, opening them in the OS file explorer without touching any file.
+- What the conversation transmits: at the start of a conversation the agent runs
+  `howami.py context` and puts a 14-day summary (scores, notes, open prescriptions) into its
+  context. So what you say during the conversation, plus that summary, goes to your agent
+  provider's API. howami itself makes no network requests at all.
 
-### 원본과 DB
+### Source of truth and the DB
 
-**md가 원본이고 DB는 캐시다.** DB를 통째로 지워도 `sync --rebuild` 한 번이면 md에서 완전히
-복원된다. 반대는 성립하지 않는다. md를 에디터로 고치거나 다른 기기에서 git으로 받아와도, 다음 호출 때
-mtime을 보고 자동으로 다시 읽어들인다. 그래서 grep 해도 되고, git으로 버전 관리해도 된다.
+**md is the source; the DB is a cache.** Delete the DB entirely and one `sync --rebuild`
+restores it fully from md. The reverse does not hold. Edit the md in an editor or pull it onto
+another machine with git — the next call notices the mtime and re-reads automatically. So grep
+it, version it with git, whatever you like.
 
-DB가 하는 일은 조회다. "가족 점수가 낮은 요일이 있나", "저녁 세션은 아침보다 기분이 높나" 같은 질문에
-SQL 한 줄로 답할 수 있고, 기록이 몇 년치 쌓여도 느려지지 않는다. 쓰기는 막혀 있다. 원본을 우회해
-DB에만 남는 데이터가 생기면 안 되기 때문이다. 자세한 형식과 테이블 구조는
-[`schema/session.md`](schema/session.md)에 있다.
+The DB exists for queries: "is there a weekday when family scores dip", "are evening sessions
+in a better mood than mornings" — one line of SQL, and it stays fast even with years of
+records. Writes are blocked, because no data should ever exist only in the DB, bypassing the
+source files. The file format and table structure are in
+[`schema/session.md`](schema/session.md).
 
-### 저장소 구조
+### Repository layout
 
 ```
 howami/
-├── SKILL.md            # 대화 로직 (에이전트가 읽는 프롬프트)
-├── questions/          # 질문 세트와 기법 카탈로그 = 데이터
-│   ├── core.ko.yaml    # 흐름·생활 영역·질문 문구
+├── SKILL.md            # conversation logic (the prompt the agent reads)
+├── questions/          # question sets and technique catalog = data
+│   ├── core.ko.yaml    # flow, life areas, question wording
 │   ├── core.en.yaml
-│   ├── methods.yaml    # 상담 기법 26종 (id·출처·근거·설명 문구)
-│   └── struggles.yaml  # 어려움 지도 (전 세계 성인이 흔히 겪는 정신적 어려움·수치·출처)
-├── scripts/howami.py   # 저장소 계층. 읽기·쓰기만 하고 대화는 하지 않는다
+│   ├── methods.yaml    # 32 counseling techniques (id, origin, evidence, wording)
+│   ├── references.yaml # expected effects and further reading per technique
+│   └── struggles.yaml  # struggles map (common mental struggles worldwide, figures, sources)
+├── scripts/howami.py   # storage layer. Reads and writes only; never converses
+├── scripts/serve.py    # local web server (127.0.0.1 only)
+├── web/                # web view source (React + Vite)
 └── schema/session.md
 ```
 
-**질문(데이터)과 대화 로직(프롬프트)을 분리한 것이 이 프로젝트의 뼈대다.**
-생활 영역을 자기 삶에 맞게 바꾸고 싶으면 `core.ko.yaml`의 `domains`만 고치면 된다.
-공부·돈·개인 작업 영역은 이미 들어 있고 기본에서 꺼져 있을 뿐이다.
-로직은 건드릴 필요가 없다.
+**Separating the questions (data) from the conversation logic (prompt) is the backbone of this
+project.** To adapt the life areas to your own life, edit `domains` in `core.ko.yaml` (or
+`core.en.yaml`) — study, money, and personal-work areas are already there, just off by
+default. The logic never needs touching.
 
-### 로드맵
+### Roadmap
 
-- **v0.1** — Claude Code 스킬 + 기본 질문 세트(ko/en) + 기법 카탈로그 + md 저장 + SQLite 인덱스
-- **v0.2** — 세션 단위 저장(하루 여러 번), 생활 영역별 다관점 분석, 상담 기법 26종,
-  해석 검증 단계, `day` 명령 ← 지금
-- **v0.3** — 주간 인사이트 리포트, 질문 확장팩 구조 공개, 기여 가이드
-- **v0.4+** — 다른 에이전트 지원, `howami` CLI 래퍼 (로컬 웹 화면은 `scripts/serve.py` + `web/`로 먼저 들어옴)
+- **v0.1** — Claude Code skill + base question sets (ko/en) + technique catalog + md storage + SQLite index
+- **v0.2** — per-session storage (multiple per day), multi-angle area analysis, technique
+  catalog (now 32), interpretation validation stage, `day` command ← now
+- **v0.3** — weekly insight reports, question expansion-pack format, contribution guide
+- **v0.4+** — other agents, a `howami` CLI wrapper (the local web view arrived early via `scripts/serve.py` + `web/`)
 
-### 라이선스
+### License
 
 MIT
