@@ -187,6 +187,16 @@ button { font: inherit; color: inherit; }
 .badge.drop { border-color: transparent; background: rgba(208, 59, 59, 0.12); color: var(--critical); font-weight: 600; }
 .badge.done { border-color: transparent; background: rgba(12, 163, 12, 0.12); color: var(--good); }
 .badge.undone { border-color: transparent; background: rgba(236, 131, 90, 0.16); color: var(--serious); }
+/* 대화 전후 마음의 무게. 내려가면 done 과 같은 색, 올라가면 undone 과 같은 색, 그대로면 중립 */
+.badge.weight { font-family: var(--font-num); white-space: nowrap; }
+.badge.weight.down { border-color: transparent; background: rgba(12, 163, 12, 0.12); color: var(--good); }
+.badge.weight.up { border-color: transparent; background: rgba(236, 131, 90, 0.16); color: var(--serious); }
+.badge.weight.flat { border-color: transparent; background: var(--surface-2); }
+.badge.weight.half { border-style: dashed; }
+.weight-line { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--rule); display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.weight-line .k { font-weight: 600; color: var(--ink); }
+.weight-line .pair { display: inline-flex; align-items: center; gap: 6px; }
+.weight-line .tally { flex-basis: 100%; font-size: 12px; color: var(--ink-3); }
 
 .empty { padding: 36px 20px; text-align: center; color: var(--ink-2); }
 .empty strong { display: block; color: var(--ink); font-size: 16px; margin-bottom: 6px; }

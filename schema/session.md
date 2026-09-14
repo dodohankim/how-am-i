@@ -1,4 +1,4 @@
-# 세션 기록 스키마 (v2)
+# 세션 기록 스키마 (v2 · DB 스키마 v4)
 
 `$HOWAMI_HOME/data/YYYY-MM-DD--HHMM.md` 한 파일이 **대화 한 번**이다.
 하루에 몇 번을 기록하든 파일이 그만큼 생기고, 하루로 묶는 것은 조회의 몫이다.
@@ -45,6 +45,8 @@ prescription_domain: "work"
 prev_prescription_done: false
 prev_prescription_ref: "2026-08-26--2140"
 prev_prescription_helped: null
+weight_before: 6
+weight_after: 4
 ---
 
 ## 하루 지도
@@ -87,6 +89,8 @@ prev_prescription_helped: null
 | `prev_prescription_done` | 불리언/null | | 지난번 처방을 실행했는지. 모르면 null |
 | `prev_prescription_ref` | 문자열/null | | done/helped 판정이 가리키는 세션 id. 며칠 건너뛰어도 판정이 엉뚱한 걸음에 붙지 않게 한다 |
 | `prev_prescription_helped` | 불리언/null | | 실행한 걸음이 도움이 됐는지에 대한 **사용자 본인의 답**. 실행하지 않았거나 답이 애매하면 null |
+| `weight_before` | 0~10 정수/null | | 대화를 열고 하루(또는 지금)를 한 번 풀어놓은 직후의 "마음의 무게". 사용자가 말한 숫자 그대로 |
+| `weight_after` | 0~10 정수/null | | 저장 직전에 같은 질문으로 받은 숫자. 두 값이 다 있을 때만 통계에 쌍으로 잡힌다 |
 
 값은 전부 JSON 리터럴로 쓴다. 표준 라이브러리만으로 읽기 위한 제약이고,
 덕분에 YAML 의존성 없이 어떤 언어에서도 읽힌다.
@@ -112,6 +116,11 @@ md를 손으로 고치더라도 나머지 필드는 그대로 살아남는다.
 
 `scores`와 `domains`의 키는 고정이 아니다. 질문 세트를 바꾸면 키도 따라 바뀌고,
 통계는 그 시점에 존재하는 키만 집계한다.
+
+`weight_before`와 `weight_after`가 있는 이유는, 이 대화를 거치고 사용자가 달라졌는지를
+사용자 본인의 숫자로 남기기 위해서다. 점수 축(`scores`)은 오늘이 어땠는지이고, 이 두 값은
+이 대화의 전과 후다. 둘은 다른 질문이다. 통계(`stats.weight`, `context.weight`)는 두 값이
+모두 있는 세션만 세고, 비율이 아니라 횟수(내려감·그대로·올라감)와 평균 변화로 보여 준다.
 
 ## 본문
 
@@ -154,6 +163,7 @@ A: 살짝 떨리긴 한데 괜찮아요.
 entries(id PK, date, time, slot, weekday, kind, prescription,
         prescription_tag, prescription_domain, prev_prescription_done,
         prev_prescription_ref, prev_prescription_helped,
+        weight_before, weight_after,
         body, source_path, source_mtime, source_size, synced_at)
 scores (entry_id FK, key, value)            -- 하루를 관통하는 축
 domains(entry_id FK, domain, score, note)   -- 생활 영역별 관점
@@ -191,6 +201,13 @@ python3 scripts/howami.py query --sql "
   FROM scores s JOIN entries e ON e.id = s.entry_id
   WHERE s.key = 'mood' AND e.time IS NOT NULL
   ORDER BY e.date DESC, e.time"
+
+# 대화 전후로 마음의 무게가 어떻게 움직였나 — 세션마다 한 쌍
+python3 scripts/howami.py query --sql "
+  SELECT date, time, weight_before, weight_after, weight_after - weight_before AS delta
+  FROM entries
+  WHERE weight_before IS NOT NULL AND weight_after IS NOT NULL
+  ORDER BY date DESC, COALESCE(time,'00:00') DESC"
 ```
 
 `SELECT`와 `WITH`만 통과한다. 쓰기·스키마 변경·여러 문장은 거부한다.

@@ -13,8 +13,8 @@ name: core
 description: A counselling-style set that opens the day by life domain, then goes deep on one
 
 flow:
-  session: [open, map, domain_scan, state_scan, focus, probe, validate, prescribe, close]
-  checkin: [open_now, state_scan, focus, prescribe, close]
+  session: [open, weight_before, map, domain_scan, state_scan, focus, probe, validate, prescribe, weight_after, close]
+  checkin: [open_now, weight_before, state_scan, focus, prescribe, weight_after, close]
 
 # ---------------------------------------------------------------------------
 # 0. Opening - no scores yet. Let the day come out in the user's own words.
@@ -31,6 +31,23 @@ open:
 open_now:
   - "Let's keep this short. How are you right now?"
   - "What were you doing just before this?"
+
+# ---------------------------------------------------------------------------
+# Weight - the same one number at the start and at the end of a conversation.
+#    These two numbers are the only thing that shows "did I change by going through this".
+#    Never grade it, never steer it lower. If the user won't give a number, leave it empty.
+#    Ask `before` right after the user has laid the day (or this moment) out once; ask `after`
+#    just before saving.
+# ---------------------------------------------------------------------------
+weight:
+  before:
+    - "Just one number. How heavy does your mind feel right now? 0 is not heavy at all, 10 is hard to bear."
+  after:
+    - "Before we save, that number once more. How heavy does your mind feel now, 0 to 10?"
+  anchors:
+    0: "Not heavy at all"
+    5: "Heavy, but bearable"
+    10: "Hard to bear"
 
 # ---------------------------------------------------------------------------
 # 1. Day map - split the free account into time and domains, reflect it back, confirm.
@@ -263,6 +280,12 @@ good_day:
 close:
   - "Let's stop here. I'll read it back before it goes down."
   - "Save it as is?"
+  # After saving, the wrap-up speaks about the person, not the techniques. {before}/{after} are the
+  # weight numbers, {named} is what got a name in this conversation (the user's own words), {step} is
+  # the one next step.
+  wrap_up:
+    - "You said {before} when we started and {after} now. {named} And one thing is set: {step}."
+    - "{before} when we started, {after} now. The number didn't move, but {named}"
 
 # ---------------------------------------------------------------------------
 # Review - only when the same dip repeats across records. Stats first, questions second.

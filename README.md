@@ -76,6 +76,9 @@ How did today go? No need to put it in order - just tell it the way it comes.
 < Morning got tense with my wife over daycare prep, then at work I walked into
 < a planning meeting unprepared, which was rough. At night I read alone for a bit.
 
+One number before we go on. How heavy does your mind feel right now, 0 to 10?
+< About a 6.
+
 Let me lay that out. Morning: friction with family over daycare prep. Midday: the
 planning meeting you entered unprepared stuck with you. Night: some time reading
 alone. Is that right?
@@ -102,10 +105,12 @@ have carried into midday - did it feel that way?
 
 ...
 
-Today we spread the day into morning, midday, and evening, scored each area
-separately, and the gap between work and family stood out first. On the work side
-we followed "why" three steps down to "I don't check the calendar in the morning",
-you confirmed that reading, and only the changeable part became the next step.
+Before we save, that number once more. How heavy does your mind feel now, 0 to 10?
+< A 4, I think.
+
+You said 6 when we started and 4 now. "Just a rough one" now has a name - embarrassed,
+not self-blame - and one thing is set: check the calendar for three minutes tomorrow
+morning, while the coffee brews.
 Saved. (~/howami/data/2026-08-27--2210.md)
 ```
 
@@ -122,14 +127,14 @@ The long one walks eight stages.
 
 | Stage | What happens |
 |---|---|
-| **Open** | Starts with "how did today go", not a score. Your words come first |
+| **Open** | Starts with "how did today go", not a score. Your words come first. Then one number: how heavy your mind feels right now, 0–10 |
 | **Day map** | Splits your account into morning/midday/evening and life areas, hands it back, gets confirmation |
 | **Area scan** | Family, work, time alone, people, body — each scored 1–5 |
 | **State scan** | The axes running through the day: energy, mood, sleep, execution |
 | **Focus** | If several things snagged, **you** pick one |
 | **Probe** | Digs into that one thing with a chosen technique |
 | **Validate** | Hands the interpretation back for confirmation. Cross-area spillover is asked here too |
-| **Next step** | You pick exactly one thing to change. The next session checks whether it happened |
+| **Next step** | You pick exactly one thing to change. The next session checks whether it happened. Then the same 0–10 number once more, and the closing line says how you moved: the two numbers, what got a name, the one step |
 
 On a day when everything is fine, the probe is skipped; what's kept instead is what made the
 day fine. There is no reason to dig into a good day.
@@ -175,12 +180,14 @@ The files are ordinary text — read them directly, edit them in any editor, mov
 machine. Edits are picked up automatically at the next conversation.
 
 Each file keeps that day's area scores with one-line notes, the topic dug into and the
-confirmed interpretation, the next step, and the counseling techniques actually used. Which
-means later you can ask:
+confirmed interpretation, the next step, the counseling techniques actually used, and the
+0–10 number you gave at the start and at the end of the conversation. Which means later you
+can ask:
 
 - Through what path did this conclusion come about?
 - Which of my interpretations turned out wrong?
 - What kinds of questions am I mostly being asked?
+- Did a conversation leave me lighter than it found me, and how often has that happened?
 
 ## What it doesn't do
 
@@ -258,7 +265,7 @@ machine reads `~/howami` and shows it — nothing goes out (it binds to `127.0.0
 
 | Tab | What it shows |
 |---|---|
-| **Today** | State axes (energy/mood/sleep/execution) next to their 7-day averages, area scores with one-line notes, open prescriptions, today's session bodies. Each session has a speech-bubble button that opens just the actual exchange as a chat view (howami's questions on the left, what you typed on the right) |
+| **Today** | State axes (energy/mood/sleep/execution) next to their 7-day averages, the 0–10 weight before and after each conversation, area scores with one-line notes, open prescriptions, today's session bodies. Each session has a speech-bubble button that opens just the actual exchange as a chat view (howami's questions on the left, what you typed on the right) |
 | **Trends** | Axis and area trends over 14/30/90 days or all time, weekday averages, time-of-day averages, prescription follow-through, most-used techniques |
 | **Records** | Sessions by date, with bodies. The raw md is viewable as-is |
 | **Techniques** | The technique catalog used in conversations: where each comes from, what to expect from it, and further reading (Wikipedia, WHO, NHS, APA, …) |

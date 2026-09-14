@@ -23,6 +23,9 @@ export interface Session {
   prev_prescription_done: boolean | null;
   prev_prescription_ref?: string | null;
   prev_prescription_helped?: boolean | null;
+  /** 대화 시작·끝의 '마음의 무게' 0~10. 사용자가 말한 숫자 그대로 */
+  weight_before?: number | null;
+  weight_after?: number | null;
   scores: Record<string, number>;
   domains: DomainEntry[];
   flags: string[];
@@ -37,6 +40,30 @@ export interface DayRollup {
   weekday_label: string;
   scores: Record<string, number>;
   domains: Record<string, number>;
+}
+
+/** 대화 전후 '마음의 무게' 한 쌍 (둘 다 있는 세션만) */
+export interface WeightPair {
+  id: string;
+  date: string;
+  time: string | null;
+  kind: Kind;
+  before: number;
+  after: number;
+  delta: number;
+}
+
+/** 전후 쌍의 집계. 비율이 아니라 횟수로 말한다 (n=1 관찰) */
+export interface WeightSummary {
+  n: number;
+  down: number;
+  same: number;
+  up: number;
+  mean_before: number | null;
+  mean_after: number | null;
+  mean_delta: number | null;
+  recent?: WeightPair[];
+  series?: WeightPair[];
 }
 
 export interface OpenPrescription {
@@ -93,6 +120,7 @@ export interface Context {
     avoid: WorksItem[];
     tags: { tag: string; text: string | null }[];
   };
+  weight?: WeightSummary;
   history: Session[];
   days: DayRollup[];
 }
@@ -135,6 +163,7 @@ export interface Stats {
   flags?: { flag: string; n: number }[];
   methods?: { method: string; n: number; last_used: string }[];
   prescription_follow_through?: { n: number; done: number };
+  weight?: WeightSummary;
   works_top?: WorksItem[];
   recent_prescriptions?: { id: string; date: string; time: string | null; prescription: string }[];
 }

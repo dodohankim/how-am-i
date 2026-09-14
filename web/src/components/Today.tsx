@@ -2,6 +2,7 @@ import type { Context, Methods, Questions, Session } from "../types";
 import { Card, Empty, Section } from "./ui";
 import { Ladder } from "./Ladder";
 import { ChatButton, SessionBody } from "./Chat";
+import { WeightLine, WeightPill } from "./Weight";
 import { fmtDate, fmtNum, kindLabel, labelOf, seriesVar, slotLabel } from "../lib/format";
 import { useI18n } from "../lib/i18n";
 
@@ -69,6 +70,7 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
               />
             ))}
           </div>
+          <WeightLine sessions={sessions} summary={ctx.weight} />
         </Card>
         <PrescriptionCard ctx={ctx} primary={primary} />
       </div>
@@ -111,6 +113,7 @@ export function Today({ ctx, questions, methods, onOpenMethod }: {
                 <div className="session-head">
                   <span className="time">{s.time ?? t("시각 없음", "No time")}</span>
                   <span className="chip">{kindLabel(lang, s.kind)}{s.slot && ` · ${slotLabel(lang, s.slot)}`}</span>
+                  <WeightPill before={s.weight_before} after={s.weight_after} />
                   {s.flags.map((f) => <span className="chip" key={f}>{f}</span>)}
                   {s.prev_prescription_done !== null && (
                     <span className={`badge ${s.prev_prescription_done ? "done" : "undone"}`}>

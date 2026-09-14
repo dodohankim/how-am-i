@@ -3,6 +3,7 @@ import { api } from "../api";
 import type { Day, DayRollup, Methods, Questions } from "../types";
 import { Card, Empty, ErrorBox } from "./ui";
 import { ChatButton, SessionBody } from "./Chat";
+import { WeightPill } from "./Weight";
 import { fmtDate, fmtNum, kindLabel, labelOf, slotLabel } from "../lib/format";
 import { useI18n } from "../lib/i18n";
 
@@ -86,6 +87,7 @@ export function Records({ days, questions, methods, onOpenMethod }: {
                   <div className="session-head">
                     <span className="time">{s.time ?? t("시각 없음", "No time")}</span>
                     <span className="chip">{kindLabel(lang, s.kind)}{s.slot && ` · ${slotLabel(lang, s.slot)}`}</span>
+                    <WeightPill before={s.weight_before} after={s.weight_after} />
                     {stateKeys.filter((k) => s.scores[k] !== undefined).map((k) => (
                       <span className="chip" key={k}>{labelOf(k, questions?.states)} <b className="num">{s.scores[k]}</b></span>
                     ))}

@@ -34,7 +34,7 @@ import sys
 import time
 from datetime import date, datetime, timedelta
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 WEEKDAY_KO = ["월", "화", "수", "목", "금", "토", "일"]
 WEEKDAY_EN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 KINDS = ("session", "checkin")
@@ -151,6 +151,13 @@ def clean_scores(raw):
     return out
 
 
+def clean_weight(raw):
+    """대화 전후 '마음의 무게' (0~10 정수). 범위를 벗어나거나 형식이 다르면 None."""
+    if isinstance(raw, bool) or not isinstance(raw, int):
+        return None
+    return raw if 0 <= raw <= 10 else None
+
+
 def clean_domains(raw):
     """영역 기록을 [{key, score, note}] 로 정리한다.
 
@@ -251,6 +258,8 @@ def read_entry_file(entry_id):
         "prev_prescription_done": done,
         "prev_prescription_ref": ref,
         "prev_prescription_helped": helped,
+        "weight_before": clean_weight(meta.get("weight_before")),
+        "weight_after": clean_weight(meta.get("weight_after")),
         "body": body.strip(),
         "path": path,
     }
@@ -292,6 +301,9 @@ CREATE TABLE IF NOT EXISTS entries (
     prev_prescription_done INTEGER,              -- 0 / 1 / NULL
     prev_prescription_ref  TEXT,                 -- done/helped 판정이 가리키는 세션 id
     prev_prescription_helped INTEGER,            -- 0 / 1 / NULL. 사용자의 답으로만 정한다
+    weight_before          INTEGER CHECK (weight_before IS NULL OR weight_before BETWEEN 0 AND 10),
+    weight_after           INTEGER CHECK (weight_after  IS NULL OR weight_after  BETWEEN 0 AND 10),
+                                                 -- 대화 시작·끝의 '마음의 무게'. 사용자가 말한 숫자 그대로
     body                   TEXT,
     source_path            TEXT NOT NULL,
     source_mtime           REAL NOT NULL,
@@ -387,9 +399,9 @@ def upsert_entry(conn, entry, stat):
     conn.execute(
         "INSERT INTO entries(id, date, time, slot, weekday, kind, prescription,"
         " prescription_tag, prescription_domain, prev_prescription_done,"
-        " prev_prescription_ref, prev_prescription_helped,"
+        " prev_prescription_ref, prev_prescription_helped, weight_before, weight_after,"
         " body, source_path, source_mtime, source_size, synced_at)"
-        " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
         " ON CONFLICT(id) DO UPDATE SET"
         "  date=excluded.date, time=excluded.time, slot=excluded.slot,"
         "  weekday=excluded.weekday, kind=excluded.kind, prescription=excluded.prescription,"
@@ -397,7 +409,9 @@ def upsert_entry(conn, entry, stat):
         "  prescription_domain=excluded.prescription_domain,"
         "  prev_prescription_done=excluded.prev_prescription_done,"
         "  prev_prescription_ref=excluded.prev_prescription_ref,"
-        "  prev_prescription_helped=excluded.prev_prescription_helped, body=excluded.body,"
+        "  prev_prescription_helped=excluded.prev_prescription_helped,"
+        "  weight_before=excluded.weight_before, weight_after=excluded.weight_after,"
+        "  body=excluded.body,"
         "  source_path=excluded.source_path, source_mtime=excluded.source_mtime,"
         "  source_size=excluded.source_size, synced_at=excluded.synced_at",
         (
@@ -413,6 +427,8 @@ def upsert_entry(conn, entry, stat):
             None if entry["prev_prescription_done"] is None else int(entry["prev_prescription_done"]),
             entry["prev_prescription_ref"],
             None if entry["prev_prescription_helped"] is None else int(entry["prev_prescription_helped"]),
+            entry["weight_before"],
+            entry["weight_after"],
             entry["body"],
             entry["path"],
             mtime,
@@ -488,7 +504,8 @@ def sync(conn, rebuild=False):
 def entry_rows(conn, limit=None, until=None, since=None, day=None):
     sql = ("SELECT id, date, time, slot, kind, weekday, prescription,"
            " prescription_tag, prescription_domain, prev_prescription_done,"
-           " prev_prescription_ref, prev_prescription_helped FROM entries")
+           " prev_prescription_ref, prev_prescription_helped,"
+           " weight_before, weight_after FROM entries")
     clauses, params = [], []
     if day:
         clauses.append("date = ?")
@@ -716,6 +733,7 @@ def cmd_context(args):
     all_works = works_rows(conn)
     groups = works_groups(all_works)
     total_days = conn.execute("SELECT COUNT(DISTINCT date) AS n FROM entries").fetchone()["n"]
+    weight = weight_summary(conn, until=today)
 
     return emit({
         "home": home_dir(),
@@ -740,10 +758,47 @@ def cmd_context(args):
             # tags: 태그 재사용용 전체 목록. 같은 뜻의 걸음이면 반드시 재사용한다.
             "tags": [{"tag": w["tag"], "text": w["text"]} for w in all_works],
         },
+        # weight: 대화 전후 '마음의 무게'가 최근에 어떻게 움직였는지. 마무리에서 횟수로 말한다.
+        "weight": weight,
         "history": history,
         "days": day_rollup(conn, since, today),
         "synced": summarize_sync(synced),
     })
+
+
+def weight_summary(conn, since=None, until=None, recent=5):
+    """대화 전후 '마음의 무게' 쌍을 모은다.
+
+    둘 다 있는 세션만 센다. 나아짐을 증명하는 수치가 아니라 사용자가 말한 숫자가
+    어떻게 움직였는지를 보여주는 것이므로, 비율이 아니라 횟수와 평균 변화만 준다.
+    """
+    sql = ("SELECT id, date, time, kind, weight_before AS b, weight_after AS a FROM entries"
+           " WHERE weight_before IS NOT NULL AND weight_after IS NOT NULL")
+    params = []
+    if since:
+        sql += " AND date >= ?"
+        params.append(since)
+    if until:
+        sql += " AND date <= ?"
+        params.append(until)
+    sql += " ORDER BY date, COALESCE(time, '00:00')"
+    pairs = [{"id": r["id"], "date": r["date"], "time": r["time"], "kind": r["kind"],
+              "before": r["b"], "after": r["a"], "delta": r["a"] - r["b"]}
+             for r in conn.execute(sql, params)]
+    if not pairs:
+        return {"n": 0, "down": 0, "same": 0, "up": 0, "mean_before": None,
+                "mean_after": None, "mean_delta": None, "recent": []}
+    n = len(pairs)
+    return {
+        "n": n,
+        "down": sum(1 for p in pairs if p["delta"] < 0),
+        "same": sum(1 for p in pairs if p["delta"] == 0),
+        "up": sum(1 for p in pairs if p["delta"] > 0),
+        "mean_before": round(sum(p["before"] for p in pairs) / n, 2),
+        "mean_after": round(sum(p["after"] for p in pairs) / n, 2),
+        "mean_delta": round(sum(p["delta"] for p in pairs) / n, 2),
+        "recent": pairs[-recent:],
+    }
 
 
 def open_prescription_of(row, same_day):
@@ -1004,6 +1059,13 @@ def cmd_save(args):
     if helped is not None and not isinstance(helped, bool):
         return fail("prev_prescription_helped는 true/false/null이어야 합니다: %r" % (helped,))
 
+    weights = {}
+    for key in ("weight_before", "weight_after"):
+        value = payload.get(key)
+        if value is not None and clean_weight(value) is None:
+            return fail("%s는 0~10 사이 정수이거나 null이어야 합니다: %r" % (key, value))
+        weights[key] = value
+
     problems = guard_payload(payload)
     transcript = None
     if not problems:
@@ -1040,6 +1102,8 @@ def cmd_save(args):
         "prev_prescription_done": payload.get("prev_prescription_done"),
         "prev_prescription_ref": ref.strip() if ref else None,
         "prev_prescription_helped": helped,
+        "weight_before": weights["weight_before"],
+        "weight_after": weights["weight_after"],
     }
     lines = ["---"]
     for key, value in meta.items():
@@ -1201,6 +1265,9 @@ def cmd_stats(args):
 
     works_top = works_groups(works_rows(conn))["worked"][:3]
 
+    weight = weight_summary(conn, since=since, recent=30)
+    weight["series"] = weight.pop("recent")
+
     return emit({
         "range": {"from": span["a"], "to": span["b"]},
         "entries": span["n"],
@@ -1212,6 +1279,8 @@ def cmd_stats(args):
         "flags": flags,
         "methods": methods,
         "prescription_follow_through": {"n": follow["n"], "done": follow["done"] or 0},
+        # 대화 전후 '마음의 무게'. n=1 관찰이므로 비율 대신 횟수와 평균 변화만 준다.
+        "weight": weight,
         "works_top": works_top,
         "recent_prescriptions": prescriptions[::-1],
     })
