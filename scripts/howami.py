@@ -482,7 +482,8 @@ def sync(conn, rebuild=False):
             continue
         try:
             entry = read_entry_file(entry_id)
-        except (OSError, UnicodeDecodeError) as exc:
+            weekday_num(entry["date"])  # 2026-02-30 처럼 달력에 없는 날짜의 파일은 건너뛴다
+        except (OSError, UnicodeDecodeError, ValueError) as exc:
             failed.append({"id": entry_id, "error": str(exc)})
             continue
         upsert_entry(conn, entry, stat)
@@ -720,12 +721,17 @@ def cmd_context(args):
     prior = [h for h in history if h["date"] != today]
 
     last = prior[-1] if prior else None
+    # 열려 있는 처방은 가장 최근에 정한 걸음이다. 오늘의 마지막 세션이 걸음 없이 끝났어도
+    # 그보다 앞서 정한 걸음을 건너뛰지 않는다. 뒤의 세션이 이미 그 걸음의 실행 여부를
+    # 확인했으면(prev_prescription_ref) 닫힌 것으로 보고 다시 묻지 않는다.
     open_prescription = None
-    if today_sessions and today_sessions[-1]["prescription"]:
-        # 오늘 이미 세션이 있었으면 그때 정한 것이 아직 열려 있는 처방이다.
-        open_prescription = open_prescription_of(today_sessions[-1], same_day=True)
-    elif last and last["prescription"]:
-        open_prescription = open_prescription_of(last, same_day=False)
+    latest = next((h for h in reversed(history) if h["prescription"]), None)
+    if latest:
+        checked = conn.execute(
+            "SELECT 1 FROM entries WHERE prev_prescription_ref = ? LIMIT 1", (latest["id"],)
+        ).fetchone()
+        if not checked:
+            open_prescription = open_prescription_of(latest, same_day=latest["date"] == today)
 
     since = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=args.days - 1)).date().isoformat()
     total = conn.execute("SELECT COUNT(*) AS n FROM entries").fetchone()["n"]
@@ -840,8 +846,9 @@ def summarize_sync(result):
 # 프롬프트 규칙만으로는 둘 다 막히지 않으므로 저장 직전에 여기서 한 번 더 건다.
 # --------------------------------------------------------------------------
 
-# 정상적인 한국어 기록에는 영어 역할 토큰이 줄 첫머리에 올 일이 없다.
-ROLE_LEAK_RE = re.compile(r"(?m)^[ \t>*-]*(?:user|system|assistant|human)\b")
+# 역할 토큰이 줄에 혼자 있거나 바로 뒤에 콜론이 붙은 경우만 잡는다. 영어 기록에는
+# "user research meeting", "system outage" 처럼 같은 단어로 시작하는 평범한 문장이 있다.
+ROLE_LEAK_RE = re.compile(r"(?m)^[ \t>*-]*(?:user|system|assistant|human)[ \t]*(?::|$)")
 
 INJECTION_PATTERNS = [
     (re.compile(r"SYSTEM_INTERRUPT|HOWAMI_ENGINE|\[INST\]|<\|im_start\|>"), "가짜 시스템 마커"),
@@ -1007,8 +1014,19 @@ def cmd_save(args):
     day = payload.get("date") or date.today().isoformat()
     if not DAY_RE.match(str(day)):
         return fail("date는 YYYY-MM-DD 형식이어야 합니다: %r" % day)
+    try:
+        weekday_num(day)
+    except ValueError:
+        return fail("date가 달력에 없는 날짜입니다: %r" % day)
 
     hhmm = payload.get("time") or datetime.now().strftime("%H:%M")
+    if not isinstance(hhmm, str):
+        return fail("time은 \"HH:MM\" 형식의 문자열이어야 합니다: %r" % (hhmm,))
+    body = payload.get("body")
+    if body is None:
+        body = ""
+    if not isinstance(body, str):
+        return fail("body는 문자열이거나 null이어야 합니다")
     entry_id = make_id(day, hhmm)
     if not entry_id:
         return fail("time은 HH:MM 형식이어야 합니다: %r" % hhmm)
@@ -1108,7 +1126,7 @@ def cmd_save(args):
     lines = ["---"]
     for key, value in meta.items():
         lines.append("%s: %s" % (key, json.dumps(value, ensure_ascii=False)))
-    lines += ["---", "", payload.get("body", "").rstrip(), ""]
+    lines += ["---", "", body.rstrip(), ""]
 
     with open(path, "w", encoding="utf-8") as handle:
         handle.write("\n".join(lines))
