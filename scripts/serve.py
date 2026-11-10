@@ -60,6 +60,7 @@ import howami  # noqa: E402  (같은 디렉토리의 저장소 계층)
 DAY_RE = re.compile(r"\A\d{4}-\d{2}-\d{2}\Z")
 ID_RE = re.compile(r"\A\d{4}-\d{2}-\d{2}(?:--[0-2]\d[0-5]\d)?\Z")
 DEFAULT_PORT = 7788
+LOCAL_HOSTS = ("127.0.0.1", "localhost", "[::1]")
 
 
 # --------------------------------------------------------------------------
@@ -468,7 +469,26 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def host_allowed(self):
+        """Host 헤더가 이 PC를 가리키는 이름일 때만 응답한다.
+
+        바깥 사이트가 자기 도메인을 127.0.0.1 로 돌려(DNS 리바인딩) 브라우저를 통해
+        기록을 읽어 가는 것을 막는다. 그런 요청은 Host 에 공격자의 도메인이 실린다.
+        포트는 보지 않는다 (vite 개발 서버가 :5173 의 Host 를 그대로 넘긴다).
+        """
+        host = (self.headers.get("Host") or "").strip().lower()
+        if host.startswith("["):
+            name = host[: host.find("]") + 1]
+        else:
+            name = host.rsplit(":", 1)[0] if ":" in host else host
+        if name in LOCAL_HOSTS:
+            return True
+        self.send_json({"ok": False, "error": "허용되지 않은 Host 입니다"}, 403)
+        return False
+
     def do_GET(self):
+        if not self.host_allowed():
+            return None
         url = urlparse(self.path)
         query = {k: v[-1] for k, v in parse_qs(url.query).items()}
         path = url.path
@@ -478,6 +498,8 @@ class Handler(BaseHTTPRequestHandler):
         return self.serve_static(path)
 
     def do_POST(self):
+        if not self.host_allowed():
+            return None
         url = urlparse(self.path)
         if url.path != "/api/open":
             return self.send_json({"ok": False, "error": "없는 API 입니다: %s" % url.path}, 404)
@@ -555,9 +577,12 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         rel = os.path.normpath(path.lstrip("/")) if path not in ("", "/") else "index.html"
-        full = os.path.join(DIST_DIR, rel)
-        if not full.startswith(DIST_DIR) or not os.path.isfile(full):
-            full = os.path.join(DIST_DIR, "index.html")  # SPA fallback
+        # join 결과를 실제 경로로 풀어서 비교한다. 문자열 접두사만 보면 `/../..` 로 dist 밖을 읽을 수 있다.
+        root = os.path.realpath(DIST_DIR)
+        full = os.path.realpath(os.path.join(root, rel))
+        if not full.startswith(root + os.sep) or not os.path.isfile(full):
+            rel = "index.html"
+            full = os.path.join(root, rel)  # SPA fallback
         ctype = mimetypes.guess_type(full)[0] or "application/octet-stream"
         with open(full, "rb") as handle:
             body = handle.read()
